@@ -1,0 +1,1022 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Hungry Dinosaur</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap');
+
+:root {
+  --bg: #0c0e1a;
+  --surface: #15182e;
+  --surface2: #1e2240;
+  --border: rgba(120,140,255,0.15);
+  --text: #e8eaff;
+  --text2: #9aa3c9;
+  --accent: #7c6fff;
+  --accent2: #a78bfa;
+  --gold: #fbbf24;
+  --gold2: #f59e0b;
+  --green: #34d399;
+  --red: #f87171;
+  --orange: #fb923c;
+  --sky: #38bdf8;
+  --purple: #c084fc;
+  --amber: #fbbf24;
+  --emerald: #34d399;
+}
+
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;overflow:hidden;font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text)}
+
+.app {
+  width:100%;height:100%;max-width:520px;margin:0 auto;
+  display:flex;flex-direction:column;
+  background:linear-gradient(180deg,#0c0e1a 0%,#13162e 50%,#0c0e1a 100%);
+}
+
+/* ===== START SCREEN ===== */
+.start-screen {
+  flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:24px;position:relative;overflow:hidden;
+}
+.start-bg {
+  position:absolute;inset:0;pointer-events:none;opacity:0.06;
+  background-image: radial-gradient(circle at 20% 30%, var(--accent) 0%, transparent 40%),
+    radial-gradient(circle at 80% 70%, var(--gold) 0%, transparent 35%);
+}
+.dragon-mascot {
+  font-size:5rem;margin-bottom:8px;animation:float 3s ease-in-out infinite;
+  filter:drop-shadow(0 0 24px rgba(251,191,36,0.3));
+}
+.start-title {font-size:1.7rem;font-weight:900;color:var(--gold);text-align:center;margin-bottom:4px}
+.start-sub {font-size:0.85rem;color:var(--text2);text-align:center;margin-bottom:28px}
+.mnemonic-box {
+  background:var(--surface2);border:1px solid var(--border);border-radius:14px;
+  padding:14px 18px;margin-bottom:24px;text-align:center;max-width:320px;width:100%;
+}
+.mnemonic-text {font-size:1rem;font-weight:700;color:var(--accent2);letter-spacing:0.5px}
+.mnemonic-sub {font-size:0.75rem;color:var(--text2);margin-top:4px}
+.name-input {
+  width:100%;max-width:280px;padding:12px 16px;border-radius:12px;
+  border:1px solid var(--border);background:var(--surface);color:var(--text);
+  font-size:1rem;font-family:inherit;text-align:center;margin-bottom:16px;
+}
+.name-input:focus {outline:none;border-color:var(--accent)}
+.diff-grid {
+  display:grid;grid-template-columns:repeat(3,1fr);gap:8px;
+  width:100%;max-width:320px;margin-bottom:20px;
+}
+.diff-btn {
+  padding:12px 8px;border-radius:12px;border:1px solid var(--border);
+  background:var(--surface);color:var(--text2);font-size:0.8rem;font-weight:700;
+  cursor:pointer;transition:all 0.2s;font-family:inherit;
+}
+.diff-btn.active {background:rgba(124,111,255,0.2);border-color:var(--accent);color:var(--accent2)}
+.start-btn {
+  width:100%;max-width:280px;padding:14px;border-radius:14px;
+  border:none;background:linear-gradient(135deg,var(--gold),var(--gold2));
+  color:#1a0f00;font-size:1rem;font-weight:800;cursor:pointer;
+  box-shadow:0 4px 20px rgba(251,191,36,0.25);font-family:inherit;
+}
+
+/* ===== GAME SCREEN ===== */
+.game-screen {flex:1;display:flex;flex-direction:column;min-height:0}
+
+/* Top Bar */
+.top-bar {
+  display:flex;align-items:center;justify-content:space-between;
+  padding:10px 16px 6px;flex-shrink:0;
+}
+.brand {font-size:1.1rem;font-weight:900;color:var(--gold)}
+.lives {display:flex;gap:3px}
+.life {font-size:1.1rem;opacity:0.25;transition:opacity 0.3s}
+.life.active {opacity:1}
+
+/* Score Row */
+.score-row {
+  display:flex;justify-content:center;gap:16px;padding:0 16px 8px;
+  flex-shrink:0;font-size:0.8rem;color:var(--text2);
+}
+.score-item {display:flex;align-items:center;gap:4px}
+.score-item .val {color:var(--text);font-weight:700}
+
+/* Step Counter */
+.step-counter {
+  text-align:center;font-size:0.75rem;color:var(--text2);padding-bottom:6px;flex-shrink:0;
+}
+
+/* Hoard Bar */
+.hoard-wrap {
+  padding:0 16px 8px;flex-shrink:0;
+}
+.hoard-track {
+  height:10px;background:var(--surface2);border-radius:5px;overflow:hidden;
+  border:1px solid var(--border);
+}
+.hoard-fill {
+  height:100%;background:linear-gradient(90deg,var(--gold),var(--gold2));
+  border-radius:5px;transition:width 0.6s ease;box-shadow:0 0 12px rgba(251,191,36,0.3);
+}
+.hoard-label {
+  display:flex;justify-content:space-between;font-size:0.7rem;color:var(--text2);
+  margin-top:3px;
+}
+
+/* BODMAS Bar */
+.bodmas-bar {
+  display:flex;justify-content:center;gap:6px;padding:0 16px 8px;flex-shrink:0;
+}
+.bodmas-tier {
+  display:flex;align-items:center;gap:2px;padding:5px 10px;border-radius:10px;
+  background:var(--surface2);border:1px solid var(--border);font-size:0.72rem;
+  font-weight:700;color:var(--text2);transition:all 0.3s;position:relative;
+}
+.bodmas-tier .tier-label {font-size:0.6rem;opacity:0.6;margin-right:3px}
+.bodmas-tier .tier-name {font-size:0.72rem}
+.bodmas-tier .tier-arrow {font-size:0.55rem;margin-left:2px;opacity:0.5}
+.bodmas-tier.done {border-color:var(--green);color:var(--green);background:rgba(52,211,153,0.08)}
+.bodmas-tier.done::after {content:'✓';margin-left:3px;font-size:0.6rem}
+.bodmas-tier.current {border-color:var(--accent);color:var(--accent2);background:rgba(124,111,255,0.1);box-shadow:0 0 12px rgba(124,111,255,0.15)}
+.bodmas-tier.unused {opacity:0.2}
+
+/* Equation Area */
+.eq-area {
+  flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:0 16px;min-height:0;overflow-y:auto;
+}
+.eq-history {
+  display:flex;flex-direction:column;align-items:center;gap:6px;width:100%;
+  margin-bottom:12px;
+}
+.eq-row {
+  font-size:0.85rem;color:var(--text2);padding:4px 12px;border-radius:8px;
+  background:var(--surface2);border:1px solid var(--border);
+}
+.eq-row.done {opacity:0.5;border-color:var(--green);color:var(--green)}
+.eq-row.final {font-size:1.3rem;color:var(--gold);font-weight:800;border-color:var(--gold);background:rgba(251,191,36,0.08)}
+
+/* Current Equation */
+.eq-current {
+  display:flex;flex-wrap:wrap;align-items:center;justify-content:center;
+  gap:2px;font-size:1.5rem;font-weight:800;padding:16px;border-radius:16px;
+  background:var(--surface2);border:1px solid var(--border);width:100%;max-width:400px;
+  position:relative;transition:border-color 0.3s;
+}
+.eq-current.has-feedback {border-color:rgba(248,113,113,0.4)}
+
+.eq-token {
+  display:inline-flex;align-items:center;justify-content:center;
+  padding:4px 6px;border-radius:8px;transition:all 0.2s;
+}
+.eq-token.num {color:var(--text)}
+.eq-token.op {
+  padding:6px 10px;border-radius:10px;cursor:pointer;font-size:1.3rem;
+  background:var(--surface);border:1px solid var(--border);color:var(--text2);
+  min-width:40px;min-height:40px;display:flex;align-items:center;justify-content:center;
+}
+.eq-token.op:hover {background:var(--surface2)}
+.eq-token.op:active {transform:scale(0.95)}
+
+/* Operator tier colors */
+.eq-token.op.tier-b {border-color:var(--purple);color:var(--purple)}
+.eq-token.op.tier-o {border-color:var(--amber);color:var(--amber)}
+.eq-token.op.tier-dm {border-color:var(--emerald);color:var(--emerald)}
+.eq-token.op.tier-as {border-color:var(--sky);color:var(--sky)}
+
+/* When a chunk is selected for answering */
+.eq-token.op.selected {
+  background:rgba(124,111,255,0.2);border-color:var(--accent);
+  box-shadow:0 0 16px rgba(124,111,255,0.3);color:var(--accent2);
+}
+.eq-token.chunk-left, .eq-token.chunk-right {
+  background:rgba(124,111,255,0.1);border-radius:10px;
+  box-shadow:0 0 8px rgba(124,111,255,0.1);
+}
+
+/* Wrong operator feedback */
+.feedback-bubble {
+  margin-top:10px;padding:10px 16px;border-radius:12px;
+  background:var(--surface2);border:1px solid rgba(248,113,113,0.3);
+  color:var(--red);font-size:0.8rem;font-weight:600;text-align:center;
+  max-width:360px;width:100%;animation:popIn 0.3s ease;
+}
+.feedback-bubble .feedback-why {font-size:0.72rem;color:var(--text2);margin-top:3px;font-weight:400}
+
+/* Answer Choices */
+.answers-area {
+  width:100%;max-width:400px;padding:0 16px;margin-top:10px;
+  animation:slideUp 0.3s ease;
+}
+.answers-label {
+  text-align:center;font-size:0.8rem;color:var(--text2);margin-bottom:8px;
+}
+.answers-grid {
+  display:grid;grid-template-columns:repeat(2,1fr);gap:8px;
+}
+.answer-btn {
+  padding:14px 8px;border-radius:12px;border:1px solid var(--border);
+  background:var(--surface);color:var(--text);font-size:1.1rem;font-weight:800;
+  cursor:pointer;transition:all 0.15s;font-family:inherit;
+}
+.answer-btn:hover {background:var(--surface2);border-color:var(--accent)}
+.answer-btn:active {transform:scale(0.97)}
+.answer-btn.correct {background:rgba(52,211,153,0.15);border-color:var(--green);color:var(--green)}
+.answer-btn.wrong {background:rgba(248,113,113,0.1);border-color:var(--red);color:var(--red);animation:shake 0.4s ease}
+
+/* Hint & Skip */
+.hint-row {
+  display:flex;justify-content:center;gap:10px;padding:12px 16px;flex-shrink:0;
+}
+.hint-btn, .skip-btn {
+  padding:8px 16px;border-radius:10px;border:1px solid var(--border);
+  background:var(--surface2);color:var(--text2);font-size:0.75rem;font-weight:700;
+  cursor:pointer;font-family:inherit;
+}
+.hint-btn:hover, .skip-btn:hover {border-color:var(--accent);color:var(--accent2)}
+
+/* ===== GAME OVER ===== */
+.go-screen {
+  flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:24px;text-align:center;
+}
+.go-emoji {font-size:4rem;margin-bottom:8px}
+.go-title {font-size:1.5rem;font-weight:900;color:var(--gold);margin-bottom:4px}
+.go-sub {color:var(--text2);font-size:0.85rem;margin-bottom:24px}
+.go-stats {
+  display:grid;grid-template-columns:repeat(2,1fr);gap:8px;
+  width:100%;max-width:300px;margin-bottom:20px;
+}
+.go-stat {
+  background:var(--surface2);border:1px solid var(--border);border-radius:12px;
+  padding:12px;text-align:center;
+}
+.go-stat .label {font-size:0.7rem;color:var(--text2)}
+.go-stat .val {font-size:1.1rem;font-weight:800;color:var(--text)}
+.go-btn {
+  width:100%;max-width:280px;padding:14px;border-radius:14px;
+  border:none;background:linear-gradient(135deg,var(--accent),var(--accent2));
+  color:#fff;font-size:1rem;font-weight:800;cursor:pointer;font-family:inherit;
+}
+
+/* ===== ANIMATIONS ===== */
+@keyframes float {0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+@keyframes popIn {from{opacity:0;transform:scale(0.9)}to{opacity:1;transform:scale(1)}}
+@keyframes slideUp {from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+@keyframes shake {0%,100%{transform:translateX(0)}20%{transform:translateX(-6px)}40%{transform:translateX(6px)}60%{transform:translateX(-4px)}80%{transform:translateX(4px)}}
+@keyframes pulse {0%,100%{box-shadow:0 0 0 0 rgba(124,111,255,0.3)}50%{box-shadow:0 0 0 8px rgba(124,111,255,0)}}
+
+/* ===== UTILS ===== */
+.hidden {display:none !important}
+.screen {display:none}
+.screen.active {display:flex;flex-direction:column;height:100%}
+</style>
+</head>
+<body>
+<div class="app">
+
+<!-- START SCREEN -->
+<div id="startScreen" class="screen active">
+  <div class="start-bg"></div>
+  <div class="dragon-mascot">🦖</div>
+  <div class="start-title">Hungry Dinosaur</div>
+  <div class="start-sub">Master BODMAS equations, feed your dinosaur.</div>
+  <input type="text" id="playerName" class="name-input" placeholder="Your Dinosaur Name" maxlength="16">
+  <div class="diff-grid">
+    <button class="diff-btn" data-d="easy">🌱 Easy</button>
+    <button class="diff-btn active" data-d="medium">⚡ Medium</button>
+    <button class="diff-btn" data-d="hard">🔥 Hard</button>
+  </div>
+  <button class="start-btn" id="startBtn">Play</button>
+</div>
+
+<!-- GAME SCREEN -->
+<div id="gameScreen" class="screen game-screen">
+  <div class="top-bar">
+    <div class="brand">🐉 Hoard</div>
+    <div class="lives" id="livesBar">
+      <span class="life active">🍎</span>
+      <span class="life active">🍎</span>
+      <span class="life active">🍎</span>
+    </div>
+  </div>
+  <div class="score-row">
+    <div class="score-item">⭐ <span class="val" id="scoreVal">0</span></div>
+    <div class="score-item">🏆 L<span class="val" id="levelVal">1</span></div>
+    <div class="score-item">🔥 <span class="val" id="streakVal">0</span></div>
+    <div class="score-item">🪙 <span class="val" id="goldVal">0</span></div>
+  </div>
+  <div class="step-counter" id="stepCounter"></div>
+
+  <div class="hoard-wrap">
+    <div class="hoard-track"><div class="hoard-fill" id="hoardFill" style="width:0%"></div></div>
+    <div class="hoard-label"><span>Hoard</span><span id="hoardText">0 / 100</span></div>
+  </div>
+
+  <div class="bodmas-bar" id="bodmasBar">
+    <div class="bodmas-tier" data-tier="B"><span class="tier-label">B</span><span class="tier-name">🥚 Brackets</span></div>
+    <div class="bodmas-tier" data-tier="O"><span class="tier-label">O</span><span class="tier-name">🔮 Orders</span></div>
+    <div class="bodmas-tier" data-tier="DM"><span class="tier-label">DM</span><span class="tier-name">🦖 Munch</span><span class="tier-arrow">←→</span></div>
+    <div class="bodmas-tier" data-tier="AS"><span class="tier-label">AS</span><span class="tier-name">🍎 Slices</span><span class="tier-arrow">←→</span></div>
+  </div>
+
+  <div class="eq-area">
+    <div class="eq-history" id="eqHistory"></div>
+    <div class="eq-current" id="eqCurrent"></div>
+    <div id="feedbackArea"></div>
+    <div class="answers-area hidden" id="answersArea">
+      <div class="answers-label" id="answersLabel">What's the answer?</div>
+      <div class="answers-grid" id="answersGrid"></div>
+    </div>
+  </div>
+
+  <div class="hint-row">
+    <button class="hint-btn" id="hintBtn">💡 Hint</button>
+    <button class="skip-btn" id="skipBtn">⏭ Skip</button>
+  </div>
+</div>
+
+<!-- GAME OVER -->
+<div id="goScreen" class="screen go-screen">
+  <div class="go-emoji" id="goEmoji">🐉</div>
+  <div class="go-title" id="goTitle">Hoard Complete!</div>
+  <div class="go-sub" id="goSub">Your dragon is well fed.</div>
+  <div class="go-stats">
+    <div class="go-stat"><div class="label">Score</div><div class="val" id="goScore">0</div></div>
+    <div class="go-stat"><div class="label">Gold</div><div class="val" id="goGold">0</div></div>
+    <div class="go-stat"><div class="label">Accuracy</div><div class="val" id="goAcc">0%</div></div>
+    <div class="go-stat"><div class="label">Best Streak</div><div class="val" id="goStreak">0</div></div>
+  </div>
+  <button class="go-btn" id="restartBtn">Hoard Again</button>
+</div>
+
+</div><!-- .app -->
+
+<script>
+/* =========================================================
+   DRAGON'S EQUATION HOARD — Priority Detective Engine
+   ========================================================= */
+
+const LS_KEY = 'deh_v1';
+
+const OP_NAMES = {
+  '+': {name:'Addition', tier:'AS', symbol:'+'},
+  '-': {name:'Subtraction', tier:'AS', symbol:'−'},
+  '*': {name:'Multiplication', tier:'DM', symbol:'×'},
+  '/': {name:'Division', tier:'DM', symbol:'÷'},
+  '^': {name:'Power', tier:'O', symbol:'^'},
+};
+
+const TIER_ORDER = ['B','O','DM','AS'];
+const TIER_NAMES = {B:'Brackets', O:'Orders', DM:'Division & Multiplication', AS:'Addition & Subtraction'};
+const TIER_MESSAGES = {
+  B: '🥚 Brackets come first! They wrap the tastiest treasures.',
+  O: '🔮 Powers next! Old dragon runes hold great strength.',
+  DM: '🦖 Dino Munch! Divide or Multiply left to right.',
+  AS: '🍎 Apple Slices! Add or Subtract left to right.',
+};
+
+/* -------------------- STATE -------------------- */
+let state = {
+  playerName: '', difficulty: 'medium',
+  level: 1, score: 0, gold: 0, lives: 3,
+  streak: 0, bestStreak: 0, totalEq: 0, correctEq: 0,
+  steps: [], currentStep: 0,
+  equationHistory: [],
+  isProcessing: false,
+  selectedOpIndex: -1,
+  hintsUsed: 0,
+};
+
+/* -------------------- AUDIO -------------------- */
+const AudioCtx = window.AudioContext || window.webkitAudioContext;
+let audioCtx = null;
+function ensureAudio() { if (!audioCtx) audioCtx = new AudioCtx(); }
+function playTone(freq, dur, type='sine', vol=0.15) {
+  ensureAudio();
+  const o = audioCtx.createOscillator(), g = audioCtx.createGain();
+  o.type = type; o.frequency.setValueAtTime(freq, audioCtx.currentTime);
+  g.gain.setValueAtTime(vol, audioCtx.currentTime);
+  g.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + dur);
+  o.connect(g); g.connect(audioCtx.destination);
+  o.start(); o.stop(audioCtx.currentTime + dur);
+}
+function sfxCorrect() { playTone(523,0.12); setTimeout(()=>playTone(659,0.12),100); setTimeout(()=>playTone(784,0.2),200); }
+function sfxWrong() { playTone(200,0.3,'sawtooth',0.08); }
+function sfxCollapse() { playTone(440,0.08); setTimeout(()=>playTone(554,0.08),80); }
+function sfxLevelUp() { [523,659,784,1047].forEach((f,i)=>setTimeout(()=>playTone(f,0.25),i*120)); }
+function sfxTap() { playTone(800,0.05,'sine',0.08); }
+
+/* -------------------- DOM REFS -------------------- */
+const $ = id => document.getElementById(id);
+
+/* -------------------- EQUATION GEN -------------------- */
+function rand(a,b){return Math.floor(Math.random()*(b-a+1))+a}
+function pick(arr){return arr[Math.floor(Math.random()*arr.length)]}
+
+function generateEquation(diff) {
+  const traps = [];
+  if (diff === 'easy') {
+    // Simple bracket traps or basic DM/AS
+    const type = rand(1,3);
+    if (type===1) {
+      const a=rand(2,9),b=rand(2,9),c=rand(2,5);
+      traps.push({expr:`(${a}+${b})×${c}`, steps:genSteps(`(${a}+${b})*${c}`)});
+    } else if (type===2) {
+      const a=rand(3,12),b=rand(2,5),c=rand(2,5);
+      traps.push({expr:`${a}+${b}×${c}`, steps:genSteps(`${a}+${b}*${c}`)});
+    } else {
+      const a=rand(10,20),b=rand(2,8),c=rand(2,8);
+      traps.push({expr:`${a}−${b}+${c}`, steps:genSteps(`${a}-${b}+${c}`)});
+    }
+  } else if (diff === 'medium') {
+    const type = rand(1,4);
+    if (type===1) {
+      const a=rand(2,9),b=rand(2,9),c=rand(2,5),d=rand(2,5);
+      traps.push({expr:`(${a}+${b})×${c}+${d}`, steps:genSteps(`(${a}+${b})*${c}+${d}`)});
+    } else if (type===2) {
+      const a=rand(4,12),b=rand(2,6),c=rand(2,6);
+      traps.push({expr:`${a}÷${b}×${c}`, steps:genSteps(`${a}/${b}*${c}`)});
+    } else if (type===3) {
+      const a=rand(2,5),b=rand(2,4);
+      const c=rand(2,8),d=rand(2,8);
+      traps.push({expr:`${a}²+${c}×${d}`, steps:genSteps(`${a}^2+${c}*${d}`)});
+    } else {
+      const a=rand(10,25),b=rand(3,9),c=rand(2,7),d=rand(2,5);
+      traps.push({expr:`${a}−${b}×${c}+${d}`, steps:genSteps(`${a}-${b}*${c}+${d}`)});
+    }
+  } else {
+    const type = rand(1,4);
+    if (type===1) {
+      const a=rand(2,9),b=rand(2,9),c=rand(2,5),d=rand(2,5),e=rand(2,5);
+      traps.push({expr:`(${a}+${b})×${c}−${d}×${e}`, steps:genSteps(`(${a}+${b})*${c}-${d}*${e}`)});
+    } else if (type===2) {
+      const a=rand(2,5),b=rand(2,4),c=rand(2,6),d=rand(10,30);
+      traps.push({expr:`${a}²×${b}+${c}²−${d}`, steps:genSteps(`${a}^2*${b}+${c}^2-${d}`)});
+    } else if (type===3) {
+      const a=rand(12,30),b=rand(3,8),c=rand(2,6),d=rand(2,6);
+      traps.push({expr:`${a}÷${b}×${c}+${d}`, steps:genSteps(`${a}/${b}*${c}+${d}`)});
+    } else {
+      const a=rand(2,9),b=rand(2,9),c=rand(2,5),d=rand(2,5);
+      traps.push({expr:`(${a}−${b})×(${c}+${d})`, steps:genSteps(`(${a}-${b})*(${c}+${d})`)});
+    }
+  }
+  return traps[0];
+}
+
+function genSteps(expr) {
+  // Parse and solve step by step, returning array of {expr, op, left, right, result}
+  let steps = [];
+  let current = expr;
+  let safety = 0;
+  while (safety++ < 20) {
+    let next = findNextOp(current);
+    if (!next) break;
+    let res = evalExpr(next.left, next.op, next.right);
+    let before = current;
+    let after = replaceChunk(current, next.start, next.end, String(res));
+    steps.push({
+      expr: before,
+      nextExpr: after,
+      op: next.op,
+      opName: OP_NAMES[next.op]?.name || next.op,
+      tier: OP_NAMES[next.op]?.tier || 'AS',
+      left: next.left,
+      right: next.right,
+      result: res,
+      opIndex: next.opIndex,
+    });
+    current = after;
+  }
+  return steps;
+}
+
+function findNextOp(expr) {
+  // Tokenize
+  let tokens = tokenize(expr);
+  if (!tokens.length) return null;
+
+  // Find all operator positions with their effective tier
+  let ops = [];
+  for (let i = 0; i < tokens.length; i++) {
+    if (tokens[i].type === 'op') {
+      let tier = OP_NAMES[tokens[i].value]?.tier || 'AS';
+      let bracketDepth = tokens[i].bracketDepth || 0;
+      let powerDepth = tokens[i].powerDepth || 0;
+      ops.push({index:i, token:tokens[i], tier, bracketDepth, powerDepth, pos:i});
+    }
+  }
+  if (!ops.length) return null;
+
+  // Priority: bracketDepth desc, then powerDepth desc, then tier order, then leftmost
+  ops.sort((a,b) => {
+    if (b.bracketDepth !== a.bracketDepth) return b.bracketDepth - a.bracketDepth;
+    if (b.powerDepth !== a.powerDepth) return b.powerDepth - a.powerDepth;
+    let ta = TIER_ORDER.indexOf(a.tier);
+    let tb = TIER_ORDER.indexOf(b.tier);
+    if (tb !== ta) return ta - tb; // lower index = higher priority
+    return a.index - b.index; // leftmost first
+  });
+
+  let chosen = ops[0];
+  let leftToken = tokens[chosen.index - 1];
+  let rightToken = tokens[chosen.index + 1];
+  if (!leftToken || !rightToken) return null;
+
+  return {
+    op: chosen.token.value,
+    left: Number(leftToken.value),
+    right: Number(rightToken.value),
+    start: leftToken.start,
+    end: rightToken.end,
+    opIndex: chosen.index,
+    tier: chosen.tier,
+  };
+}
+
+function tokenize(expr) {
+  let tokens = [];
+  let i = 0;
+  let bracketDepth = 0;
+  let powerDepth = 0;
+  while (i < expr.length) {
+    let ch = expr[i];
+    if (ch === ' ') { i++; continue; }
+    if (ch === '(') { bracketDepth++; i++; continue; }
+    if (ch === ')') { bracketDepth--; i++; continue; }
+    if ('+-*/^'.includes(ch)) {
+      tokens.push({type:'op', value:ch, start:i, end:i+1, bracketDepth, powerDepth});
+      i++;
+    } else if (/\d/.test(ch)) {
+      let start = i;
+      while (i < expr.length && /\d/.test(expr[i])) i++;
+      tokens.push({type:'num', value:expr.slice(start,i), start, end:i, bracketDepth, powerDepth});
+    } else {
+      i++;
+    }
+  }
+  return tokens;
+}
+
+function evalExpr(a, op, b) {
+  switch(op) {
+    case '+': return a + b;
+    case '-': return a - b;
+    case '*': return a * b;
+    case '/': return Math.floor(a / b);
+    case '^': return Math.pow(a, b);
+  }
+  return 0;
+}
+
+function replaceChunk(expr, start, end, replacement) {
+  return expr.slice(0, start) + replacement + expr.slice(end);
+}
+
+/* -------------------- RENDERING -------------------- */
+function showScreen(name) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  $(name).classList.add('active');
+}
+
+function updateStats() {
+  $('scoreVal').textContent = state.score;
+  $('levelVal').textContent = state.level;
+  $('streakVal').textContent = state.streak;
+  $('goldVal').textContent = state.gold;
+  let pct = Math.min(100, (state.gold % 100));
+  $('hoardFill').style.width = pct + '%';
+  $('hoardText').textContent = `${state.gold} / ${Math.ceil((state.gold+1)/100)*100}`;
+}
+
+function updateLives() {
+  document.querySelectorAll('#livesBar .life').forEach((el,i) => {
+    el.classList.toggle('active', i < state.lives);
+  });
+}
+
+function updateStepCounter() {
+  if (state.currentStep < state.steps.length) {
+    $('stepCounter').textContent = `Step ${state.currentStep + 1} of ${state.steps.length}`;
+  } else {
+    $('stepCounter').textContent = 'Equation Solved!';
+  }
+}
+
+function renderBodmasBar() {
+  if (!state.steps.length || state.currentStep >= state.steps.length) return;
+  let usedTiers = new Set(state.steps.map(s => s.tier));
+  let currentTier = state.steps[state.currentStep]?.tier;
+  let doneTiers = new Set(state.steps.slice(0, state.currentStep).map(s => s.tier));
+
+  document.querySelectorAll('.bodmas-tier').forEach(el => {
+    let tier = el.dataset.tier;
+    el.classList.remove('done','current','unused');
+    if (!usedTiers.has(tier)) {
+      el.classList.add('unused');
+    } else if (tier === currentTier) {
+      el.classList.add('current');
+    } else if (doneTiers.has(tier)) {
+      el.classList.add('done');
+    }
+  });
+}
+
+function renderEquation() {
+  const container = $('eqCurrent');
+  const history = $('eqHistory');
+  container.innerHTML = '';
+  history.innerHTML = '';
+  $('feedbackArea').innerHTML = '';
+  hideAnswers();
+
+  // Render history
+  state.equationHistory.forEach((h, i) => {
+    let div = document.createElement('div');
+    div.className = 'eq-row' + (i === state.equationHistory.length-1 && state.currentStep >= state.steps.length ? ' final' : ' done');
+    div.textContent = h;
+    history.appendChild(div);
+  });
+
+  if (state.currentStep >= state.steps.length) return;
+
+  let step = state.steps[state.currentStep];
+  let expr = step.expr;
+
+  // Parse expr into renderable tokens
+  let tokens = tokenizeForRender(expr);
+  let correctOpIndex = step.opIndex;
+
+  tokens.forEach((tok, idx) => {
+    let span = document.createElement('span');
+    span.className = 'eq-token';
+    if (tok.type === 'num') {
+      span.classList.add('num');
+      span.textContent = tok.value;
+    } else if (tok.type === 'op') {
+      span.classList.add('op');
+      let tier = OP_NAMES[tok.value]?.tier || 'AS';
+      span.classList.add('tier-' + tier.toLowerCase());
+      span.textContent = OP_NAMES[tok.value]?.symbol || tok.value;
+      span.dataset.op = tok.value;
+      span.dataset.index = idx;
+      span.onclick = () => handleOperatorTap(idx, tok.value, tier);
+    } else if (tok.type === 'paren') {
+      span.classList.add('num');
+      span.textContent = tok.value;
+    }
+    container.appendChild(span);
+  });
+}
+
+function tokenizeForRender(expr) {
+  let tokens = [];
+  let i = 0;
+  while (i < expr.length) {
+    let ch = expr[i];
+    if (ch === ' ') { i++; continue; }
+    if (ch === '(' || ch === ')') {
+      tokens.push({type:'paren', value:ch});
+      i++;
+    } else if ('+-*/^'.includes(ch)) {
+      tokens.push({type:'op', value:ch});
+      i++;
+    } else if (/\d/.test(ch)) {
+      let start = i;
+      while (i < expr.length && /\d/.test(expr[i])) i++;
+      tokens.push({type:'num', value:expr.slice(start,i)});
+    } else {
+      i++;
+    }
+  }
+  return tokens;
+}
+
+/* -------------------- INTERACTION -------------------- */
+function handleOperatorTap(tokenIndex, opValue, opTier) {
+  if (state.isProcessing) return;
+  if (state.currentStep >= state.steps.length) return;
+
+  sfxTap();
+  let step = state.steps[state.currentStep];
+  let correctOpIndex = step.opIndex;
+
+  // Get the visual op index (count only op tokens)
+  let ops = document.querySelectorAll('#eqCurrent .eq-token.op');
+  let visualIndex = Array.from(ops).indexOf(event.currentTarget);
+
+  // Check if this is the correct operator
+  // We need to match by position in the tokenized equation
+  let currentTokens = tokenizeForRender(step.expr);
+  let opPositions = [];
+  currentTokens.forEach((t,i) => { if (t.type==='op') opPositions.push(i); });
+  let tappedGlobalIndex = opPositions[visualIndex];
+
+  if (tappedGlobalIndex === correctOpIndex) {
+    // Correct! Show answer choices
+    showAnswerPhase(step);
+  } else {
+    // Wrong operator - teach!
+    showWrongOpFeedback(opValue, step.op, step.tier);
+  }
+}
+
+function showWrongOpFeedback(tappedOp, correctOp, correctTier) {
+  let tappedName = OP_NAMES[tappedOp]?.name || tappedOp;
+  let correctName = OP_NAMES[correctOp]?.name || correctOp;
+  let tappedTier = OP_NAMES[tappedOp]?.tier || 'AS';
+
+  let feedback = document.createElement('div');
+  feedback.className = 'feedback-bubble';
+
+  let tierMsg = TIER_MESSAGES[correctTier] || '';
+  let comparison = '';
+
+  if (tappedTier === correctTier) {
+    comparison = `${tappedName} and ${correctName} are equal priority! Solve left to right.`;
+  } else {
+    let tappedRank = TIER_ORDER.indexOf(tappedTier);
+    let correctRank = TIER_ORDER.indexOf(correctTier);
+    if (correctRank < tappedRank) {
+      comparison = `${correctName} comes before ${tappedName} in BODMAS.`;
+    } else {
+      comparison = `${correctName} has higher priority than ${tappedName}.`;
+    }
+  }
+
+  feedback.innerHTML = `
+    <div>❌ Not ${tappedName}! Try ${correctName}.</div>
+    <div class="feedback-why">${comparison}<br>${tierMsg}</div>
+  `;
+
+  $('feedbackArea').innerHTML = '';
+  $('feedbackArea').appendChild(feedback);
+  $('eqCurrent').classList.add('has-feedback');
+  sfxWrong();
+
+  // Briefly highlight the correct tier on the BODMAS bar
+  document.querySelectorAll('.bodmas-tier').forEach(el => {
+    if (el.dataset.tier === correctTier) {
+      el.style.animation = 'pulse 0.6s ease';
+      setTimeout(() => el.style.animation = '', 600);
+    }
+  });
+
+  // No penalty, no lives lost. Just teaching.
+}
+
+function showAnswerPhase(step) {
+  state.isProcessing = true;
+  state.selectedOpIndex = step.opIndex;
+
+  // Highlight the selected operator and its operands
+  let ops = document.querySelectorAll('#eqCurrent .eq-token.op');
+  let nums = document.querySelectorAll('#eqCurrent .eq-token.num');
+
+  // Find which visual op was tapped
+  let currentTokens = tokenizeForRender(step.expr);
+  let opVisualIndex = 0;
+  let targetVisualIndex = -1;
+  currentTokens.forEach((t,i) => {
+    if (t.type === 'op') {
+      if (i === step.opIndex) targetVisualIndex = opVisualIndex;
+      opVisualIndex++;
+    }
+  });
+
+  if (ops[targetVisualIndex]) {
+    ops[targetVisualIndex].classList.add('selected');
+  }
+
+  // Highlight adjacent numbers
+  let numIndices = [];
+  currentTokens.forEach((t,i) => { if (t.type==='num' || t.type==='paren') numIndices.push(i); });
+
+  // Show answer choices
+  let correct = step.result;
+  let choices = generateChoices(correct, step.left, step.right, step.op);
+
+  $('answersLabel').textContent = `${step.left} ${OP_NAMES[step.op]?.symbol || step.op} ${step.right} = ?`;
+  let grid = $('answersGrid');
+  grid.innerHTML = '';
+  choices.forEach(c => {
+    let btn = document.createElement('button');
+    btn.className = 'answer-btn';
+    btn.textContent = c;
+    btn.onclick = () => handleAnswer(c, correct, btn);
+    grid.appendChild(btn);
+  });
+
+  $('answersArea').classList.remove('hidden');
+}
+
+function generateChoices(correct, left, right, op) {
+  let choices = new Set([correct]);
+  // Common errors
+  choices.add(left + right);
+  choices.add(Math.abs(left - right));
+  choices.add(left * right);
+  if (right !== 0) choices.add(Math.floor(left / right));
+  choices.add(left + right + 1);
+  choices.add(Math.abs(correct + rand(-3, 3)));
+
+  // Remove negatives for kid-friendliness, filter to reasonable range
+  let arr = Array.from(choices).filter(x => x >= 0 && x < 1000 && x !== correct);
+  // Shuffle and pick 3
+  arr.sort(() => Math.random() - 0.5);
+  arr = arr.slice(0, 3);
+  arr.push(correct);
+  arr.sort(() => Math.random() - 0.5);
+  return arr;
+}
+
+function handleAnswer(val, correct, btn) {
+  if (val === correct) {
+    btn.classList.add('correct');
+    sfxCorrect();
+    setTimeout(() => {
+      addGold(10 + state.streak * 2);
+      state.score += 10 + state.streak;
+      state.streak++;
+      if (state.streak > state.bestStreak) state.bestStreak = state.streak;
+      state.correctEq++;
+
+      // Collapse
+      let step = state.steps[state.currentStep];
+      state.equationHistory.push(step.expr);
+      state.currentStep++;
+
+      updateStats();
+      updateStepCounter();
+      renderBodmasBar();
+
+      if (state.currentStep >= state.steps.length) {
+        state.equationHistory.push(String(step.result));
+        renderEquation();
+        setTimeout(levelComplete, 600);
+      } else {
+        renderEquation();
+        state.isProcessing = false;
+      }
+    }, 400);
+  } else {
+    btn.classList.add('wrong');
+    sfxWrong();
+    state.lives--;
+    state.streak = 0;
+    updateLives();
+    updateStats();
+
+    if (state.lives <= 0) {
+      setTimeout(gameOver, 500);
+    } else {
+      // Show inline error, let them try again
+      let feedback = document.createElement('div');
+      feedback.className = 'feedback-bubble';
+      feedback.innerHTML = `<div>❌ Not ${val}! Try again.</div>`;
+      $('feedbackArea').innerHTML = '';
+      $('feedbackArea').appendChild(feedback);
+      setTimeout(() => {
+        btn.classList.remove('wrong');
+      }, 600);
+    }
+  }
+}
+
+function hideAnswers() {
+  $('answersArea').classList.add('hidden');
+  $('eqCurrent').classList.remove('has-feedback');
+}
+
+/* -------------------- GAME FLOW -------------------- */
+function loadLevel() {
+  let eqData = generateEquation(state.difficulty);
+  state.steps = eqData.steps;
+  state.currentStep = 0;
+  state.equationHistory = [];
+  state.isProcessing = false;
+  state.selectedOpIndex = -1;
+  state.totalEq++;
+
+  updateStats();
+  updateLives();
+  updateStepCounter();
+  renderBodmasBar();
+  renderEquation();
+}
+
+function addGold(n) {
+  state.gold += n;
+  updateStats();
+}
+
+function levelComplete() {
+  sfxLevelUp();
+  state.level++;
+  state.score += 50;
+  addGold(25);
+  setTimeout(loadLevel, 800);
+}
+
+function gameOver() {
+  showScreen('goScreen');
+  let acc = state.totalEq > 0 ? Math.round((state.correctEq / state.totalEq) * 100) : 0;
+  $('goScore').textContent = state.score;
+  $('goGold').textContent = state.gold;
+  $('goAcc').textContent = acc + '%';
+  $('goStreak').textContent = state.bestStreak;
+  saveProgress();
+}
+
+/* -------------------- HINT / SKIP -------------------- */
+$('hintBtn').onclick = () => {
+  if (state.isProcessing) return;
+  if (state.currentStep >= state.steps.length) return;
+  let step = state.steps[state.currentStep];
+  let msg = TIER_MESSAGES[step.tier] || 'Follow BODMAS!';
+
+  let feedback = document.createElement('div');
+  feedback.className = 'feedback-bubble';
+  feedback.style.borderColor = 'rgba(251,191,36,0.3)';
+  feedback.style.color = 'var(--gold)';
+  feedback.innerHTML = `<div>💡 ${msg}</div>`;
+  $('feedbackArea').innerHTML = '';
+  $('feedbackArea').appendChild(feedback);
+};
+
+$('skipBtn').onclick = () => {
+  if (state.isProcessing) return;
+  state.lives--;
+  state.streak = 0;
+  updateLives();
+  updateStats();
+  if (state.lives <= 0) { gameOver(); return; }
+  loadLevel();
+};
+
+/* -------------------- STORAGE -------------------- */
+function saveProgress() {
+  let data = {
+    playerName: state.playerName,
+    gold: state.gold,
+    bestStreak: state.bestStreak,
+    totalEq: state.totalEq,
+    correctEq: state.correctEq,
+  };
+  localStorage.setItem(LS_KEY, JSON.stringify(data));
+}
+
+function loadProgress() {
+  try {
+    let data = JSON.parse(localStorage.getItem(LS_KEY));
+    if (data) {
+      state.gold = data.gold || 0;
+      state.bestStreak = data.bestStreak || 0;
+      state.totalEq = data.totalEq || 0;
+      state.correctEq = data.correctEq || 0;
+      if (data.playerName) {
+        state.playerName = data.playerName;
+        $('playerName').value = data.playerName;
+      }
+    }
+  } catch(e) {}
+}
+
+/* -------------------- STARTUP -------------------- */
+loadProgress();
+
+// Difficulty selection
+document.querySelectorAll('.diff-btn').forEach(btn => {
+  btn.onclick = () => {
+    document.querySelectorAll('.diff-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    state.difficulty = btn.dataset.d;
+  };
+});
+
+$('startBtn').onclick = () => {
+  let name = $('playerName').value.trim();
+  if (!name) name = 'Dragon Keeper';
+  state.playerName = name;
+  state.level = 1;
+  state.score = 0;
+  state.lives = 3;
+  state.streak = 0;
+  state.hintsUsed = 0;
+  showScreen('gameScreen');
+  loadLevel();
+};
+
+$('restartBtn').onclick = () => {
+  state.level = 1;
+  state.score = 0;
+  state.lives = 3;
+  state.streak = 0;
+  showScreen('gameScreen');
+  loadLevel();
+};
+
+</script>
+</body>
+</html>
