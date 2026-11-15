@@ -1148,22 +1148,21 @@ function generateDistractors(correct, node) {
     case '^': mirror = l * r; break;
   }
 
+  const opts = new Set([correct]);
+  if (mirror !== correct) opts.add(mirror);
   const offsets = [-2, -1, 1, 2, 10, -10];
-  let nearMiss = correct + offsets[Math.floor(Math.random() * offsets.length)];
-  if (nearMiss === correct || nearMiss === mirror || nearMiss < 0) {
-    nearMiss = correct + 3;
+  for (const o of offsets) {
+    const v = correct + o;
+    if (v >= 0 && v !== correct && v !== mirror) opts.add(v);
+    if (opts.size >= 3) break;
   }
-  if (nearMiss === mirror) nearMiss = correct - 3;
-  if (nearMiss < 0) nearMiss = correct + 5;
-
-  const set = new Set([correct, mirror, nearMiss]);
-  while (set.size < 3) {
-    set.add(correct + Math.floor(Math.random() * 8) - 4 + set.size);
+  let fill = 1;
+  while (opts.size < 3) {
+    const v = correct + fill;
+    if (v !== correct) opts.add(v);
+    fill++;
   }
-  const arr = Array.from(set).filter(x => x >= 0);
-  while (arr.length < 3) arr.push(correct + arr.length + 1);
-
-  return arr.slice(0, 3).sort(() => Math.random() - 0.5);
+  return Array.from(opts).slice(0, 3).sort(() => Math.random() - 0.5);
 }
 
 /* -------------------- EQUATION GENERATOR -------------------- */
@@ -1193,7 +1192,10 @@ function generateEquation(diff) {
   } else if (diff === 'medium') {
     const t = rand(1, 4);
     if (t === 1) {
-      const a = rand(6, 18), b = rand(2, 6), c = rand(2, 6), d = rand(2, 8);
+      const b = rand(2, 6);
+      const c = rand(2, Math.min(6, Math.floor(18 / b)));
+      const a = rand(Math.max(6, b * c), 18);
+      const d = rand(2, 8);
       expr = `${a} - ${b} * ${c} + ${d}`;
     } else if (t === 2) {
       const div = cleanDiv(2, 6, 2, 5);
@@ -1209,8 +1211,13 @@ function generateEquation(diff) {
   } else {
     const t = rand(1, 4);
     if (t === 1) {
-      const a = rand(2, 8), b = rand(2, 8), c = rand(2, 5), d = rand(2, 5);
-      expr = `(${a} + ${b}) * ${c} - ${d} * ${rand(2, 4)}`;
+      const d = rand(2, 5), e = rand(2, 4);
+      const Y = d * e;
+      const c = rand(2, 5);
+      const minSum = Math.ceil(Y / c);
+      const a = rand(Math.max(2, minSum - 8), 8);
+      const b = rand(Math.max(2, minSum - a), 8);
+      expr = `(${a} + ${b}) * ${c} - ${d} * ${e}`;
     } else if (t === 2) {
       const a = rand(2, 5), b = rand(2, 4), c = rand(2, 5);
       expr = `${a}^2 * ${b} + ${c}^2`;
@@ -1220,7 +1227,9 @@ function generateEquation(diff) {
       const c = rand(2, 5), d = rand(2, 9);
       expr = `${div.a} / ${div.b} * ${c} + ${d}`;
     } else {
-      const a = rand(4, 10), b = rand(2, 6), c = rand(2, 5), d = rand(2, 5);
+      const b = rand(2, 6);
+      const a = rand(Math.max(4, b + 1), 10);
+      const c = rand(2, 5), d = rand(2, 5);
       expr = `(${a} - ${b}) * (${c} + ${d})`;
     }
   }
@@ -1739,7 +1748,7 @@ function handleAnswerSelect(val, correct, btn) {
     setTimeout(() => {
       $('foodChain').classList.remove('arena-shake');
       const resultNode = { type: 'num', value: correct };
-      replaceNode(state.ast, chunkNode, resultNode);
+      state.ast = replaceNode(state.ast, chunkNode, resultNode);
       state.ast = simplifyBrackets(state.ast);
       clearChunkHighlights();
       updateStepCounter();
