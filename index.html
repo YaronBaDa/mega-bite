@@ -314,51 +314,6 @@ body {
   100% { transform: scale(1); opacity: 1; }
 }
 
-/* ===== PRIORITY BEACON (BODMAS HUD) ===== */
-.beacon {
-  display: flex;
-  justify-content: center;
-  gap: 6px;
-  padding: 0 16px 12px;
-  flex-shrink: 0;
-}
-.beacon-tier {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 8px 10px;
-  border-radius: 12px;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  font-size: 0.65rem;
-  font-weight: 700;
-  color: var(--text2);
-  min-width: 68px;
-  transition: all 0.3s var(--spring);
-}
-.beacon-tier .tier-icon { font-size: 1.1rem; margin-bottom: 2px; }
-.beacon-tier .tier-name { font-size: 0.65rem; }
-.beacon-tier .tier-arrow { font-size: 0.55rem; opacity: 0.5; }
-
-.beacon-tier.active {
-  border-color: var(--amber);
-  color: var(--amber2);
-  background: rgba(245, 158, 11, 0.12);
-  box-shadow: 0 0 16px rgba(245, 158, 11, 0.25);
-  animation: beaconPulse 1.2s ease-in-out infinite;
-}
-.beacon-tier.done {
-  border-color: var(--leaf);
-  color: var(--leaf2);
-  background: rgba(132, 204, 22, 0.08);
-}
-.beacon-tier.unused { opacity: 0.25; }
-
-@keyframes beaconPulse {
-  0%, 100% { box-shadow: 0 0 16px rgba(245, 158, 11, 0.25); }
-  50% { box-shadow: 0 0 24px rgba(245, 158, 11, 0.45); }
-}
-
 /* ===== MASTER FOOD CHAIN ===== */
 .food-chain-area {
   flex: 1;
@@ -789,7 +744,6 @@ body {
 @media (max-width: 380px) {
   .food-token { font-size: 1.1rem; padding: 6px 8px; }
   .food-token.op { font-size: 1.2rem; }
-  .beacon-tier { min-width: 60px; padding: 6px 8px; }
   .chunk-card, .answer-btn { font-size: 1.1rem; padding: 14px 10px; }
 }
 </style>
@@ -829,27 +783,6 @@ body {
       <span>Appetite</span>
       <span id="stepCounter" style="color:var(--amber2);font-weight:700"></span>
       <span id="appetiteText">Full</span>
-    </div>
-  </div>
-
-  <div class="beacon" id="beacon" style="display:none">
-    <div class="beacon-tier" data-tier="B">
-      <span class="tier-icon">🥚</span>
-      <span class="tier-name">B: Eggs</span>
-    </div>
-    <div class="beacon-tier" data-tier="O">
-      <span class="tier-icon">💎</span>
-      <span class="tier-name">O: Gems</span>
-    </div>
-    <div class="beacon-tier" data-tier="DM">
-      <span class="tier-icon">🦖</span>
-      <span class="tier-name">DM: Munch</span>
-      <span class="tier-arrow">←→</span>
-    </div>
-    <div class="beacon-tier" data-tier="AS">
-      <span class="tier-icon">🍎</span>
-      <span class="tier-name">AS: Slices</span>
-      <span class="tier-arrow">←→</span>
     </div>
   </div>
 
@@ -1547,41 +1480,6 @@ function renderEvolution() {
 /* -------------------- RENDERING -------------------- */
 const $ = id => document.getElementById(id);
 
-function renderBeacon() {
-  const tiers = new Set();
-  function collectTiers(node) {
-    if (node.type === 'binop') {
-      tiers.add(node.tier);
-      collectTiers(node.left);
-      collectTiers(node.right);
-    } else if (node.type === 'bracket') {
-      tiers.add('B');
-      collectTiers(node.inner);
-    }
-  }
-  collectTiers(state.ast);
-
-  document.querySelectorAll('.beacon-tier').forEach(el => {
-    const tier = el.dataset.tier;
-    el.classList.remove('active', 'done', 'unused');
-    if (!tiers.has(tier)) {
-      el.classList.add('unused');
-    }
-  });
-}
-
-function highlightBeaconTier(tier) {
-  document.querySelectorAll('.beacon-tier').forEach(el => {
-    if (el.dataset.tier === tier) {
-      el.classList.add('active');
-    }
-  });
-}
-
-function clearBeaconActive() {
-  document.querySelectorAll('.beacon-tier').forEach(el => el.classList.remove('active'));
-}
-
 function renderFoodChain() {
   const chain = $('foodChain');
   chain.innerHTML = '';
@@ -1641,19 +1539,11 @@ function renderActionTray() {
 
   if (state.phase === 'select') {
     renderPrompt('Which bite should we crunch <strong>first</strong>?');
-    clearBeaconActive();
 
     const candidates = findCandidateChunks(state.ast);
     const visualDistractors = findVisualDistractors(state.ast);
     const correct = findNextReduction(state.ast);
     state.currentCandidates = candidates; // Store for error feedback
-
-    // Find the candidates that are actually eligible (correct precedence)
-    const tierRank = { B: 0, O: 1, DM: 2, AS: 3 };
-    const correctTier = correct.tier;
-    const correctIsBracket = candidates.find(c => c.node === correct)?.insideBracket;
-
-    // P0 FIX: Do NOT highlight the correct tier — beacon is a reference, not an answer key
 
     const grid = document.createElement('div');
     const totalOptions = candidates.length + visualDistractors.length;
@@ -1929,7 +1819,6 @@ function loadLevel() {
   clearChunkHighlights();
   closeCheatSheet();
 
-  renderBeacon();
   renderFoodChain();
   renderActionTray();
   renderEvolution();
