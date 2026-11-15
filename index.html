@@ -3,35 +3,35 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-<title>Mega-Bite 🦖</title>
+<title>MEGA-BITE</title>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&family=JetBrains+Mono:wght@700;800&display=swap');
 
 :root {
-  --bg: #1a1410;
-  --surface: #2a2118;
-  --surface2: #3a2e20;
-  --surface3: #4a3a28;
-  --border: rgba(220, 180, 120, 0.18);
-  --text: #f5ead6;
-  --text2: #b8a688;
-  --amber: #f59e0b;
-  --amber2: #fbbf24;
-  --leaf: #84cc16;
-  --leaf2: #a3e635;
-  --berry: #dc2626;
-  --sky: #38bdf8;
-  --purple: #a78bfa;
-  --stone: #a8a29e;
-  --shadow: rgba(0, 0, 0, 0.4);
+  --bg: #0B0F19;
+  --surface: #151C2C;
+  --surface2: #1E293B;
+  --surface3: #283548;
+  --border: #334155;
+  --text: #F8FAFC;
+  --text2: #94A3B8;
+  --accent: #A3E635;
+  --accent-hover: #BEF264;
+  --operator: #38BDF8;
+  --bracket: #C084FC;
+  --danger: #FB7185;
+  --hard-shadow: #020617;
+  --font-ui: 'Plus Jakarta Sans', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
   --spring: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 html, body {
   height: 100%;
   overflow: hidden;
-  font-family: 'Nunito', sans-serif;
+  font-family: var(--font-ui);
   background: var(--bg);
   color: var(--text);
   padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
@@ -39,9 +39,21 @@ html, body {
 
 body {
   background:
-    radial-gradient(circle at 20% 10%, rgba(245, 158, 11, 0.06) 0%, transparent 40%),
-    radial-gradient(circle at 80% 90%, rgba(132, 204, 22, 0.05) 0%, transparent 40%),
-    linear-gradient(180deg, #1a1410 0%, #251c14 50%, #1a1410 100%);
+    radial-gradient(1200px 600px at 80% -10%, rgba(56, 189, 248, 0.08) 0%, transparent 60%),
+    radial-gradient(1000px 520px at 10% 110%, rgba(163, 230, 53, 0.06) 0%, transparent 60%),
+    linear-gradient(180deg, #0B0F19 0%, #0E1424 50%, #0B0F19 100%);
+  position: relative;
+}
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(51, 65, 85, 0.10) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(51, 65, 85, 0.10) 1px, transparent 1px);
+  background-size: 28px 28px;
+  pointer-events: none;
+  z-index: 0;
 }
 
 .app {
@@ -51,270 +63,153 @@ body {
   margin: 0 auto;
   display: flex;
   flex-direction: column;
+  position: relative;
+  z-index: 1;
 }
 
 /* ===== HEADER ===== */
 .header {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  gap: 8px;
   padding: 12px 16px 8px;
   flex-shrink: 0;
-  gap: 8px;
 }
 
 .mute-btn {
   width: 44px; height: 44px;
-  border-radius: 12px;
+  border-radius: 10px;
   background: var(--surface);
-  border: 1px solid var(--border);
-  font-size: 1.2rem;
+  border: 2px solid var(--border);
+  color: var(--text);
   cursor: pointer;
   display: flex; align-items: center; justify-content: center;
   transition: transform 0.15s var(--spring);
-  color: var(--text);
-  font-family: inherit;
+  flex-shrink: 0;
+  box-shadow: 0 3px 0 var(--hard-shadow);
 }
-.mute-btn:active { transform: scale(0.92); }
+.mute-btn:active { transform: translateY(2px); box-shadow: 0 1px 0 var(--hard-shadow); }
 
 .brand {
-  font-size: 1.1rem;
-  font-weight: 900;
-  color: var(--amber2);
-  letter-spacing: 0.5px;
+  flex: 1;
+  text-align: center;
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: var(--accent);
+  letter-spacing: 2px;
+}
+
+.hud {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
 }
 
 .evo-badge {
-  padding: 6px 12px;
-  border-radius: 12px;
+  padding: 6px 10px;
+  border-radius: 10px;
   background: var(--surface);
   border: 1px solid var(--border);
-  font-size: 0.75rem;
-  font-weight: 700;
+  font-size: 0.6rem;
+  font-weight: 800;
+  letter-spacing: 0.5px;
   color: var(--text2);
-  display: flex; align-items: center; gap: 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 118px;
 }
-.evo-badge .evo-emoji { font-size: 1rem; }
 
 .streak-badge {
   padding: 6px 10px;
-  border-radius: 12px;
+  border-radius: 10px;
   background: var(--surface);
   border: 1px solid var(--border);
-  font-size: 0.8rem;
+  font-size: 0.72rem;
   font-weight: 800;
-  color: var(--amber);
-  display: flex; align-items: center; gap: 3px;
+  display: flex; align-items: center; gap: 5px;
 }
+.streak-label { color: var(--text2); font-size: 0.58rem; letter-spacing: 0.5px; }
+.streak-badge #streakVal { color: var(--accent); }
 
-/* ===== APPETITE METER ===== */
-.appetite-wrap {
+/* ===== OVERDRIVE CORE METER ===== */
+.overdrive-wrap {
   padding: 0 16px 12px;
   flex-shrink: 0;
 }
-.appetite-track {
+.overdrive-track {
   height: 14px;
   background: var(--surface);
   border-radius: 8px;
-  border: 1px solid var(--border);
+  border: 2px solid var(--border);
   overflow: hidden;
   position: relative;
 }
-.appetite-fill {
+.overdrive-fill {
   height: 100%;
-  background: linear-gradient(90deg, var(--leaf), var(--leaf2));
-  border-radius: 8px;
+  background: linear-gradient(90deg, var(--accent), var(--accent-hover));
+  border-radius: 6px;
   transition: width 0.6s var(--spring);
-  box-shadow: 0 0 12px rgba(132, 204, 22, 0.3);
+  box-shadow: 0 0 12px rgba(163, 230, 53, 0.35);
   position: relative;
 }
-.appetite-fill.low {
-  background: linear-gradient(90deg, var(--berry), #f97316);
-  box-shadow: 0 0 12px rgba(220, 38, 38, 0.3);
+.overdrive-fill.low {
+  background: linear-gradient(90deg, var(--danger), #F87171);
+  box-shadow: 0 0 12px rgba(251, 113, 133, 0.35);
 }
-.appetite-label {
+.overdrive-label {
   display: flex;
   justify-content: space-between;
-  font-size: 0.7rem;
-  color: var(--text2);
-  margin-top: 4px;
-  font-weight: 600;
-}
-
-/* ===== BODMAS CHEAT SHEET (Modal Overlay) ===== */
-.bodmas-toggle {
-  padding: 4px 10px;
-  border-radius: 8px;
-  background: var(--surface2);
-  border: 1px solid var(--border);
-  font-size: 0.68rem;
+  font-size: 0.62rem;
   font-weight: 700;
-  color: var(--text2);
-  cursor: pointer;
-  font-family: inherit;
-  display: inline-flex; align-items: center; gap: 3px;
-  transition: all 0.2s var(--spring);
-}
-.bodmas-toggle:hover { border-color: var(--amber); color: var(--amber2); }
-.bodmas-toggle.open { border-color: var(--amber); color: var(--amber2); background: rgba(245,158,11,0.08); }
-
-.cheat-backdrop {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.7);
-  z-index: 99;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.3s ease;
-}
-.cheat-backdrop.open {
-  opacity: 1;
-  pointer-events: auto;
-}
-
-.cheat-sheet {
-  position: fixed;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%) scale(0.9);
-  z-index: 100;
-  opacity: 0;
-  pointer-events: none;
-  transition: all 0.3s var(--spring);
-  width: 90%;
-  max-width: 380px;
-}
-.cheat-sheet.open {
-  opacity: 1;
-  pointer-events: auto;
-  transform: translate(-50%, -50%) scale(1);
-}
-.cheat-panel {
-  background: var(--surface2);
-  border: 1px solid var(--border);
-  border-radius: 18px;
-  padding: 20px 18px;
-  box-shadow: 0 16px 48px rgba(0,0,0,0.5);
-  position: relative;
-}
-.cheat-close {
-  position: absolute;
-  top: 10px;
-  right: 12px;
-  width: 32px;
-  height: 32px;
-  border-radius: 8px;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  color: var(--text2);
-  font-size: 1.1rem;
-  font-weight: 700;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: inherit;
-  transition: all 0.15s;
-}
-.cheat-close:hover { border-color: var(--amber); color: var(--amber2); }
-.cheat-title {
-  font-size: 0.72rem;
-  font-weight: 800;
-  color: var(--amber2);
-  letter-spacing: 1px;
-  margin-bottom: 10px;
-  text-transform: uppercase;
-}
-.cheat-row {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 6px 0;
-  border-bottom: 1px solid rgba(220,180,120,0.08);
-  transition: background 0.3s;
-}
-.cheat-row:last-child { border-bottom: none; }
-.cheat-row.highlight-rule {
-  background: rgba(245,158,11,0.12);
-  border-radius: 8px;
-  margin: 0 -8px;
-  padding: 6px 8px;
-  animation: ruleFlash 0.6s ease;
-}
-@keyframes ruleFlash {
-  0%, 100% { background: rgba(245,158,11,0.12); }
-  50% { background: rgba(245,158,11,0.25); }
-}
-.cheat-rank {
-  width: 22px; height: 22px;
-  border-radius: 6px;
-  background: var(--amber);
-  color: #1a1410;
-  font-size: 0.7rem;
-  font-weight: 900;
-  display: flex; align-items: center; justify-content: center;
-  flex-shrink: 0;
-}
-.cheat-symbol {
-  font-size: 1.1rem;
-  font-weight: 800;
-  color: var(--text);
-  min-width: 40px;
-  font-family: 'Courier New', monospace;
-}
-.cheat-name {
-  font-size: 0.8rem;
-  font-weight: 700;
-  color: var(--text);
-  flex: 1;
-}
-.cheat-ltr {
-  font-size: 0.65rem;
-  font-weight: 800;
-  color: var(--amber2);
-  background: rgba(245,158,11,0.12);
-  padding: 3px 8px;
-  border-radius: 6px;
   letter-spacing: 0.5px;
-  white-space: nowrap;
+  color: var(--text2);
+  margin-top: 5px;
+}
+.overdrive-label .lbl { color: var(--text2); }
+.overdrive-label #stepCounter { color: var(--operator); }
+.overdrive-label #overdriveText { color: var(--accent); }
+.overdrive-label #overdriveText.low { color: var(--danger); }
+
+/* ===== MASCOT (Mecha-Rex) ===== */
+.mascot { display: inline-block; width: 64px; height: 64px; }
+.mascot svg { width: 100%; height: 100%; display: block; overflow: visible; }
+.mascot .mascot-visor { transition: fill 0.3s ease; }
+
+.mascot.idle { animation: mascotBreath 2.6s ease-in-out infinite; }
+@keyframes mascotBreath {
+  0%, 100% { transform: translateY(0) scaleY(1); }
+  50% { transform: translateY(-1.5px) scaleY(1.02); }
 }
 
-/* Superscript for orders */
-.sup {
-  font-size: 0.65em;
-  vertical-align: super;
-  line-height: 0;
+.mascot .mascot-jaw { transform-box: fill-box; transform-origin: 50% 0; }
+
+.mascot.chomp { animation: chompGlow 0.45s ease; }
+.mascot.chomp .mascot-jaw { animation: jawSnap 0.45s var(--spring); }
+@keyframes jawSnap {
+  0%, 100% { transform: translateY(0); }
+  40% { transform: translateY(6px) rotate(4deg); }
+}
+@keyframes chompGlow {
+  0%, 100% { filter: drop-shadow(0 0 0 rgba(163,230,53,0)); }
+  50% { filter: drop-shadow(0 0 14px var(--accent)); }
 }
 
-/* Tight superscript inside food tokens and buttons */
-.food-token sup,
-.chunk-card sup {
-  font-size: 0.6em;
-  vertical-align: super;
-  line-height: 0;
-  margin-left: 1px;
+.mascot.error { animation: mascotGlitch 0.4s ease; }
+.mascot.error .mascot-visor { fill: var(--danger); filter: drop-shadow(0 0 6px var(--danger)); }
+@keyframes mascotGlitch {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-3px); }
+  40% { transform: translateX(3px); }
+  60% { transform: translateX(-2px); }
+  80% { transform: translateX(2px); }
 }
 
-/* Crunch collapse animation for food tokens */
-.food-token.crunch-collapse {
-  animation: crunchCollapse 0.5s var(--spring) forwards;
-}
-@keyframes crunchCollapse {
-  0% { transform: scale(1); opacity: 1; }
-  30% { transform: scale(0.7); opacity: 0.8; }
-  60% { transform: scale(0.3) rotate(-8deg); opacity: 0.4; }
-  100% { transform: scale(0); opacity: 0; }
-}
-.food-token.crunch-result {
-  animation: crunchResult 0.4s var(--spring) forwards;
-}
-@keyframes crunchResult {
-  0% { transform: scale(0); opacity: 0; }
-  50% { transform: scale(1.3); opacity: 1; }
-  100% { transform: scale(1); opacity: 1; }
-}
+.mascot.cooldown { opacity: 0.55; }
+.mascot.cooldown .mascot-visor { fill: var(--text2); filter: none; }
 
-/* ===== MASTER FOOD CHAIN ===== */
+/* ===== MASTER FOOD CHAIN (ARENA) ===== */
 .food-chain-area {
   flex: 1;
   display: flex;
@@ -334,20 +229,19 @@ body {
   gap: 4px;
   padding: 18px 14px;
   background: var(--surface);
-  border-radius: 20px;
+  border-radius: 14px;
   border: 2px solid var(--border);
   max-width: 100%;
-  box-shadow: 0 8px 24px var(--shadow);
+  box-shadow: 0 4px 0 var(--hard-shadow);
   position: relative;
   transition: transform 0.4s var(--spring);
 }
-.food-chain::before {
-  content: '';
-  position: absolute;
-  inset: -2px;
-  border-radius: 22px;
-  background: linear-gradient(135deg, rgba(245,158,11,0.1), transparent, rgba(132,204,22,0.1));
-  z-index: -1;
+.food-chain.arena-shake { animation: arenaShake 0.15s ease; }
+@keyframes arenaShake {
+  0%, 100% { transform: translate(0, 0); }
+  25% { transform: translate(-2px, 1px); }
+  50% { transform: translate(2px, -1px); }
+  75% { transform: translate(-1px, -1px); }
 }
 
 .food-token {
@@ -355,89 +249,71 @@ body {
   align-items: center;
   justify-content: center;
   padding: 8px 10px;
-  border-radius: 12px;
+  border-radius: 10px;
+  font-family: var(--font-mono);
   font-weight: 800;
   font-size: 1.3rem;
-  transition: all 0.4s var(--spring);
+  transition: all 0.2s var(--spring);
   position: relative;
 }
 .food-token.num {
-  background: linear-gradient(135deg, var(--surface3), var(--surface2));
+  background: var(--surface3);
   color: var(--text);
   border: 2px solid var(--border);
-  min-width: 44px;
-  box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
+  min-width: 42px;
 }
 .food-token.op {
-  color: var(--amber2);
+  color: var(--operator);
   font-size: 1.4rem;
-  padding: 4px 6px;
-  text-shadow: 0 0 8px rgba(245, 158, 11, 0.3);
+  padding: 4px 5px;
+  text-shadow: 0 0 8px rgba(56, 189, 248, 0.35);
 }
 .food-token.paren {
-  color: var(--purple);
+  color: var(--bracket);
   font-size: 1.5rem;
   padding: 0 2px;
 }
 
-/* Highlighted candidate chunks */
-.food-token.chunk-highlight {
-  background: rgba(245, 158, 11, 0.2);
-  border-color: var(--amber);
-  box-shadow: 0 0 12px rgba(245, 158, 11, 0.4);
+/* Hover/touch preview highlight — glowing cyan/lime outline */
+.food-token.chunk-highlight { outline: 2px solid var(--accent); outline-offset: 1px; }
+.food-token.num.chunk-highlight,
+.food-token.paren.chunk-highlight { outline-color: var(--accent); box-shadow: 0 0 12px rgba(163, 230, 53, 0.5); }
+.food-token.op.chunk-highlight { outline-color: var(--operator); box-shadow: 0 0 12px rgba(56, 189, 248, 0.5); }
+
+.sup {
+  font-size: 0.65em;
+  vertical-align: super;
+  line-height: 0;
+}
+.food-token sup,
+.chunk-card sup {
+  font-size: 0.6em;
+  vertical-align: super;
+  line-height: 0;
+  margin-left: 1px;
 }
 
-/* Crunch animation */
-.food-token.crunching {
-  animation: crunchBite 0.45s var(--spring) forwards;
+.food-token.crunch-collapse { animation: crunchCollapse 0.5s var(--spring) forwards; }
+@keyframes crunchCollapse {
+  0% { transform: scale(1); opacity: 1; }
+  30% { transform: scale(0.7); opacity: 0.8; }
+  60% { transform: scale(0.3) rotate(-8deg); opacity: 0.4; }
+  100% { transform: scale(0); opacity: 0; }
 }
-@keyframes crunchBite {
-  0% { transform: scale(1); }
-  40% { transform: scale(0.6) rotate(-5deg); opacity: 0.7; }
-  70% { transform: scale(1.15) rotate(3deg); }
-  100% { transform: scale(1); }
+.food-token.crunch-result { animation: crunchResult 0.4s var(--spring) forwards; }
+@keyframes crunchResult {
+  0% { transform: scale(0); opacity: 0; }
+  50% { transform: scale(1.3); opacity: 1; }
+  100% { transform: scale(1); opacity: 1; }
 }
 
-/* Dino mascot */
-.dino-stage {
+.mascot-stage {
   margin-top: 16px;
   position: relative;
   height: 70px;
   display: flex;
   align-items: center;
   justify-content: center;
-}
-.dino-mascot {
-  font-size: 3.2rem;
-  filter: drop-shadow(0 4px 12px rgba(0,0,0,0.4));
-  transition: transform 0.3s var(--spring);
-  display: inline-block;
-}
-.dino-mascot.chomp {
-  animation: dinoChomp 0.45s var(--spring);
-}
-.dino-mascot.headshake {
-  animation: dinoHeadShake 0.5s ease;
-}
-.dino-mascot.sleeping {
-  animation: dinoSleep 2s ease-in-out infinite;
-  opacity: 0.6;
-}
-@keyframes dinoChomp {
-  0%, 100% { transform: translateY(0) scale(1); }
-  30% { transform: translateY(-16px) scale(1.1); }
-  50% { transform: translateY(2px) scale(0.95); }
-  70% { transform: translateY(-4px) scale(1.02); }
-}
-@keyframes dinoHeadShake {
-  0%, 100% { transform: rotate(0); }
-  25% { transform: rotate(-12deg); }
-  50% { transform: rotate(10deg); }
-  75% { transform: rotate(-6deg); }
-}
-@keyframes dinoSleep {
-  0%, 100% { transform: rotate(-3deg); }
-  50% { transform: rotate(3deg); }
 }
 
 /* ===== PROMPT ROW ===== */
@@ -451,12 +327,67 @@ body {
 }
 .prompt {
   text-align: center;
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   color: var(--text2);
-  font-weight: 600;
+  font-weight: 700;
   flex: 1;
 }
-.prompt strong { color: var(--amber2); }
+.prompt strong { color: var(--text); }
+
+.bodmas-toggle {
+  padding: 8px 14px;
+  min-height: 40px;
+  border-radius: 10px;
+  background: var(--surface2);
+  border: 2px solid var(--border);
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  color: var(--text2);
+  cursor: pointer;
+  font-family: inherit;
+  display: inline-flex; align-items: center; gap: 3px;
+  transition: all 0.2s var(--spring);
+  flex-shrink: 0;
+  box-shadow: 0 3px 0 var(--hard-shadow);
+}
+.bodmas-toggle:hover { border-color: var(--operator); color: var(--operator); }
+.bodmas-toggle:active { transform: translateY(2px); box-shadow: 0 1px 0 var(--hard-shadow); }
+.bodmas-toggle.open { border-color: var(--accent); color: var(--accent); }
+.bodmas-toggle.pulse-hint { animation: pulseHint 1s ease-in-out 3; border-color: var(--accent); }
+@keyframes pulseHint {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(163, 230, 53, 0); }
+  50% { box-shadow: 0 0 0 7px rgba(163, 230, 53, 0.35); }
+}
+
+/* ===== FEEDBACK BANNER ===== */
+.feedback-slot {
+  display: flex;
+  justify-content: center;
+  padding: 0 16px;
+  flex-shrink: 0;
+}
+.feedback-banner {
+  display: none;
+  width: 100%;
+  padding: 10px 14px;
+  border-radius: 10px;
+  border: 2px solid var(--border);
+  background: var(--surface2);
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-align: center;
+  line-height: 1.35;
+  box-shadow: 0 4px 0 var(--hard-shadow);
+}
+.feedback-banner.show { display: block; animation: bannerIn 0.25s var(--spring); }
+.feedback-banner.error { border-color: var(--danger); color: var(--danger); }
+.feedback-banner.info { border-color: var(--operator); color: var(--operator); }
+.feedback-banner.success { border-color: var(--accent); color: var(--accent); }
+@keyframes bannerIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
 
 /* ===== ACTION TRAY ===== */
 .action-tray {
@@ -473,41 +404,32 @@ body {
   grid-template-columns: 1fr 1fr;
   gap: 10px;
 }
-.tray-grid.single {
-  grid-template-columns: 1fr;
-}
+.tray-grid.single { grid-template-columns: 1fr; }
 
 .chunk-card {
-  padding: 18px 14px;
-  min-height: 64px;
-  border-radius: 16px;
-  background: linear-gradient(135deg, var(--surface2), var(--surface));
+  padding: 16px 14px;
+  min-height: 62px;
+  border-radius: 12px;
+  background: var(--surface2);
   border: 2px solid var(--border);
   color: var(--text);
-  font-size: 1.2rem;
+  font-family: var(--font-mono);
+  font-size: 1.15rem;
   font-weight: 800;
   cursor: pointer;
-  transition: all 0.2s var(--spring);
-  font-family: inherit;
+  transition: transform 0.12s var(--spring), box-shadow 0.12s var(--spring);
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 6px;
-  box-shadow: 0 4px 12px var(--shadow);
+  box-shadow: 0 4px 0 var(--hard-shadow);
   position: relative;
   overflow: hidden;
 }
-.chunk-card::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  height: 3px;
-  background: linear-gradient(90deg, transparent, var(--amber), transparent);
-  opacity: 0;
-  transition: opacity 0.2s;
-}
-.chunk-card:active { transform: scale(0.96); }
-.chunk-card.shake { animation: cardShake 0.4s ease; border-color: var(--berry); }
+.chunk-card:active { transform: translateY(3px); box-shadow: 0 1px 0 var(--hard-shadow); }
+.chunk-card.shake { animation: cardShake 0.4s ease; border-color: var(--danger); }
+.chunk-card .op-sym { color: var(--operator); }
+.chunk-card .paren-sym { color: var(--bracket); }
 
 @keyframes cardShake {
   0%, 100% { transform: translateX(0); }
@@ -518,68 +440,144 @@ body {
 }
 
 .answer-btn {
-  padding: 18px 14px;
-  min-height: 64px;
-  border-radius: 16px;
-  background: linear-gradient(135deg, var(--surface2), var(--surface));
+  padding: 16px 14px;
+  min-height: 62px;
+  border-radius: 12px;
+  background: var(--surface2);
   border: 2px solid var(--border);
   color: var(--text);
-  font-size: 1.4rem;
-  font-weight: 900;
+  font-family: var(--font-mono);
+  font-size: 1.35rem;
+  font-weight: 800;
   cursor: pointer;
-  transition: all 0.15s var(--spring);
-  font-family: inherit;
-  box-shadow: 0 4px 12px var(--shadow);
+  transition: transform 0.12s var(--spring), box-shadow 0.12s var(--spring);
+  box-shadow: 0 4px 0 var(--hard-shadow);
 }
-.answer-btn:active { transform: scale(0.96); }
+.answer-btn:active { transform: translateY(3px); box-shadow: 0 1px 0 var(--hard-shadow); }
 .answer-btn.correct {
-  background: linear-gradient(135deg, rgba(132, 204, 22, 0.3), rgba(132, 204, 22, 0.15));
-  border-color: var(--leaf);
-  color: var(--leaf2);
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--bg);
 }
 .answer-btn.wrong {
-  background: linear-gradient(135deg, rgba(220, 38, 38, 0.25), rgba(220, 38, 38, 0.12));
-  border-color: var(--berry);
-  color: #fca5a5;
+  background: var(--danger);
+  border-color: var(--danger);
+  color: var(--bg);
   animation: cardShake 0.4s ease;
 }
 
-/* ===== TOAST ===== */
-.toast {
-  position: fixed;
-  left: 50%;
-  bottom: 220px;
-  transform: translateX(-50%);
-  padding: 12px 18px;
-  border-radius: 14px;
-  background: var(--surface2);
-  border: 1px solid var(--amber);
-  color: var(--amber2);
-  font-size: 0.85rem;
-  font-weight: 700;
-  box-shadow: 0 8px 24px var(--shadow);
-  animation: toastIn 0.3s var(--spring);
-  max-width: 90%;
-  text-align: center;
-  z-index: 50;
-  pointer-events: none;
-}
-@keyframes toastIn {
-  from { opacity: 0; transform: translateX(-50%) translateY(12px); }
-  to { opacity: 1; transform: translateX(-50%) translateY(0); }
-}
-.toast.out {
-  animation: toastOut 0.3s ease forwards;
-}
-@keyframes toastOut {
-  to { opacity: 0; transform: translateX(-50%) translateY(8px); }
-}
-
-/* ===== SLEEP OVERLAY ===== */
-.sleep-overlay {
+/* ===== BODMAS CHEAT SHEET (Modal) ===== */
+.cheat-backdrop {
   position: fixed;
   inset: 0;
-  background: rgba(26, 20, 16, 0.85);
+  background: rgba(2, 6, 23, 0.78);
+  z-index: 99;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+.cheat-backdrop.open { opacity: 1; pointer-events: auto; }
+
+.cheat-sheet {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%) scale(0.9);
+  z-index: 100;
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.3s var(--spring);
+  width: 90%;
+  max-width: 380px;
+}
+.cheat-sheet.open { opacity: 1; pointer-events: auto; transform: translate(-50%, -50%) scale(1); }
+.cheat-panel {
+  background: var(--surface2);
+  border: 2px solid var(--border);
+  border-radius: 14px;
+  padding: 20px 18px;
+  box-shadow: 0 8px 0 var(--hard-shadow);
+  position: relative;
+}
+.cheat-close {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  width: 38px;
+  height: 38px;
+  border-radius: 8px;
+  background: var(--surface);
+  border: 2px solid var(--border);
+  color: var(--text2);
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: inherit;
+  transition: all 0.15s;
+}
+.cheat-close:hover { border-color: var(--accent); color: var(--accent); }
+.cheat-title {
+  font-size: 0.7rem;
+  font-weight: 800;
+  color: var(--accent);
+  letter-spacing: 1.5px;
+  margin-bottom: 10px;
+}
+.cheat-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 7px 0;
+  border-bottom: 1px solid rgba(51, 65, 85, 0.6);
+}
+.cheat-row:last-child { border-bottom: none; }
+.cheat-rank {
+  width: 22px; height: 22px;
+  border-radius: 6px;
+  background: var(--accent);
+  color: var(--bg);
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 800;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.cheat-symbol {
+  font-family: var(--font-mono);
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: var(--text);
+  min-width: 44px;
+}
+.cheat-row[data-tier="B"] .cheat-symbol { color: var(--bracket); }
+.cheat-row[data-tier="O"] .cheat-symbol { color: var(--accent); }
+.cheat-row[data-tier="DM"] .cheat-symbol,
+.cheat-row[data-tier="AS"] .cheat-symbol { color: var(--operator); }
+.cheat-name {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--text);
+  flex: 1;
+}
+.cheat-ltr {
+  font-size: 0.6rem;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  color: var(--accent);
+  background: rgba(163, 230, 53, 0.12);
+  padding: 3px 8px;
+  border-radius: 6px;
+  white-space: nowrap;
+}
+
+/* ===== SYSTEM COOLDOWN OVERLAY ===== */
+.cooldown-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(2, 6, 23, 0.92);
   backdrop-filter: blur(4px);
   display: flex;
   flex-direction: column;
@@ -588,31 +586,38 @@ body {
   z-index: 100;
   animation: fadeIn 0.4s ease;
 }
-.sleep-overlay .big-dino {
-  font-size: 5rem;
-  margin-bottom: 12px;
-  animation: dinoSleep 2s ease-in-out infinite;
+.cooldown-overlay .mascot { width: 84px; height: 84px; margin-bottom: 16px; }
+.cooldown-title {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--danger);
+  letter-spacing: 1px;
+  margin-bottom: 6px;
 }
-.sleep-overlay .sleep-text {
-  font-size: 1.1rem;
+.cooldown-text {
+  font-size: 0.9rem;
   color: var(--text2);
-  margin-bottom: 20px;
+  margin-bottom: 22px;
   text-align: center;
   padding: 0 24px;
 }
-.wake-btn {
+.reboot-btn {
   padding: 14px 28px;
   min-height: 52px;
-  border-radius: 14px;
-  border: none;
-  background: linear-gradient(135deg, var(--leaf), var(--leaf2));
-  color: #1a1410;
-  font-size: 1rem;
-  font-weight: 900;
+  border-radius: 12px;
+  border: 2px solid var(--accent);
+  background: var(--accent);
+  color: var(--bg);
+  font-size: 0.95rem;
+  font-weight: 800;
+  letter-spacing: 0.5px;
   cursor: pointer;
   font-family: inherit;
-  box-shadow: 0 4px 16px rgba(132, 204, 22, 0.3);
+  box-shadow: 0 4px 0 var(--hard-shadow);
+  transition: transform 0.12s var(--spring), box-shadow 0.12s var(--spring);
 }
+.reboot-btn:active { transform: translateY(3px); box-shadow: 0 1px 0 var(--hard-shadow); }
+
 @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
 /* ===== START SCREEN ===== */
@@ -625,28 +630,22 @@ body {
   padding: 24px;
   text-align: center;
 }
-.start-dino {
-  font-size: 5.5rem;
-  margin-bottom: 12px;
-  animation: dinoFloat 3s ease-in-out infinite;
-  filter: drop-shadow(0 8px 24px rgba(245, 158, 11, 0.25));
-}
-@keyframes dinoFloat {
-  0%, 100% { transform: translateY(0) rotate(-2deg); }
-  50% { transform: translateY(-10px) rotate(2deg); }
-}
+.start-mascot { width: 110px; height: 110px; margin-bottom: 12px; }
+.start-mascot svg { filter: drop-shadow(0 8px 24px rgba(163, 230, 53, 0.18)); }
 .start-title {
-  font-size: 2rem;
-  font-weight: 900;
-  color: var(--amber2);
+  font-size: 2.1rem;
+  font-weight: 800;
+  color: var(--text);
+  letter-spacing: 3px;
   margin-bottom: 4px;
-  letter-spacing: 1px;
 }
+.start-title .accent { color: var(--accent); }
 .start-sub {
-  font-size: 0.9rem;
+  font-size: 0.88rem;
   color: var(--text2);
-  margin-bottom: 24px;
-  max-width: 280px;
+  margin-bottom: 26px;
+  max-width: 290px;
+  line-height: 1.5;
 }
 .diff-row {
   display: flex;
@@ -654,44 +653,48 @@ body {
   margin-bottom: 20px;
 }
 .diff-btn {
-  padding: 12px 18px;
-  min-height: 48px;
-  border-radius: 12px;
+  padding: 12px 16px;
+  min-height: 46px;
+  border-radius: 10px;
   border: 2px solid var(--border);
   background: var(--surface);
   color: var(--text2);
-  font-size: 0.85rem;
-  font-weight: 700;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 1px;
   cursor: pointer;
-  transition: all 0.2s var(--spring);
+  transition: transform 0.12s var(--spring), box-shadow 0.12s var(--spring), background 0.2s, color 0.2s, border-color 0.2s;
   font-family: inherit;
+  box-shadow: 0 4px 0 var(--hard-shadow);
 }
+.diff-btn:active { transform: translateY(3px); box-shadow: 0 1px 0 var(--hard-shadow); }
 .diff-btn.active {
-  border-color: var(--amber);
-  color: var(--amber2);
-  background: rgba(245, 158, 11, 0.12);
+  border-color: var(--accent);
+  background: var(--accent);
+  color: var(--bg);
 }
 .play-btn {
-  padding: 16px 40px;
+  padding: 16px 44px;
   min-height: 56px;
-  border-radius: 16px;
-  border: none;
-  background: linear-gradient(135deg, var(--amber), var(--amber2));
-  color: #1a1410;
-  font-size: 1.1rem;
-  font-weight: 900;
+  border-radius: 12px;
+  border: 2px solid var(--accent);
+  background: var(--accent);
+  color: var(--bg);
+  font-size: 1.05rem;
+  font-weight: 800;
+  letter-spacing: 2px;
   cursor: pointer;
   font-family: inherit;
-  box-shadow: 0 6px 24px rgba(245, 158, 11, 0.35);
-  letter-spacing: 0.5px;
+  box-shadow: 0 4px 0 var(--hard-shadow);
+  transition: transform 0.12s var(--spring), box-shadow 0.12s var(--spring);
 }
-.play-btn:active { transform: scale(0.97); }
+.play-btn:active { transform: translateY(3px); box-shadow: 0 1px 0 var(--hard-shadow); }
 
 /* ===== LEVEL COMPLETE ===== */
 .level-card {
   position: fixed;
   inset: 0;
-  background: rgba(26, 20, 16, 0.9);
+  background: rgba(2, 6, 23, 0.9);
   backdrop-filter: blur(6px);
   display: flex;
   flex-direction: column;
@@ -701,24 +704,21 @@ body {
   animation: fadeIn 0.4s ease;
   padding: 24px;
 }
-.level-card .evo-display {
-  font-size: 5rem;
-  margin-bottom: 12px;
-  animation: evoPop 0.6s var(--spring);
-}
+.level-mascot { width: 100px; height: 100px; margin-bottom: 12px; animation: evoPop 0.6s var(--spring); }
 @keyframes evoPop {
   0% { transform: scale(0); }
-  60% { transform: scale(1.3); }
+  60% { transform: scale(1.25); }
   100% { transform: scale(1); }
 }
-.level-card .level-title {
-  font-size: 1.5rem;
-  font-weight: 900;
-  color: var(--amber2);
+.level-title {
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: var(--accent);
+  letter-spacing: 1px;
   margin-bottom: 6px;
 }
-.level-card .level-sub {
-  font-size: 0.9rem;
+.level-sub {
+  font-size: 0.88rem;
   color: var(--text2);
   margin-bottom: 24px;
   text-align: center;
@@ -726,15 +726,19 @@ body {
 .next-btn {
   padding: 14px 32px;
   min-height: 52px;
-  border-radius: 14px;
-  border: none;
-  background: linear-gradient(135deg, var(--amber), var(--amber2));
-  color: #1a1410;
-  font-size: 1rem;
-  font-weight: 900;
+  border-radius: 12px;
+  border: 2px solid var(--accent);
+  background: var(--accent);
+  color: var(--bg);
+  font-size: 0.95rem;
+  font-weight: 800;
+  letter-spacing: 1px;
   cursor: pointer;
   font-family: inherit;
+  box-shadow: 0 4px 0 var(--hard-shadow);
+  transition: transform 0.12s var(--spring), box-shadow 0.12s var(--spring);
 }
+.next-btn:active { transform: translateY(3px); box-shadow: 0 1px 0 var(--hard-shadow); }
 
 /* ===== UTILS ===== */
 .hidden { display: none !important; }
@@ -742,9 +746,20 @@ body {
 .screen.active { display: flex; flex-direction: column; }
 
 @media (max-width: 380px) {
-  .food-token { font-size: 1.1rem; padding: 6px 8px; }
+  .food-token { font-size: 1.05rem; padding: 6px 8px; }
   .food-token.op { font-size: 1.2rem; }
-  .chunk-card, .answer-btn { font-size: 1.1rem; padding: 14px 10px; }
+  .chunk-card, .answer-btn { font-size: 1.05rem; padding: 13px 10px; }
+  .brand { font-size: 0.9rem; letter-spacing: 1px; }
+  .evo-badge { max-width: 88px; }
+  .start-mascot { width: 90px; height: 90px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
 </style>
 </head>
@@ -754,59 +769,63 @@ body {
 <!-- START SCREEN -->
 <div id="startScreen" class="screen active">
   <div class="start-screen">
-    <div class="start-dino">🦖</div>
-    <div class="start-title">MEGA-BITE</div>
-    <div class="start-sub">Feed your dino by solving BODMAS equations — one crunch at a time.</div>
+    <div class="mascot start-mascot idle" id="startMascot" aria-hidden="true"></div>
+    <div class="start-title">MEGA<span class="accent">-</span>BITE</div>
+    <div class="start-sub">Solve BODMAS equations. Crunch the right operation first — charge your core.</div>
     <div class="diff-row">
-      <button class="diff-btn" data-d="easy">🌱 Easy</button>
-      <button class="diff-btn active" data-d="medium">⚡ Medium</button>
-      <button class="diff-btn" data-d="hard">🔥 Hard</button>
+      <button class="diff-btn" data-d="easy">EASY</button>
+      <button class="diff-btn active" data-d="medium">MEDIUM</button>
+      <button class="diff-btn" data-d="hard">HARD</button>
     </div>
-    <button class="play-btn" id="playBtn">PLAY</button>
+    <button class="play-btn" id="playBtn">ENGAGE</button>
   </div>
 </div>
 
 <!-- GAME SCREEN -->
 <div id="gameScreen" class="screen">
   <div class="header">
-    <button class="mute-btn" id="muteBtn" aria-label="Mute">🔊</button>
+    <button class="mute-btn" id="muteBtn" aria-label="Toggle sound"></button>
     <div class="brand">MEGA-BITE</div>
-    <div class="evo-badge"><span class="evo-emoji" id="evoEmoji">🦕</span><span id="evoName">Hatchling</span></div>
-    <div class="streak-badge">🔥<span id="streakVal">0</span></div>
+    <div class="hud">
+      <div class="evo-badge" id="evoBadge"><span id="evoName">CYBER-HATCHLING</span></div>
+      <div class="streak-badge" aria-label="Streak"><span class="streak-label">STREAK</span><span id="streakVal">0</span></div>
+    </div>
   </div>
 
-  <div class="appetite-wrap">
-    <div class="appetite-track">
-      <div class="appetite-fill" id="appetiteFill" style="width: 100%"></div>
+  <div class="overdrive-wrap">
+    <div class="overdrive-track">
+      <div class="overdrive-fill" id="overdriveFill" style="width: 100%"></div>
     </div>
-    <div class="appetite-label">
-      <span>Appetite</span>
-      <span id="stepCounter" style="color:var(--amber2);font-weight:700"></span>
-      <span id="appetiteText">Full</span>
+    <div class="overdrive-label">
+      <span class="lbl">OVERDRIVE</span>
+      <span id="stepCounter"></span>
+      <span id="overdriveText">CHARGED</span>
     </div>
   </div>
 
   <div class="food-chain-area">
     <div class="food-chain" id="foodChain"></div>
-    <div class="dino-stage">
-      <div class="dino-mascot" id="dinoMascot">🦖</div>
+    <div class="mascot-stage">
+      <div class="mascot idle" id="kaijuMascot" aria-hidden="true"></div>
     </div>
   </div>
 
   <div class="prompt-row">
-    <div class="prompt" id="prompt">Which bite should we crunch first?</div>
-    <button class="bodmas-toggle" id="bodmasToggle">? Rules</button>
+    <div class="prompt" id="prompt">Which operation do you crunch first?</div>
+    <button class="bodmas-toggle" id="bodmasToggle" aria-label="BODMAS rules">? RULES</button>
   </div>
+
+  <div class="feedback-slot" aria-live="polite"><div class="feedback-banner" id="feedbackBanner"></div></div>
 
   <div class="action-tray" id="actionTray"></div>
 </div>
 
 <!-- BODMAS CHEAT SHEET MODAL -->
 <div class="cheat-backdrop" id="cheatBackdrop"></div>
-<div class="cheat-sheet" id="cheatSheet">
+<div class="cheat-sheet" id="cheatSheet" role="dialog" aria-label="BODMAS priority">
   <div class="cheat-panel">
-    <button class="cheat-close" id="cheatClose">×</button>
-    <div class="cheat-title">BODMAS Priority</div>
+    <button class="cheat-close" id="cheatClose" aria-label="Close">×</button>
+    <div class="cheat-title">BODMAS PRIORITY</div>
     <div class="cheat-row" data-tier="B">
       <div class="cheat-rank">1</div>
       <div class="cheat-symbol">( )</div>
@@ -820,42 +839,69 @@ body {
     <div class="cheat-row" data-tier="DM">
       <div class="cheat-rank">3</div>
       <div class="cheat-symbol">÷ ×</div>
-      <div class="cheat-name">Division & Multiplication</div>
+      <div class="cheat-name">Division &amp; Multiplication</div>
       <div class="cheat-ltr">LEFT → RIGHT</div>
     </div>
     <div class="cheat-row" data-tier="AS">
       <div class="cheat-rank">4</div>
       <div class="cheat-symbol">+ −</div>
-      <div class="cheat-name">Addition & Subtraction</div>
+      <div class="cheat-name">Addition &amp; Subtraction</div>
       <div class="cheat-ltr">LEFT → RIGHT</div>
     </div>
   </div>
 </div>
 
-<!-- SLEEP OVERLAY -->
-<div id="sleepOverlay" class="sleep-overlay hidden">
-  <div class="big-dino">🦖💤</div>
-  <div class="sleep-text">Your dino got hungry and took a nap.<br>Wake them up to keep crunching!</div>
-  <button class="wake-btn" id="wakeBtn">Wake Up 🦖</button>
+<!-- SYSTEM COOLDOWN OVERLAY -->
+<div id="cooldownOverlay" class="cooldown-overlay hidden">
+  <div class="mascot cooldown" id="cooldownMascot" aria-hidden="true"></div>
+  <div class="cooldown-title">OVERDRIVE DEPLETED</div>
+  <div class="cooldown-text">System Cooldown — reboot to keep crunching.</div>
+  <button class="reboot-btn" id="rebootBtn">REBOOT CORE ⚡</button>
 </div>
 
 <!-- LEVEL COMPLETE -->
 <div id="levelCard" class="level-card hidden">
-  <div class="evo-display" id="levelEvoDisplay">🦕</div>
-  <div class="level-title" id="levelTitle">Equation Crunched!</div>
-  <div class="level-sub" id="levelSub">Your dino is growing stronger.</div>
-  <button class="next-btn" id="nextBtn">Next Bite →</button>
+  <div class="mascot level-mascot" id="levelMascot" aria-hidden="true"></div>
+  <div class="level-title" id="levelTitle">EQUATION CLEARED</div>
+  <div class="level-sub" id="levelSub">Level 1 • CYBER-HATCHLING</div>
+  <button class="next-btn" id="nextBtn">NEXT →</button>
 </div>
 
 </div>
 
 <script>
 /* =========================================================
-   MEGA-BITE — Syntactic Reducer Engine
+   MEGA-BITE — Syntactic Reducer Engine (Arcade Kaiju)
    ========================================================= */
 
 const LS_KEY = 'megabite_v1';
 const LS_MUTE = 'megabite_muted';
+
+/* -------------------- MASCOT (inline SVG) -------------------- */
+const MASCOT_SVG = `
+<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Mecha-Rex">
+  <path d="M5 14 L13 12 L13 30 L5 32 Z" fill="#151C2C" stroke="#334155" stroke-width="2" stroke-linejoin="round"/>
+  <path d="M59 14 L51 12 L51 30 L59 32 Z" fill="#151C2C" stroke="#334155" stroke-width="2" stroke-linejoin="round"/>
+  <path d="M13 8 L22 3 L42 3 L51 8 L54 24 L48 36 L16 36 L10 24 Z" fill="#283548" stroke="#334155" stroke-width="2" stroke-linejoin="round"/>
+  <path d="M16 12 L22 7 L42 7 L48 12 L48 18 L16 18 Z" fill="#151C2C" stroke="#334155" stroke-width="2" stroke-linejoin="round"/>
+  <rect class="mascot-visor" x="20" y="11" width="24" height="5" rx="2.5" fill="#A3E635"/>
+  <g class="mascot-jaw">
+    <path d="M16 36 L48 36 L44 46 L20 46 Z" fill="#151C2C" stroke="#334155" stroke-width="2" stroke-linejoin="round"/>
+    <path d="M20 36 L22.5 41 L25 36 L27.5 41 L30 36 L32.5 41 L35 36 L37.5 41 L40 36 L42.5 41 L45 36" fill="#F8FAFC" stroke="#334155" stroke-width="1" stroke-linejoin="round"/>
+    <circle cx="26" cy="42.5" r="1.4" fill="#94A3B8"/>
+    <circle cx="38" cy="42.5" r="1.4" fill="#94A3B8"/>
+  </g>
+</svg>`;
+
+const ICON_SOUND = '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4Z" fill="currentColor" stroke="none"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.5 5.5a9.5 9.5 0 0 1 0 13"/></svg>';
+const ICON_MUTE = '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4Z" fill="currentColor" stroke="none"/><path d="m16 9 5 5"/><path d="m21 9-5 5"/></svg>';
+
+function mountMascots() {
+  ['startMascot', 'kaijuMascot', 'levelMascot', 'cooldownMascot'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.innerHTML = MASCOT_SVG;
+  });
+}
 
 /* -------------------- TOKENIZER & AST -------------------- */
 function tokenize(expr) {
@@ -882,7 +928,6 @@ function tokenize(expr) {
 }
 
 function parseAST(tokens) {
-  // Recursive descent parser producing AST with bracket info preserved
   let pos = 0;
   function peek() { return tokens[pos]; }
   function consume() { return tokens[pos++]; }
@@ -951,8 +996,6 @@ function astToString(node) {
 
 /* Find the correct next reduction target per BODMAS */
 function findNextReduction(node) {
-  // Returns the binop node that should be evaluated first
-  // Priority: Brackets > Orders > DM > AS, left-to-right within equal precedence
   let candidates = [];
   function walk(n, insideBracket, path) {
     if (n.type === 'binop') {
@@ -966,13 +1009,13 @@ function findNextReduction(node) {
   walk(node, false, []);
   if (!candidates.length) return null;
 
-  // Sort: bracket first, then tier priority, then leftmost (shallowest path, then leftmost)
+  // Sort: bracket first, then tier priority, then deepest-leftmost within equal precedence
   const tierRank = { B: 0, O: 1, DM: 2, AS: 3 };
   candidates.sort((a, b) => {
     if (a.insideBracket !== b.insideBracket) return b.insideBracket - a.insideBracket;
     const ra = tierRank[a.node.tier], rb = tierRank[b.node.tier];
     if (ra !== rb) return ra - rb;
-    // Within same tier, prefer leftmost (shortest path wins, then leftmost child)
+    // Left-associative: deeper path wins (deepest-left), then leftmost child
     if (a.path.length !== b.path.length) return b.path.length - a.path.length;
     for (let i = 0; i < a.path.length; i++) {
       if (a.path[i] !== b.path[i]) {
@@ -986,9 +1029,6 @@ function findNextReduction(node) {
 
 /* Find all candidate binop nodes (for the candidate tray) */
 function findCandidateChunks(node) {
-  // Returns leaf-level binop nodes (those whose left and right are both num or bracket)
-  // A bracket counts as "simple" regardless of contents — it's a single unit to the student
-  // ALWAYS recurse into children to find inner chunks (especially inside brackets)
   const chunks = [];
   function walk(n, insideBracket) {
     if (n.type === 'binop') {
@@ -997,7 +1037,6 @@ function findCandidateChunks(node) {
       if (leftIsSimple && rightIsSimple) {
         chunks.push({ node: n, insideBracket });
       }
-      // Always recurse to find inner chunks (e.g., inside brackets)
       walk(n.left, insideBracket);
       walk(n.right, insideBracket);
     } else if (n.type === 'bracket') {
@@ -1014,29 +1053,20 @@ function getChunkValue(node) {
   return evalAST({ type: 'binop', op: node.op, left: { type: 'num', value: l }, right: { type: 'num', value: r } });
 }
 
-function getChunkDisplay(node) {
-  const symbols = { '+': '+', '-': '−', '*': '×', '/': '÷' };
-  const l = node.left.type === 'bracket' ? '(' + astToString(node.left.inner) + ')' : String(node.left.value);
-  const r = node.right.type === 'bracket' ? '(' + astToString(node.right.inner) + ')' : String(node.right.value);
-  return l + ' ' + (symbols[node.op] || node.op) + ' ' + r;
-}
+/* Get chunk display as HTML with superscript for powers + colored symbols */
+const OPSYMBOLS = { '+': '+', '-': '−', '*': '×', '/': '÷' };
 
-/* Get chunk display as HTML with superscript for powers */
 function getChunkHTML(node) {
   const l = node.left.type === 'bracket' ? '(' + astToString(node.left.inner) + ')' : String(node.left.value);
   const r = node.right.type === 'bracket' ? '(' + astToString(node.right.inner) + ')' : String(node.right.value);
   if (node.op === '^') {
     return `${l}<span class="sup">${r}</span>`;
   }
-  const symbols = { '+': '+', '-': '−', '*': '×', '/': '÷' };
-  return `${l} ${symbols[node.op] || node.op} ${r}`;
+  return `${l} <span class="op-sym">${OPSYMBOLS[node.op] || node.op}</span> ${r}`;
 }
 
-/* Find visual distractor chunks — adjacent num-op-num that cross AST boundaries.
-   E.g., in (6+8)×3 - 4×2, the pair "3 - 4" is visually adjacent but not a real sub-expression.
-   These are presented as wrong options for teaching purposes. */
+/* Find visual distractor chunks — adjacent num-op-num that cross AST boundaries */
 function findVisualDistractors(node) {
-  // Build flat token sequence at the outer level, treating brackets as single units
   const tokens = [];
   function flatten(n) {
     if (n.type === 'num') {
@@ -1046,31 +1076,26 @@ function findVisualDistractors(node) {
       tokens.push({ type: 'op', value: n.op, astNode: n });
       flatten(n.right);
     } else if (n.type === 'bracket') {
-      // At this level, bracket is a single unit
       tokens.push({ type: 'num', value: evalAST(n), astNode: n, isBracket: true });
     }
   }
   flatten(node);
 
-  // Find adjacent num-op-num triples
   const distractors = [];
   for (let i = 0; i < tokens.length - 2; i++) {
     if (tokens[i].type === 'num' && tokens[i+1].type === 'op' && tokens[i+2].type === 'num') {
       const left = tokens[i];
       const op = tokens[i+1];
       const right = tokens[i+2];
-
-      // Check if this triple corresponds to a real AST binop
       const isReal = op.astNode.left === left.astNode && op.astNode.right === right.astNode;
-
       if (!isReal) {
-        const symbols = { '+': '+', '-': '−', '*': '×', '/': '÷' };
         distractors.push({
-          display: `${left.value} ${symbols[op.value] || op.value} ${right.value}`,
+          display: `${left.value} ${OPSYMBOLS[op.value] || op.value} ${right.value}`,
           op: op.value,
           leftVal: left.value,
           rightVal: right.value,
           isVisual: true,
+          astNodes: [left.astNode, op.astNode, right.astNode],
         });
       }
     }
@@ -1114,17 +1139,15 @@ function generateDistractors(correct, node) {
   const l = node.left.type === 'bracket' ? evalAST(node.left) : node.left.value;
   const r = node.right.type === 'bracket' ? evalAST(node.right) : node.right.value;
 
-  // Pedagogical Error Mirror: common operator confusion
   let mirror;
   switch (node.op) {
-    case '*': mirror = l + r; break;         // confused × with +
-    case '+': mirror = l * r; break;         // confused + with ×
-    case '-': mirror = l + r; break;         // confused − with +
-    case '/': mirror = l * r; break;         // confused ÷ with ×
-    case '^': mirror = l * r; break;         // confused ^ with ×
+    case '*': mirror = l + r; break;
+    case '+': mirror = l * r; break;
+    case '-': mirror = l + r; break;
+    case '/': mirror = l * r; break;
+    case '^': mirror = l * r; break;
   }
 
-  // Near-miss slip
   const offsets = [-2, -1, 1, 2, 10, -10];
   let nearMiss = correct + offsets[Math.floor(Math.random() * offsets.length)];
   if (nearMiss === correct || nearMiss === mirror || nearMiss < 0) {
@@ -1134,14 +1157,12 @@ function generateDistractors(correct, node) {
   if (nearMiss < 0) nearMiss = correct + 5;
 
   const set = new Set([correct, mirror, nearMiss]);
-  // Pad if needed
   while (set.size < 3) {
     set.add(correct + Math.floor(Math.random() * 8) - 4 + set.size);
   }
   const arr = Array.from(set).filter(x => x >= 0);
   while (arr.length < 3) arr.push(correct + arr.length + 1);
 
-  // Shuffle
   return arr.slice(0, 3).sort(() => Math.random() - 0.5);
 }
 
@@ -1175,7 +1196,6 @@ function generateEquation(diff) {
       const a = rand(6, 18), b = rand(2, 6), c = rand(2, 6), d = rand(2, 8);
       expr = `${a} - ${b} * ${c} + ${d}`;
     } else if (t === 2) {
-      // Clean division: a/b always whole
       const div = cleanDiv(2, 6, 2, 5);
       const c = rand(2, 5);
       expr = `${div.a} / ${div.b} * ${c}`;
@@ -1195,9 +1215,10 @@ function generateEquation(diff) {
       const a = rand(2, 5), b = rand(2, 4), c = rand(2, 5);
       expr = `${a}^2 * ${b} + ${c}^2`;
     } else if (t === 3) {
-      // Hard level: division can be non-clean (decimals allowed)
-      const a = rand(12, 36), b = rand(3, 6), c = rand(2, 5), d = rand(2, 9);
-      expr = `${a} / ${b} * ${c} + ${d}`;
+      // Clean division on hard too — no truncated decimals
+      const div = cleanDiv(3, 6, 2, 5);
+      const c = rand(2, 5), d = rand(2, 9);
+      expr = `${div.a} / ${div.b} * ${c} + ${d}`;
     } else {
       const a = rand(4, 10), b = rand(2, 6), c = rand(2, 5), d = rand(2, 5);
       expr = `(${a} - ${b}) * (${c} + ${d})`;
@@ -1214,46 +1235,11 @@ function toggleCheatSheet() {
   $('bodmasToggle').classList.toggle('open', state.cheatSheetOpen);
 }
 
-function openCheatSheet(highlightTier) {
-  state.cheatSheetOpen = true;
-  $('cheatSheet').classList.add('open');
-  $('cheatBackdrop').classList.add('open');
-  $('bodmasToggle').classList.add('open');
-  if (highlightTier) {
-    // Flash the missed rule
-    document.querySelectorAll('.cheat-row').forEach(row => {
-      row.classList.remove('highlight-rule');
-      if (row.dataset.tier === highlightTier) {
-        row.classList.add('highlight-rule');
-        setTimeout(() => row.classList.remove('highlight-rule'), 3000);
-      }
-    });
-  }
-}
-
 function closeCheatSheet() {
   state.cheatSheetOpen = false;
   $('cheatSheet').classList.remove('open');
   $('cheatBackdrop').classList.remove('open');
   $('bodmasToggle').classList.remove('open');
-}
-
-/* Auto-open during first 3 rounds (onboarding) — DISABLED to avoid blocking gameplay.
-   The cheat sheet only opens when the player taps "? Rules" or makes a mistake. */
-function checkOnboarding() {
-  // Intentionally empty — do NOT auto-open the modal.
-  // Opening it blocks the game screen behind a backdrop.
-}
-
-/* -------------------- SUPERSCRIPT HELPER -------------------- */
-const SUPERSCRIPTS = { '0':'⁰','1':'¹','2':'²','3':'³','4':'⁴','5':'⁵','6':'⁶','7':'⁷','8':'⁸','9':'⁹' };
-function toSuperscript(n) {
-  return String(n).split('').map(d => SUPERSCRIPTS[d] || d).join('');
-}
-
-/* Render a number with optional power as superscript HTML */
-function renderPowerHTML(base, exp) {
-  return `${base}<span class="sup">${exp}</span>`;
 }
 
 /* -------------------- AUDIO (Web Audio API) -------------------- */
@@ -1270,7 +1256,6 @@ function playChomp() {
   if (isMuted) return;
   ensureAudio();
   const t = audioCtx.currentTime;
-  // Noise burst + low-freq decay
   const noise = audioCtx.createBufferSource();
   const buf = audioCtx.createBuffer(1, audioCtx.sampleRate * 0.15, audioCtx.sampleRate);
   const data = buf.getChannelData(0);
@@ -1330,7 +1315,6 @@ function playFanfare() {
   if (isMuted) return;
   ensureAudio();
   const t = audioCtx.currentTime;
-  // C major triad arpeggio
   [261.63, 329.63, 392.00, 523.25].forEach((f, i) => {
     const osc = audioCtx.createOscillator();
     osc.type = 'triangle';
@@ -1347,9 +1331,9 @@ function playFanfare() {
 
 /* -------------------- STATE -------------------- */
 const EVOLUTION_STAGES = [
-  { name: 'Hatchling', emoji: '🦕', threshold: 0 },
-  { name: 'Raptor', emoji: '🦖', threshold: 3 },
-  { name: 'T-Rex', emoji: '🦖👑', threshold: 8 },
+  { name: 'CYBER-HATCHLING', threshold: 0 },
+  { name: 'APEX RAPTOR', threshold: 3 },
+  { name: 'MECHA-REX', threshold: 8 },
 ];
 
 let state = {
@@ -1359,16 +1343,17 @@ let state = {
   bestStreak: 0,
   totalEquations: 0,
   correctEquations: 0,
-  appetite: 100,
+  overdrive: 100,
   ast: null,
   totalStepsOriginal: 0,
   phase: 'select',
   selectedChunk: null,
   correctAnswer: null,
   isProcessing: false,
-  appetiteTimer: null,
+  overdriveTimer: null,
   cheatSheetOpen: false,
   roundsPlayed: 0,
+  currentCandidates: [],
 };
 
 function loadState() {
@@ -1408,58 +1393,58 @@ function updateStepCounter() {
   const total = countTotalSteps(state.ast);
   const done = state.totalStepsOriginal - total;
   if (total > 0) {
-    $('stepCounter').textContent = `Bite ${done + 1} of ${state.totalStepsOriginal}`;
+    $('stepCounter').textContent = `STEP ${done + 1} / ${state.totalStepsOriginal}`;
   } else {
     $('stepCounter').textContent = '';
   }
 }
 
-/* -------------------- APPETITE METER -------------------- */
-function startAppetiteTimer() {
-  stopAppetiteTimer();
-  state.appetiteTimer = setInterval(() => {
-    // P1: Only deplete during chunk selection (thinking time), not during answer phase
-    if (state.phase === 'select' && state.appetite > 0) {
-      state.appetite = Math.max(0, state.appetite - 0.1);
-      renderAppetite();
-      if (state.appetite === 0) showSleep();
+/* -------------------- OVERDRIVE CORE -------------------- */
+function startOverdriveTimer() {
+  stopOverdriveTimer();
+  state.overdriveTimer = setInterval(() => {
+    if (state.phase === 'select' && state.overdrive > 0) {
+      state.overdrive = Math.max(0, state.overdrive - 0.1);
+      renderOverdrive();
+      if (state.overdrive === 0) showCooldown();
     }
   }, 1000);
 }
 
-function stopAppetiteTimer() {
-  if (state.appetiteTimer) clearInterval(state.appetiteTimer);
-  state.appetiteTimer = null;
+function stopOverdriveTimer() {
+  if (state.overdriveTimer) clearInterval(state.overdriveTimer);
+  state.overdriveTimer = null;
 }
 
-function feedDino() {
-  state.appetite = Math.min(100, state.appetite + 15);
-  renderAppetite();
+function chargeCore() {
+  state.overdrive = Math.min(100, state.overdrive + 15);
+  renderOverdrive();
 }
 
-function renderAppetite() {
-  const fill = document.getElementById('appetiteFill');
-  const text = document.getElementById('appetiteText');
-  fill.style.width = state.appetite + '%';
-  fill.classList.toggle('low', state.appetite < 30);
-  if (state.appetite > 70) text.textContent = 'Full';
-  else if (state.appetite > 30) text.textContent = 'Hungry';
-  else if (state.appetite > 0) text.textContent = 'Very Hungry!';
-  else text.textContent = 'Sleeping...';
+function renderOverdrive() {
+  const fill = document.getElementById('overdriveFill');
+  const text = document.getElementById('overdriveText');
+  fill.style.width = state.overdrive + '%';
+  fill.classList.toggle('low', state.overdrive < 30);
+  text.classList.toggle('low', state.overdrive < 30);
+  if (state.overdrive > 70) text.textContent = 'CHARGED';
+  else if (state.overdrive > 30) text.textContent = 'DRAINING';
+  else if (state.overdrive > 0) text.textContent = 'CRITICAL!';
+  else text.textContent = 'OVERHEATED';
 }
 
-function showSleep() {
-  stopAppetiteTimer();
-  document.getElementById('sleepOverlay').classList.remove('hidden');
-  document.getElementById('dinoMascot').classList.add('sleeping');
+function showCooldown() {
+  stopOverdriveTimer();
+  $('cooldownOverlay').classList.remove('hidden');
+  $('kaijuMascot').classList.add('cooldown');
 }
 
-function hideSleep() {
-  state.appetite = 50;
-  renderAppetite();
-  document.getElementById('sleepOverlay').classList.add('hidden');
-  document.getElementById('dinoMascot').classList.remove('sleeping');
-  startAppetiteTimer();
+function rebootCore() {
+  state.overdrive = 50;
+  renderOverdrive();
+  $('cooldownOverlay').classList.add('hidden');
+  $('kaijuMascot').classList.remove('cooldown');
+  startOverdriveTimer();
 }
 
 /* -------------------- EVOLUTION -------------------- */
@@ -1473,8 +1458,7 @@ function getEvolution() {
 
 function renderEvolution() {
   const evo = getEvolution();
-  document.getElementById('evoEmoji').textContent = evo.emoji;
-  document.getElementById('evoName').textContent = evo.name;
+  $('evoName').textContent = evo.name;
 }
 
 /* -------------------- RENDERING -------------------- */
@@ -1504,7 +1488,6 @@ function renderFoodChain() {
       close._astNode = node;
       parent.appendChild(close);
     } else if (node.type === 'binop') {
-      // For power operations, render base+exponent as a single unified tile
       if (node.op === '^' && node.left.type === 'num' && node.right.type === 'num') {
         const powSpan = document.createElement('span');
         powSpan.className = 'food-token num';
@@ -1517,8 +1500,7 @@ function renderFoodChain() {
       renderNode(node.left, parent);
       const opSpan = document.createElement('span');
       opSpan.className = 'food-token op';
-      const symbols = { '+': '+', '-': '−', '*': '×', '/': '÷' };
-      opSpan.textContent = symbols[node.op] || node.op;
+      opSpan.textContent = OPSYMBOLS[node.op] || node.op;
       opSpan._astNode = node;
       parent.appendChild(opSpan);
       renderNode(node.right, parent);
@@ -1532,25 +1514,37 @@ function renderPrompt(text) {
   $('prompt').innerHTML = text;
 }
 
+/* -------------------- HIGHLIGHT / PREVIEW -------------------- */
+function highlightTokens(nodes) {
+  const set = new Set(nodes);
+  document.querySelectorAll('#foodChain .food-token').forEach(tok => {
+    tok.classList.toggle('chunk-highlight', set.has(tok._astNode));
+  });
+}
+
+function clearChunkHighlights() {
+  document.querySelectorAll('#foodChain .food-token').forEach(tok => {
+    tok.classList.remove('chunk-highlight');
+  });
+}
+
 /* -------------------- ACTION TRAY -------------------- */
 function renderActionTray() {
   const tray = $('actionTray');
   tray.innerHTML = '';
 
   if (state.phase === 'select') {
-    renderPrompt('Which bite should we crunch <strong>first</strong>?');
+    renderPrompt('Which operation do you crunch <strong>first</strong>?');
 
     const candidates = findCandidateChunks(state.ast);
     const visualDistractors = findVisualDistractors(state.ast);
     const correct = findNextReduction(state.ast);
-    state.currentCandidates = candidates; // Store for error feedback
+    state.currentCandidates = candidates;
 
     const grid = document.createElement('div');
     const totalOptions = candidates.length + visualDistractors.length;
     grid.className = 'tray-grid' + (totalOptions === 1 ? ' single' : '');
 
-    // Build combined option list: real candidates + visual distractors
-    // Deduplicate by display text — identical chunks should never appear twice
     const seen = new Set();
     const allOptions = [];
 
@@ -1570,7 +1564,6 @@ function renderActionTray() {
       }
     });
 
-    // Shuffle for display
     allOptions.sort(() => Math.random() - 0.5);
 
     allOptions.forEach(opt => {
@@ -1578,18 +1571,21 @@ function renderActionTray() {
       btn.className = 'chunk-card';
       if (opt.type === 'real') {
         btn.innerHTML = getChunkHTML(opt.data.node);
+        btn._previewNodes = [opt.data.node, opt.data.node.left, opt.data.node.right];
         btn.onclick = () => handleChunkSelect(opt.data, correct, btn);
       } else {
         btn.textContent = opt.data.display;
+        btn._previewNodes = opt.data.astNodes || [];
         btn.onclick = () => handleVisualDistractorTap(opt.data, correct, btn);
       }
+      btn.addEventListener('pointerenter', () => highlightTokens(btn._previewNodes));
+      btn.addEventListener('pointerleave', () => { if (state.phase === 'select') clearChunkHighlights(); });
       grid.appendChild(btn);
     });
 
     tray.appendChild(grid);
   } else {
-    // Answer phase
-    renderPrompt(`Crunch it! <strong>${getChunkHTML(state.selectedChunk.node)}</strong> = ?`);
+    renderPrompt(`Solve: <strong>${getChunkHTML(state.selectedChunk.node)}</strong> = ?`);
     const grid = document.createElement('div');
     grid.className = 'tray-grid';
     const correct = state.correctAnswer;
@@ -1607,30 +1603,56 @@ function renderActionTray() {
   }
 }
 
+/* -------------------- FEEDBACK -------------------- */
+let feedbackTimer = null;
+function showFeedback(msg, type = 'error') {
+  const el = $('feedbackBanner');
+  el.textContent = msg;
+  el.className = 'feedback-banner show ' + type;
+  clearTimeout(feedbackTimer);
+  feedbackTimer = setTimeout(() => {
+    el.className = 'feedback-banner';
+  }, 4000);
+}
+function clearFeedback() {
+  clearTimeout(feedbackTimer);
+  $('feedbackBanner').className = 'feedback-banner';
+}
+
+function pulseRules() {
+  const t = $('bodmasToggle');
+  t.classList.remove('pulse-hint');
+  void t.offsetWidth;
+  t.classList.add('pulse-hint');
+  setTimeout(() => t.classList.remove('pulse-hint'), 4200);
+}
+
+const TIER_NAMES = {
+  B: 'Brackets ( )',
+  O: 'Orders (x² √)',
+  DM: 'Multiplication & Division (× ÷)',
+  AS: 'Addition & Subtraction (+ −)',
+};
+const TIER_RANK = { B: 0, O: 1, DM: 2, AS: 3 };
+
+/* -------------------- CHUNK SELECTION -------------------- */
 function handleVisualDistractorTap(distractor, correctNode, btn) {
   if (state.isProcessing) return;
 
-  // Visual distractor — always wrong, but a valuable teaching moment
   playThud();
   btn.classList.add('shake');
-  $('dinoMascot').classList.add('headshake');
+  $('kaijuMascot').classList.add('error');
 
-  // Streak reset on precedence error
   state.streak = 0;
   $('streakVal').textContent = state.streak;
 
-  // Educational message: these numbers belong to different chunks
-  const correctTier = correctNode.tier;
-  const tierNames = { B: 'Brackets ( )', O: 'Orders (x²)', DM: 'Multiplication & Division (× ÷)', AS: 'Addition & Subtraction (+ −)' };
-  const msg = `${distractor.leftVal} and ${distractor.rightVal} belong to different chunks! The ${distractor.op} connects bigger pieces. Try a smaller bite.`;
-  showToast(msg, true);
-
-  // Auto-open cheat sheet and highlight the correct tier
-  openCheatSheet(correctTier);
+  const msg = `${distractor.leftVal} and ${distractor.rightVal} belong to different chunks — the ${distractor.op} connects bigger pieces. Try a smaller chunk.`;
+  showFeedback(msg, 'error');
+  pulseRules();
 
   setTimeout(() => {
     btn.classList.remove('shake');
-    $('dinoMascot').classList.remove('headshake');
+    $('kaijuMascot').classList.remove('error');
   }, 500);
 }
 
@@ -1638,86 +1660,56 @@ function handleChunkSelect(candidate, correctNode, btn) {
   if (state.isProcessing) return;
 
   if (candidate.node === correctNode) {
-    // Correct chunk — move to answer phase
     state.selectedChunk = candidate;
     state.correctAnswer = getChunkValue(candidate.node);
     state.phase = 'answer';
     playSnap();
 
-    // P1: Streak tracks BODMAS identification, not arithmetic
     state.streak++;
     if (state.streak > state.bestStreak) state.bestStreak = state.streak;
     $('streakVal').textContent = state.streak;
 
-    // P1: Highlight the matching tokens in the food chain
-    highlightChunkInFoodChain(candidate.node);
+    highlightTokens([candidate.node, candidate.node.left, candidate.node.right]);
+    clearFeedback();
 
     renderActionTray();
   } else {
-    // Wrong chunk — gentle refusal, NO penalty
     playThud();
     btn.classList.add('shake');
-    $('dinoMascot').classList.add('headshake');
+    $('kaijuMascot').classList.add('error');
 
-    // P1: Precedence error resets streak — this is the skill being tracked
     state.streak = 0;
     $('streakVal').textContent = state.streak;
 
-    // Targeted error feedback based on mistake type
     const correctTier = correctNode.tier;
     const candidateTier = candidate.node.tier;
-    const tierRank = { B: 0, O: 1, DM: 2, AS: 3 };
-    const tierNames = { B: 'Brackets ( )', O: 'Orders (x²)', DM: 'Multiplication & Division (× ÷)', AS: 'Addition & Subtraction (+ −)' };
 
     let msg;
-    // Check if there's a bracket chunk available but player picked non-bracket
     const currentCandidates = state.currentCandidates || [];
     const hasBracketChunk = currentCandidates.find(c => c.insideBracket);
     if (hasBracketChunk && !candidate.insideBracket) {
-      msg = `Always crunch inside the Brackets ( ) first!`;
+      msg = 'Always crunch inside the Brackets ( ) first!';
     } else if (correctTier === candidateTier) {
-      // Same tier — wrong direction (left-to-right rule)
       if (correctTier === 'DM') {
-        msg = `Division & Multiplication are tied — crunch from LEFT to RIGHT!`;
+        msg = 'Division & Multiplication are tied — crunch LEFT to RIGHT!';
       } else if (correctTier === 'AS') {
-        msg = `Addition & Subtraction are tied — crunch from LEFT to RIGHT!`;
+        msg = 'Addition & Subtraction are tied — crunch LEFT to RIGHT!';
       } else {
-        msg = `Same priority — go LEFT to RIGHT!`;
+        msg = 'Same priority — go LEFT to RIGHT!';
       }
-    } else if (tierRank[correctTier] < tierRank[candidateTier]) {
-      // Wrong priority
-      msg = `Too early! ${tierNames[correctTier]} outranks ${tierNames[candidateTier]}.`;
+    } else if (TIER_RANK[correctTier] < TIER_RANK[candidateTier]) {
+      msg = `Too early — ${TIER_NAMES[correctTier]} outranks ${TIER_NAMES[candidateTier]}.`;
     } else {
-      msg = `Try a different bite first!`;
+      msg = 'Try a different operation first.';
     }
-    showToast(msg, true);
-
-    // Auto-open cheat sheet and highlight the missed rule
-    openCheatSheet(correctTier);
+    showFeedback(msg, 'error');
+    pulseRules();
 
     setTimeout(() => {
       btn.classList.remove('shake');
-      $('dinoMascot').classList.remove('headshake');
+      $('kaijuMascot').classList.remove('error');
     }, 500);
   }
-}
-
-/* Highlight food chain tokens matching the selected chunk */
-function highlightChunkInFoodChain(node) {
-  // Find the tokens in the food chain that correspond to this AST node
-  const tokens = document.querySelectorAll('#foodChain .food-token');
-  tokens.forEach(tok => {
-    if (tok._astNode === node || tok._astNode === node.left || tok._astNode === node.right) {
-      tok.classList.add('chunk-highlight');
-    }
-  });
-}
-
-/* Clear all chunk highlights */
-function clearChunkHighlights() {
-  document.querySelectorAll('#foodChain .food-token').forEach(tok => {
-    tok.classList.remove('chunk-highlight');
-  });
 }
 
 function handleAnswerSelect(val, correct, btn) {
@@ -1727,42 +1719,38 @@ function handleAnswerSelect(val, correct, btn) {
     state.isProcessing = true;
     btn.classList.add('correct');
     playChomp();
-    $('dinoMascot').classList.add('chomp');
+    $('kaijuMascot').classList.add('chomp');
+    $('foodChain').classList.add('arena-shake');
 
-    feedDino();
+    chargeCore();
 
-    // Crunch & Snap animation: animate operand tokens collapsing, then replace with result
     const chunkNode = state.selectedChunk.node;
     const tokensToCollapse = [];
     document.querySelectorAll('#foodChain .food-token').forEach(tok => {
       if (tok._astNode === chunkNode || tok._astNode === chunkNode.left || tok._astNode === chunkNode.right) {
         tokensToCollapse.push(tok);
       }
-      // Also collapse bracket parens if left/right is a bracket
       if (chunkNode.left.type === 'bracket' && tok._astNode === chunkNode.left) tokensToCollapse.push(tok);
       if (chunkNode.right.type === 'bracket' && tok._astNode === chunkNode.right) tokensToCollapse.push(tok);
     });
 
-    // Start collapse animation
     tokensToCollapse.forEach(tok => tok.classList.add('crunch-collapse'));
 
     setTimeout(() => {
+      $('foodChain').classList.remove('arena-shake');
       const resultNode = { type: 'num', value: correct };
       replaceNode(state.ast, chunkNode, resultNode);
       state.ast = simplifyBrackets(state.ast);
       clearChunkHighlights();
       updateStepCounter();
 
-      // Check if done
       if (state.ast.type === 'num') {
         renderFoodChain();
-        // Animate the final result token
         const finalToken = document.querySelector('#foodChain .food-token.num');
         if (finalToken) finalToken.classList.add('crunch-result');
         setTimeout(() => levelComplete(), 500);
       } else {
         renderFoodChain();
-        // Find and animate the new result token
         document.querySelectorAll('#foodChain .food-token.num').forEach(tok => {
           if (tok._astNode && tok._astNode.type === 'num' && tok._astNode.value === correct) {
             tok.classList.add('crunch-result');
@@ -1771,7 +1759,7 @@ function handleAnswerSelect(val, correct, btn) {
         state.phase = 'select';
         state.selectedChunk = null;
         state.isProcessing = false;
-        $('dinoMascot').classList.remove('chomp');
+        $('kaijuMascot').classList.remove('chomp');
         renderActionTray();
       }
     }, 500);
@@ -1779,31 +1767,12 @@ function handleAnswerSelect(val, correct, btn) {
     btn.classList.add('wrong');
     playThud();
 
-    // Pedagogical feedback
     const symbols = { '+': 'Addition (+)', '-': 'Subtraction (−)', '*': 'Multiplication (×)', '/': 'Division (÷)', '^': 'Power' };
     const node = state.selectedChunk.node;
-    showToast(`Watch the sign! That's ${symbols[node.op]}, not something else.`, true);
+    showFeedback(`Watch the sign — that's ${symbols[node.op]}, not something else.`, 'error');
 
     setTimeout(() => btn.classList.remove('wrong'), 500);
   }
-}
-
-/* -------------------- TOAST -------------------- */
-let toastEl = null;
-function showToast(msg, isEducational = false) {
-  if (toastEl) toastEl.remove();
-  toastEl = document.createElement('div');
-  toastEl.className = 'toast';
-  toastEl.textContent = msg;
-  document.body.appendChild(toastEl);
-  // P1: Educational messages need more reading time for kids
-  const duration = isEducational ? 4000 : 2200;
-  setTimeout(() => {
-    if (toastEl) {
-      toastEl.classList.add('out');
-      setTimeout(() => { if (toastEl) { toastEl.remove(); toastEl = null; } }, 300);
-    }
-  }, duration);
 }
 
 /* -------------------- LEVEL FLOW -------------------- */
@@ -1817,14 +1786,14 @@ function loadLevel() {
   state.totalEquations++;
   state.roundsPlayed++;
   clearChunkHighlights();
+  clearFeedback();
   closeCheatSheet();
 
   renderFoodChain();
   renderActionTray();
   renderEvolution();
-  renderAppetite();
+  renderOverdrive();
   updateStepCounter();
-  checkOnboarding();
 }
 
 function levelComplete() {
@@ -1834,9 +1803,8 @@ function levelComplete() {
   saveState();
 
   const evo = getEvolution();
-  $('levelEvoDisplay').textContent = evo.emoji;
-  $('levelTitle').textContent = 'Equation Crunched!';
-  $('levelSub').textContent = `Your dino grows stronger. Level ${state.level} • ${evo.name}`;
+  $('levelTitle').textContent = 'EQUATION CLEARED';
+  $('levelSub').textContent = `Level ${state.level} • ${evo.name}`;
   $('levelCard').classList.remove('hidden');
 }
 
@@ -1853,19 +1821,24 @@ $('playBtn').onclick = () => {
   ensureAudio();
   $('startScreen').classList.remove('active');
   $('gameScreen').classList.add('active');
-  state.appetite = 100;
+  state.overdrive = 100;
+  renderOverdrive();
   loadLevel();
-  startAppetiteTimer();
+  startOverdriveTimer();
 };
+
+function renderMute() {
+  $('muteBtn').innerHTML = isMuted ? ICON_MUTE : ICON_SOUND;
+}
 
 $('muteBtn').onclick = () => {
   isMuted = !isMuted;
   localStorage.setItem(LS_MUTE, isMuted ? '1' : '0');
-  $('muteBtn').textContent = isMuted ? '🔇' : '🔊';
+  renderMute();
 };
 
-$('wakeBtn').onclick = () => {
-  hideSleep();
+$('rebootBtn').onclick = () => {
+  rebootCore();
 };
 
 $('nextBtn').onclick = () => {
@@ -1886,8 +1859,10 @@ $('cheatClose').onclick = () => {
 };
 
 /* -------------------- INIT -------------------- */
+mountMascots();
 loadState();
-if (isMuted) $('muteBtn').textContent = '🔇';
+renderEvolution();
+renderMute();
 </script>
 </body>
 </html>
