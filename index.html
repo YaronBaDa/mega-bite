@@ -141,6 +141,179 @@ body {
   font-weight: 600;
 }
 
+/* ===== BODMAS CHEAT SHEET (Modal Overlay) ===== */
+.bodmas-toggle {
+  padding: 4px 10px;
+  border-radius: 8px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: var(--text2);
+  cursor: pointer;
+  font-family: inherit;
+  display: inline-flex; align-items: center; gap: 3px;
+  transition: all 0.2s var(--spring);
+}
+.bodmas-toggle:hover { border-color: var(--amber); color: var(--amber2); }
+.bodmas-toggle.open { border-color: var(--amber); color: var(--amber2); background: rgba(245,158,11,0.08); }
+
+.cheat-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  z-index: 99;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+.cheat-backdrop.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.cheat-sheet {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%) scale(0.9);
+  z-index: 100;
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.3s var(--spring);
+  width: 90%;
+  max-width: 380px;
+}
+.cheat-sheet.open {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translate(-50%, -50%) scale(1);
+}
+.cheat-panel {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 20px 18px;
+  box-shadow: 0 16px 48px rgba(0,0,0,0.5);
+  position: relative;
+}
+.cheat-close {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text2);
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: inherit;
+  transition: all 0.15s;
+}
+.cheat-close:hover { border-color: var(--amber); color: var(--amber2); }
+.cheat-title {
+  font-size: 0.72rem;
+  font-weight: 800;
+  color: var(--amber2);
+  letter-spacing: 1px;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+}
+.cheat-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 0;
+  border-bottom: 1px solid rgba(220,180,120,0.08);
+  transition: background 0.3s;
+}
+.cheat-row:last-child { border-bottom: none; }
+.cheat-row.highlight-rule {
+  background: rgba(245,158,11,0.12);
+  border-radius: 8px;
+  margin: 0 -8px;
+  padding: 6px 8px;
+  animation: ruleFlash 0.6s ease;
+}
+@keyframes ruleFlash {
+  0%, 100% { background: rgba(245,158,11,0.12); }
+  50% { background: rgba(245,158,11,0.25); }
+}
+.cheat-rank {
+  width: 22px; height: 22px;
+  border-radius: 6px;
+  background: var(--amber);
+  color: #1a1410;
+  font-size: 0.7rem;
+  font-weight: 900;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.cheat-symbol {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: var(--text);
+  min-width: 40px;
+  font-family: 'Courier New', monospace;
+}
+.cheat-name {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--text);
+  flex: 1;
+}
+.cheat-ltr {
+  font-size: 0.65rem;
+  font-weight: 800;
+  color: var(--amber2);
+  background: rgba(245,158,11,0.12);
+  padding: 3px 8px;
+  border-radius: 6px;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+}
+
+/* Superscript for orders */
+.sup {
+  font-size: 0.65em;
+  vertical-align: super;
+  line-height: 0;
+}
+
+/* Tight superscript inside food tokens and buttons */
+.food-token sup,
+.chunk-card sup {
+  font-size: 0.6em;
+  vertical-align: super;
+  line-height: 0;
+  margin-left: 1px;
+}
+
+/* Crunch collapse animation for food tokens */
+.food-token.crunch-collapse {
+  animation: crunchCollapse 0.5s var(--spring) forwards;
+}
+@keyframes crunchCollapse {
+  0% { transform: scale(1); opacity: 1; }
+  30% { transform: scale(0.7); opacity: 0.8; }
+  60% { transform: scale(0.3) rotate(-8deg); opacity: 0.4; }
+  100% { transform: scale(0); opacity: 0; }
+}
+.food-token.crunch-result {
+  animation: crunchResult 0.4s var(--spring) forwards;
+}
+@keyframes crunchResult {
+  0% { transform: scale(0); opacity: 0; }
+  50% { transform: scale(1.3); opacity: 1; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
 /* ===== PRIORITY BEACON (BODMAS HUD) ===== */
 .beacon {
   display: flex;
@@ -312,14 +485,21 @@ body {
   50% { transform: rotate(3deg); }
 }
 
-/* ===== PROMPT TEXT ===== */
+/* ===== PROMPT ROW ===== */
+.prompt-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 8px 16px 6px;
+  flex-shrink: 0;
+}
 .prompt {
   text-align: center;
   font-size: 0.95rem;
   color: var(--text2);
-  padding: 8px 16px 6px;
-  flex-shrink: 0;
   font-weight: 600;
+  flex: 1;
 }
 .prompt strong { color: var(--amber2); }
 
@@ -647,11 +827,12 @@ body {
     </div>
     <div class="appetite-label">
       <span>Appetite</span>
+      <span id="stepCounter" style="color:var(--amber2);font-weight:700"></span>
       <span id="appetiteText">Full</span>
     </div>
   </div>
 
-  <div class="beacon" id="beacon">
+  <div class="beacon" id="beacon" style="display:none">
     <div class="beacon-tier" data-tier="B">
       <span class="tier-icon">🥚</span>
       <span class="tier-name">B: Eggs</span>
@@ -679,9 +860,43 @@ body {
     </div>
   </div>
 
-  <div class="prompt" id="prompt">Which bite should we crunch first?</div>
+  <div class="prompt-row">
+    <div class="prompt" id="prompt">Which bite should we crunch first?</div>
+    <button class="bodmas-toggle" id="bodmasToggle">? Rules</button>
+  </div>
 
   <div class="action-tray" id="actionTray"></div>
+</div>
+
+<!-- BODMAS CHEAT SHEET MODAL -->
+<div class="cheat-backdrop" id="cheatBackdrop"></div>
+<div class="cheat-sheet" id="cheatSheet">
+  <div class="cheat-panel">
+    <button class="cheat-close" id="cheatClose">×</button>
+    <div class="cheat-title">BODMAS Priority</div>
+    <div class="cheat-row" data-tier="B">
+      <div class="cheat-rank">1</div>
+      <div class="cheat-symbol">( )</div>
+      <div class="cheat-name">Brackets</div>
+    </div>
+    <div class="cheat-row" data-tier="O">
+      <div class="cheat-rank">2</div>
+      <div class="cheat-symbol">x<span class="sup">2</span> √</div>
+      <div class="cheat-name">Orders</div>
+    </div>
+    <div class="cheat-row" data-tier="DM">
+      <div class="cheat-rank">3</div>
+      <div class="cheat-symbol">÷ ×</div>
+      <div class="cheat-name">Division & Multiplication</div>
+      <div class="cheat-ltr">LEFT → RIGHT</div>
+    </div>
+    <div class="cheat-row" data-tier="AS">
+      <div class="cheat-rank">4</div>
+      <div class="cheat-symbol">+ −</div>
+      <div class="cheat-name">Addition & Subtraction</div>
+      <div class="cheat-ltr">LEFT → RIGHT</div>
+    </div>
+  </div>
 </div>
 
 <!-- SLEEP OVERLAY -->
@@ -825,7 +1040,7 @@ function findNextReduction(node) {
     const ra = tierRank[a.node.tier], rb = tierRank[b.node.tier];
     if (ra !== rb) return ra - rb;
     // Within same tier, prefer leftmost (shortest path wins, then leftmost child)
-    if (a.path.length !== b.path.length) return a.path.length - b.path.length;
+    if (a.path.length !== b.path.length) return b.path.length - a.path.length;
     for (let i = 0; i < a.path.length; i++) {
       if (a.path[i] !== b.path[i]) {
         return a.path[i] === 'left' ? -1 : 1;
@@ -838,19 +1053,20 @@ function findNextReduction(node) {
 
 /* Find all candidate binop nodes (for the candidate tray) */
 function findCandidateChunks(node) {
-  // Returns leaf-level binop nodes (those whose left and right are both num or bracket-with-num)
-  // These are the "tappable" chunks the player can choose between
+  // Returns leaf-level binop nodes (those whose left and right are both num or bracket)
+  // A bracket counts as "simple" regardless of contents — it's a single unit to the student
+  // ALWAYS recurse into children to find inner chunks (especially inside brackets)
   const chunks = [];
   function walk(n, insideBracket) {
     if (n.type === 'binop') {
-      const leftIsSimple = n.left.type === 'num' || (n.left.type === 'bracket' && n.left.inner.type === 'num');
-      const rightIsSimple = n.right.type === 'num' || (n.right.type === 'bracket' && n.right.inner.type === 'num');
+      const leftIsSimple = n.left.type === 'num' || n.left.type === 'bracket';
+      const rightIsSimple = n.right.type === 'num' || n.right.type === 'bracket';
       if (leftIsSimple && rightIsSimple) {
         chunks.push({ node: n, insideBracket });
-      } else {
-        walk(n.left, insideBracket);
-        walk(n.right, insideBracket);
       }
+      // Always recurse to find inner chunks (e.g., inside brackets)
+      walk(n.left, insideBracket);
+      walk(n.right, insideBracket);
     } else if (n.type === 'bracket') {
       walk(n.inner, true);
     }
@@ -866,9 +1082,67 @@ function getChunkValue(node) {
 }
 
 function getChunkDisplay(node) {
+  const symbols = { '+': '+', '-': '−', '*': '×', '/': '÷' };
   const l = node.left.type === 'bracket' ? '(' + astToString(node.left.inner) + ')' : String(node.left.value);
   const r = node.right.type === 'bracket' ? '(' + astToString(node.right.inner) + ')' : String(node.right.value);
-  return l + ' ' + node.op + ' ' + r;
+  return l + ' ' + (symbols[node.op] || node.op) + ' ' + r;
+}
+
+/* Get chunk display as HTML with superscript for powers */
+function getChunkHTML(node) {
+  const l = node.left.type === 'bracket' ? '(' + astToString(node.left.inner) + ')' : String(node.left.value);
+  const r = node.right.type === 'bracket' ? '(' + astToString(node.right.inner) + ')' : String(node.right.value);
+  if (node.op === '^') {
+    return `${l}<span class="sup">${r}</span>`;
+  }
+  const symbols = { '+': '+', '-': '−', '*': '×', '/': '÷' };
+  return `${l} ${symbols[node.op] || node.op} ${r}`;
+}
+
+/* Find visual distractor chunks — adjacent num-op-num that cross AST boundaries.
+   E.g., in (6+8)×3 - 4×2, the pair "3 - 4" is visually adjacent but not a real sub-expression.
+   These are presented as wrong options for teaching purposes. */
+function findVisualDistractors(node) {
+  // Build flat token sequence at the outer level, treating brackets as single units
+  const tokens = [];
+  function flatten(n) {
+    if (n.type === 'num') {
+      tokens.push({ type: 'num', value: n.value, astNode: n });
+    } else if (n.type === 'binop') {
+      flatten(n.left);
+      tokens.push({ type: 'op', value: n.op, astNode: n });
+      flatten(n.right);
+    } else if (n.type === 'bracket') {
+      // At this level, bracket is a single unit
+      tokens.push({ type: 'num', value: evalAST(n), astNode: n, isBracket: true });
+    }
+  }
+  flatten(node);
+
+  // Find adjacent num-op-num triples
+  const distractors = [];
+  for (let i = 0; i < tokens.length - 2; i++) {
+    if (tokens[i].type === 'num' && tokens[i+1].type === 'op' && tokens[i+2].type === 'num') {
+      const left = tokens[i];
+      const op = tokens[i+1];
+      const right = tokens[i+2];
+
+      // Check if this triple corresponds to a real AST binop
+      const isReal = op.astNode.left === left.astNode && op.astNode.right === right.astNode;
+
+      if (!isReal) {
+        const symbols = { '+': '+', '-': '−', '*': '×', '/': '÷' };
+        distractors.push({
+          display: `${left.value} ${symbols[op.value] || op.value} ${right.value}`,
+          op: op.value,
+          leftVal: left.value,
+          rightVal: right.value,
+          isVisual: true,
+        });
+      }
+    }
+  }
+  return distractors;
 }
 
 /* Replace a node in the AST with its computed value */
@@ -943,6 +1217,13 @@ function rand(a, b) { return Math.floor(Math.random() * (b - a + 1)) + a; }
 
 function generateEquation(diff) {
   let expr;
+  // Helper: generate clean division (a/b always whole number)
+  function cleanDiv(bMin, bMax, multMin, multMax) {
+    const b = rand(bMin, bMax);
+    const mult = rand(multMin, multMax);
+    return { a: b * mult, b, result: mult };
+  }
+
   if (diff === 'easy') {
     const t = rand(1, 3);
     if (t === 1) {
@@ -961,8 +1242,10 @@ function generateEquation(diff) {
       const a = rand(6, 18), b = rand(2, 6), c = rand(2, 6), d = rand(2, 8);
       expr = `${a} - ${b} * ${c} + ${d}`;
     } else if (t === 2) {
-      const a = rand(6, 24), b = rand(2, 6), c = rand(2, 5);
-      expr = `${a} / ${b} * ${c}`;
+      // Clean division: a/b always whole
+      const div = cleanDiv(2, 6, 2, 5);
+      const c = rand(2, 5);
+      expr = `${div.a} / ${div.b} * ${c}`;
     } else if (t === 3) {
       const a = rand(2, 6), b = rand(2, 8), c = rand(2, 8);
       expr = `(${a} + ${b}) * ${c} - ${rand(2, 8)}`;
@@ -979,6 +1262,7 @@ function generateEquation(diff) {
       const a = rand(2, 5), b = rand(2, 4), c = rand(2, 5);
       expr = `${a}^2 * ${b} + ${c}^2`;
     } else if (t === 3) {
+      // Hard level: division can be non-clean (decimals allowed)
       const a = rand(12, 36), b = rand(3, 6), c = rand(2, 5), d = rand(2, 9);
       expr = `${a} / ${b} * ${c} + ${d}`;
     } else {
@@ -987,6 +1271,56 @@ function generateEquation(diff) {
     }
   }
   return expr;
+}
+
+/* -------------------- CHEAT SHEET -------------------- */
+function toggleCheatSheet() {
+  state.cheatSheetOpen = !state.cheatSheetOpen;
+  $('cheatSheet').classList.toggle('open', state.cheatSheetOpen);
+  $('cheatBackdrop').classList.toggle('open', state.cheatSheetOpen);
+  $('bodmasToggle').classList.toggle('open', state.cheatSheetOpen);
+}
+
+function openCheatSheet(highlightTier) {
+  state.cheatSheetOpen = true;
+  $('cheatSheet').classList.add('open');
+  $('cheatBackdrop').classList.add('open');
+  $('bodmasToggle').classList.add('open');
+  if (highlightTier) {
+    // Flash the missed rule
+    document.querySelectorAll('.cheat-row').forEach(row => {
+      row.classList.remove('highlight-rule');
+      if (row.dataset.tier === highlightTier) {
+        row.classList.add('highlight-rule');
+        setTimeout(() => row.classList.remove('highlight-rule'), 3000);
+      }
+    });
+  }
+}
+
+function closeCheatSheet() {
+  state.cheatSheetOpen = false;
+  $('cheatSheet').classList.remove('open');
+  $('cheatBackdrop').classList.remove('open');
+  $('bodmasToggle').classList.remove('open');
+}
+
+/* Auto-open during first 3 rounds (onboarding) — DISABLED to avoid blocking gameplay.
+   The cheat sheet only opens when the player taps "? Rules" or makes a mistake. */
+function checkOnboarding() {
+  // Intentionally empty — do NOT auto-open the modal.
+  // Opening it blocks the game screen behind a backdrop.
+}
+
+/* -------------------- SUPERSCRIPT HELPER -------------------- */
+const SUPERSCRIPTS = { '0':'⁰','1':'¹','2':'²','3':'³','4':'⁴','5':'⁵','6':'⁶','7':'⁷','8':'⁸','9':'⁹' };
+function toSuperscript(n) {
+  return String(n).split('').map(d => SUPERSCRIPTS[d] || d).join('');
+}
+
+/* Render a number with optional power as superscript HTML */
+function renderPowerHTML(base, exp) {
+  return `${base}<span class="sup">${exp}</span>`;
 }
 
 /* -------------------- AUDIO (Web Audio API) -------------------- */
@@ -1094,11 +1428,14 @@ let state = {
   correctEquations: 0,
   appetite: 100,
   ast: null,
-  phase: 'select', // 'select' | 'answer'
+  totalStepsOriginal: 0,
+  phase: 'select',
   selectedChunk: null,
   correctAnswer: null,
   isProcessing: false,
   appetiteTimer: null,
+  cheatSheetOpen: false,
+  roundsPlayed: 0,
 };
 
 function loadState() {
@@ -1122,12 +1459,35 @@ function saveState() {
   }));
 }
 
+/* Count total binop nodes in AST (number of crunches needed) */
+function countTotalSteps(node) {
+  if (node.type === 'binop') {
+    return 1 + countTotalSteps(node.left) + countTotalSteps(node.right);
+  }
+  if (node.type === 'bracket') {
+    return countTotalSteps(node.inner);
+  }
+  return 0;
+}
+
+/* Update step counter display */
+function updateStepCounter() {
+  const total = countTotalSteps(state.ast);
+  const done = state.totalStepsOriginal - total;
+  if (total > 0) {
+    $('stepCounter').textContent = `Bite ${done + 1} of ${state.totalStepsOriginal}`;
+  } else {
+    $('stepCounter').textContent = '';
+  }
+}
+
 /* -------------------- APPETITE METER -------------------- */
 function startAppetiteTimer() {
   stopAppetiteTimer();
   state.appetiteTimer = setInterval(() => {
-    if (state.appetite > 0) {
-      state.appetite = Math.max(0, state.appetite - 0.5);
+    // P1: Only deplete during chunk selection (thinking time), not during answer phase
+    if (state.phase === 'select' && state.appetite > 0) {
+      state.appetite = Math.max(0, state.appetite - 0.1);
       renderAppetite();
       if (state.appetite === 0) showSleep();
     }
@@ -1237,17 +1597,29 @@ function renderFoodChain() {
       const open = document.createElement('span');
       open.className = 'food-token paren';
       open.textContent = '(';
+      open._astNode = node;
       parent.appendChild(open);
       renderNode(node.inner, parent);
       const close = document.createElement('span');
       close.className = 'food-token paren';
       close.textContent = ')';
+      close._astNode = node;
       parent.appendChild(close);
     } else if (node.type === 'binop') {
+      // For power operations, render base+exponent as a single unified tile
+      if (node.op === '^' && node.left.type === 'num' && node.right.type === 'num') {
+        const powSpan = document.createElement('span');
+        powSpan.className = 'food-token num';
+        powSpan.innerHTML = `${node.left.value}<sup>${node.right.value}</sup>`;
+        powSpan._astNode = node;
+        powSpan._isPower = true;
+        parent.appendChild(powSpan);
+        return;
+      }
       renderNode(node.left, parent);
       const opSpan = document.createElement('span');
       opSpan.className = 'food-token op';
-      const symbols = { '+': '+', '-': '−', '*': '×', '/': '÷', '^': '^' };
+      const symbols = { '+': '+', '-': '−', '*': '×', '/': '÷' };
       opSpan.textContent = symbols[node.op] || node.op;
       opSpan._astNode = node;
       parent.appendChild(opSpan);
@@ -1272,34 +1644,62 @@ function renderActionTray() {
     clearBeaconActive();
 
     const candidates = findCandidateChunks(state.ast);
+    const visualDistractors = findVisualDistractors(state.ast);
     const correct = findNextReduction(state.ast);
+    state.currentCandidates = candidates; // Store for error feedback
 
     // Find the candidates that are actually eligible (correct precedence)
     const tierRank = { B: 0, O: 1, DM: 2, AS: 3 };
     const correctTier = correct.tier;
     const correctIsBracket = candidates.find(c => c.node === correct)?.insideBracket;
 
-    // Highlight relevant beacon tier
-    highlightBeaconTier(correctTier);
+    // P0 FIX: Do NOT highlight the correct tier — beacon is a reference, not an answer key
 
     const grid = document.createElement('div');
-    grid.className = 'tray-grid' + (candidates.length === 1 ? ' single' : '');
+    const totalOptions = candidates.length + visualDistractors.length;
+    grid.className = 'tray-grid' + (totalOptions === 1 ? ' single' : '');
 
-    // Shuffle candidates for display
-    const shuffled = candidates.slice().sort(() => Math.random() - 0.5);
+    // Build combined option list: real candidates + visual distractors
+    // Deduplicate by display text — identical chunks should never appear twice
+    const seen = new Set();
+    const allOptions = [];
 
-    shuffled.forEach(c => {
+    candidates.forEach(c => {
+      const key = getChunkHTML(c.node);
+      if (!seen.has(key)) {
+        seen.add(key);
+        allOptions.push({ type: 'real', data: c });
+      }
+    });
+
+    visualDistractors.forEach(v => {
+      const key = v.display;
+      if (!seen.has(key)) {
+        seen.add(key);
+        allOptions.push({ type: 'visual', data: v });
+      }
+    });
+
+    // Shuffle for display
+    allOptions.sort(() => Math.random() - 0.5);
+
+    allOptions.forEach(opt => {
       const btn = document.createElement('button');
       btn.className = 'chunk-card';
-      btn.textContent = getChunkDisplay(c.node);
-      btn.onclick = () => handleChunkSelect(c, correct, btn);
+      if (opt.type === 'real') {
+        btn.innerHTML = getChunkHTML(opt.data.node);
+        btn.onclick = () => handleChunkSelect(opt.data, correct, btn);
+      } else {
+        btn.textContent = opt.data.display;
+        btn.onclick = () => handleVisualDistractorTap(opt.data, correct, btn);
+      }
       grid.appendChild(btn);
     });
 
     tray.appendChild(grid);
   } else {
     // Answer phase
-    renderPrompt(`Crunch it! <strong>${getChunkDisplay(state.selectedChunk.node)}</strong> = ?`);
+    renderPrompt(`Crunch it! <strong>${getChunkHTML(state.selectedChunk.node)}</strong> = ?`);
     const grid = document.createElement('div');
     grid.className = 'tray-grid';
     const correct = state.correctAnswer;
@@ -1317,6 +1717,33 @@ function renderActionTray() {
   }
 }
 
+function handleVisualDistractorTap(distractor, correctNode, btn) {
+  if (state.isProcessing) return;
+
+  // Visual distractor — always wrong, but a valuable teaching moment
+  playThud();
+  btn.classList.add('shake');
+  $('dinoMascot').classList.add('headshake');
+
+  // Streak reset on precedence error
+  state.streak = 0;
+  $('streakVal').textContent = state.streak;
+
+  // Educational message: these numbers belong to different chunks
+  const correctTier = correctNode.tier;
+  const tierNames = { B: 'Brackets ( )', O: 'Orders (x²)', DM: 'Multiplication & Division (× ÷)', AS: 'Addition & Subtraction (+ −)' };
+  const msg = `${distractor.leftVal} and ${distractor.rightVal} belong to different chunks! The ${distractor.op} connects bigger pieces. Try a smaller bite.`;
+  showToast(msg, true);
+
+  // Auto-open cheat sheet and highlight the correct tier
+  openCheatSheet(correctTier);
+
+  setTimeout(() => {
+    btn.classList.remove('shake');
+    $('dinoMascot').classList.remove('headshake');
+  }, 500);
+}
+
 function handleChunkSelect(candidate, correctNode, btn) {
   if (state.isProcessing) return;
 
@@ -1326,6 +1753,15 @@ function handleChunkSelect(candidate, correctNode, btn) {
     state.correctAnswer = getChunkValue(candidate.node);
     state.phase = 'answer';
     playSnap();
+
+    // P1: Streak tracks BODMAS identification, not arithmetic
+    state.streak++;
+    if (state.streak > state.bestStreak) state.bestStreak = state.streak;
+    $('streakVal').textContent = state.streak;
+
+    // P1: Highlight the matching tokens in the food chain
+    highlightChunkInFoodChain(candidate.node);
+
     renderActionTray();
   } else {
     // Wrong chunk — gentle refusal, NO penalty
@@ -1333,26 +1769,65 @@ function handleChunkSelect(candidate, correctNode, btn) {
     btn.classList.add('shake');
     $('dinoMascot').classList.add('headshake');
 
+    // P1: Precedence error resets streak — this is the skill being tracked
+    state.streak = 0;
+    $('streakVal').textContent = state.streak;
+
+    // Targeted error feedback based on mistake type
     const correctTier = correctNode.tier;
     const candidateTier = candidate.node.tier;
     const tierRank = { B: 0, O: 1, DM: 2, AS: 3 };
+    const tierNames = { B: 'Brackets ( )', O: 'Orders (x²)', DM: 'Multiplication & Division (× ÷)', AS: 'Addition & Subtraction (+ −)' };
 
     let msg;
-    if (correctTier === candidateTier) {
-      msg = 'Equal rank! Read left to right like a book. 📖';
+    // Check if there's a bracket chunk available but player picked non-bracket
+    const currentCandidates = state.currentCandidates || [];
+    const hasBracketChunk = currentCandidates.find(c => c.insideBracket);
+    if (hasBracketChunk && !candidate.insideBracket) {
+      msg = `Always crunch inside the Brackets ( ) first!`;
+    } else if (correctTier === candidateTier) {
+      // Same tier — wrong direction (left-to-right rule)
+      if (correctTier === 'DM') {
+        msg = `Division & Multiplication are tied — crunch from LEFT to RIGHT!`;
+      } else if (correctTier === 'AS') {
+        msg = `Addition & Subtraction are tied — crunch from LEFT to RIGHT!`;
+      } else {
+        msg = `Same priority — go LEFT to RIGHT!`;
+      }
     } else if (tierRank[correctTier] < tierRank[candidateTier]) {
-      const names = { B: 'Eggs', O: 'Gems', DM: 'Munch', AS: 'Slices' };
-      msg = `${names[correctTier]} beats ${names[candidateTier]}! Check the beacon.`;
+      // Wrong priority
+      msg = `Too early! ${tierNames[correctTier]} outranks ${tierNames[candidateTier]}.`;
     } else {
-      msg = 'Try a different bite first!';
+      msg = `Try a different bite first!`;
     }
-    showToast(msg);
+    showToast(msg, true);
+
+    // Auto-open cheat sheet and highlight the missed rule
+    openCheatSheet(correctTier);
 
     setTimeout(() => {
       btn.classList.remove('shake');
       $('dinoMascot').classList.remove('headshake');
     }, 500);
   }
+}
+
+/* Highlight food chain tokens matching the selected chunk */
+function highlightChunkInFoodChain(node) {
+  // Find the tokens in the food chain that correspond to this AST node
+  const tokens = document.querySelectorAll('#foodChain .food-token');
+  tokens.forEach(tok => {
+    if (tok._astNode === node || tok._astNode === node.left || tok._astNode === node.right) {
+      tok.classList.add('chunk-highlight');
+    }
+  });
+}
+
+/* Clear all chunk highlights */
+function clearChunkHighlights() {
+  document.querySelectorAll('#foodChain .food-token').forEach(tok => {
+    tok.classList.remove('chunk-highlight');
+  });
 }
 
 function handleAnswerSelect(val, correct, btn) {
@@ -1365,40 +1840,59 @@ function handleAnswerSelect(val, correct, btn) {
     $('dinoMascot').classList.add('chomp');
 
     feedDino();
-    state.streak++;
-    if (state.streak > state.bestStreak) state.bestStreak = state.streak;
-    $('streakVal').textContent = state.streak;
 
-    // Crunch & Snap animation: replace chunk with result
+    // Crunch & Snap animation: animate operand tokens collapsing, then replace with result
+    const chunkNode = state.selectedChunk.node;
+    const tokensToCollapse = [];
+    document.querySelectorAll('#foodChain .food-token').forEach(tok => {
+      if (tok._astNode === chunkNode || tok._astNode === chunkNode.left || tok._astNode === chunkNode.right) {
+        tokensToCollapse.push(tok);
+      }
+      // Also collapse bracket parens if left/right is a bracket
+      if (chunkNode.left.type === 'bracket' && tok._astNode === chunkNode.left) tokensToCollapse.push(tok);
+      if (chunkNode.right.type === 'bracket' && tok._astNode === chunkNode.right) tokensToCollapse.push(tok);
+    });
+
+    // Start collapse animation
+    tokensToCollapse.forEach(tok => tok.classList.add('crunch-collapse'));
+
     setTimeout(() => {
       const resultNode = { type: 'num', value: correct };
-      replaceNode(state.ast, state.selectedChunk.node, resultNode);
+      replaceNode(state.ast, chunkNode, resultNode);
       state.ast = simplifyBrackets(state.ast);
+      clearChunkHighlights();
+      updateStepCounter();
 
       // Check if done
       if (state.ast.type === 'num') {
         renderFoodChain();
+        // Animate the final result token
+        const finalToken = document.querySelector('#foodChain .food-token.num');
+        if (finalToken) finalToken.classList.add('crunch-result');
         setTimeout(() => levelComplete(), 500);
       } else {
         renderFoodChain();
+        // Find and animate the new result token
+        document.querySelectorAll('#foodChain .food-token.num').forEach(tok => {
+          if (tok._astNode && tok._astNode.type === 'num' && tok._astNode.value === correct) {
+            tok.classList.add('crunch-result');
+          }
+        });
         state.phase = 'select';
         state.selectedChunk = null;
         state.isProcessing = false;
         $('dinoMascot').classList.remove('chomp');
-        renderBeacon();
         renderActionTray();
       }
     }, 500);
   } else {
     btn.classList.add('wrong');
     playThud();
-    state.streak = 0;
-    $('streakVal').textContent = state.streak;
 
     // Pedagogical feedback
-    const symbols = { '+': 'Slice (+)', '-': 'Slice (−)', '*': 'Munch (×)', '/': 'Munch (÷)', '^': 'Gem (^)' };
+    const symbols = { '+': 'Addition (+)', '-': 'Subtraction (−)', '*': 'Multiplication (×)', '/': 'Division (÷)', '^': 'Power' };
     const node = state.selectedChunk.node;
-    showToast(`Watch the sign! That's a ${symbols[node.op]}, not something else.`);
+    showToast(`Watch the sign! That's ${symbols[node.op]}, not something else.`, true);
 
     setTimeout(() => btn.classList.remove('wrong'), 500);
   }
@@ -1406,34 +1900,42 @@ function handleAnswerSelect(val, correct, btn) {
 
 /* -------------------- TOAST -------------------- */
 let toastEl = null;
-function showToast(msg) {
+function showToast(msg, isEducational = false) {
   if (toastEl) toastEl.remove();
   toastEl = document.createElement('div');
   toastEl.className = 'toast';
   toastEl.textContent = msg;
   document.body.appendChild(toastEl);
+  // P1: Educational messages need more reading time for kids
+  const duration = isEducational ? 4000 : 2200;
   setTimeout(() => {
     if (toastEl) {
       toastEl.classList.add('out');
       setTimeout(() => { if (toastEl) { toastEl.remove(); toastEl = null; } }, 300);
     }
-  }, 2200);
+  }, duration);
 }
 
 /* -------------------- LEVEL FLOW -------------------- */
 function loadLevel() {
   const expr = generateEquation(state.difficulty);
   state.ast = parseAST(tokenize(expr));
+  state.totalStepsOriginal = countTotalSteps(state.ast);
   state.phase = 'select';
   state.selectedChunk = null;
   state.isProcessing = false;
   state.totalEquations++;
+  state.roundsPlayed++;
+  clearChunkHighlights();
+  closeCheatSheet();
 
   renderBeacon();
   renderFoodChain();
   renderActionTray();
   renderEvolution();
   renderAppetite();
+  updateStepCounter();
+  checkOnboarding();
 }
 
 function levelComplete() {
@@ -1480,6 +1982,18 @@ $('wakeBtn').onclick = () => {
 $('nextBtn').onclick = () => {
   $('levelCard').classList.add('hidden');
   loadLevel();
+};
+
+$('bodmasToggle').onclick = () => {
+  toggleCheatSheet();
+};
+
+$('cheatBackdrop').onclick = () => {
+  closeCheatSheet();
+};
+
+$('cheatClose').onclick = () => {
+  closeCheatSheet();
 };
 
 /* -------------------- INIT -------------------- */
