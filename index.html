@@ -5,22 +5,22 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <title>MEGA-BITE</title>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&family=JetBrains+Mono:wght@700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Architects+Daughter&family=Plus+Jakarta+Sans:wght@600;700;800&family=JetBrains+Mono:wght@700;800&display=swap');
 
 :root {
-  --bg: #0B0F19;
-  --surface: #151C2C;
-  --surface2: #1E293B;
-  --surface3: #283548;
-  --border: #334155;
-  --text: #F8FAFC;
-  --text2: #94A3B8;
-  --accent: #A3E635;
-  --accent-hover: #BEF264;
-  --operator: #38BDF8;
-  --bracket: #C084FC;
-  --danger: #FB7185;
-  --hard-shadow: #020617;
+  --paper: #FAF8F5;
+  --paper-card: #FFFFFF;
+  --paper-tint: #F1EFEA;
+  --grid-blue: rgba(59, 130, 246, 0.14);
+  --margin-pink: rgba(244, 63, 94, 0.28);
+  --ink: #1E293B;
+  --ink-muted: #475569;
+  --pen-blue: #1D4ED8;
+  --pen-pink: #BE123C;
+  --pen-green: #15803D;
+  --highlighter: #FEF08A;
+  --border-ink: #334155;
+  --font-hand: 'Architects Daughter', cursive;
   --font-ui: 'Plus Jakarta Sans', sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
   --spring: cubic-bezier(0.175, 0.885, 0.32, 1.275);
@@ -32,28 +32,19 @@ html, body {
   height: 100%;
   overflow: hidden;
   font-family: var(--font-ui);
-  background: var(--bg);
-  color: var(--text);
+  background: var(--paper);
+  color: var(--ink);
   padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
 }
 
+/* Graph-paper grid */
 body {
-  background:
-    radial-gradient(1200px 600px at 80% -10%, rgba(56, 189, 248, 0.08) 0%, transparent 60%),
-    radial-gradient(1000px 520px at 10% 110%, rgba(163, 230, 53, 0.06) 0%, transparent 60%),
-    linear-gradient(180deg, #0B0F19 0%, #0E1424 50%, #0B0F19 100%);
-  position: relative;
-}
-body::before {
-  content: '';
-  position: fixed;
-  inset: 0;
+  background-color: var(--paper);
   background-image:
-    linear-gradient(rgba(51, 65, 85, 0.10) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(51, 65, 85, 0.10) 1px, transparent 1px);
-  background-size: 28px 28px;
-  pointer-events: none;
-  z-index: 0;
+    linear-gradient(var(--grid-blue) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-blue) 1px, transparent 1px);
+  background-size: 24px 24px;
+  position: relative;
 }
 
 .app {
@@ -65,6 +56,18 @@ body::before {
   flex-direction: column;
   position: relative;
   z-index: 1;
+}
+/* Notebook margin line */
+.app::before {
+  content: '';
+  position: absolute;
+  left: 22px;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: var(--margin-pink);
+  z-index: 0;
+  pointer-events: none;
 }
 
 /* ===== HEADER ===== */
@@ -79,24 +82,24 @@ body::before {
 .mute-btn {
   width: 44px; height: 44px;
   border-radius: 10px;
-  background: var(--surface);
-  border: 2px solid var(--border);
-  color: var(--text);
+  background: var(--paper-card);
+  border: 2px solid var(--border-ink);
+  color: var(--ink);
   cursor: pointer;
   display: flex; align-items: center; justify-content: center;
-  transition: transform 0.15s var(--spring);
+  transition: transform 0.12s var(--spring), box-shadow 0.12s var(--spring);
   flex-shrink: 0;
-  box-shadow: 0 3px 0 var(--hard-shadow);
+  box-shadow: 3px 3px 0 var(--border-ink);
 }
-.mute-btn:active { transform: translateY(2px); box-shadow: 0 1px 0 var(--hard-shadow); }
+.mute-btn:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 var(--border-ink); }
 
 .brand {
   flex: 1;
   text-align: center;
-  font-size: 1.05rem;
-  font-weight: 800;
-  color: var(--accent);
-  letter-spacing: 2px;
+  font-family: var(--font-hand);
+  font-size: 1.45rem;
+  color: var(--ink);
+  letter-spacing: 0.5px;
 }
 
 .hud {
@@ -107,109 +110,97 @@ body::before {
 }
 
 .evo-badge {
-  padding: 6px 10px;
-  border-radius: 10px;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  font-size: 0.6rem;
-  font-weight: 800;
-  letter-spacing: 0.5px;
-  color: var(--text2);
+  padding: 5px 10px;
+  border-radius: 8px;
+  background: var(--paper-card);
+  border: 1.5px solid var(--border-ink);
+  font-family: var(--font-hand);
+  font-size: 0.82rem;
+  color: var(--ink-muted);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  max-width: 118px;
+  max-width: 122px;
+  box-shadow: 2px 2px 0 var(--border-ink);
 }
 
 .streak-badge {
-  padding: 6px 10px;
-  border-radius: 10px;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  font-size: 0.72rem;
-  font-weight: 800;
-  display: flex; align-items: center; gap: 5px;
+  padding: 5px 10px;
+  border-radius: 8px;
+  background: var(--paper-card);
+  border: 1.5px solid var(--border-ink);
+  display: flex; align-items: center; gap: 4px;
+  box-shadow: 2px 2px 0 var(--border-ink);
 }
-.streak-label { color: var(--text2); font-size: 0.58rem; letter-spacing: 0.5px; }
-.streak-badge #streakVal { color: var(--accent); }
+.streak-label { color: var(--ink-muted); font-family: var(--font-hand); font-size: 0.72rem; }
+.streak-badge #streakVal { color: var(--pen-green); font-family: var(--font-mono); font-weight: 800; font-size: 0.85rem; }
 
-/* ===== OVERDRIVE CORE METER ===== */
-.overdrive-wrap {
+/* ===== INK ENERGY METER ===== */
+.ink-wrap {
   padding: 0 16px 12px;
   flex-shrink: 0;
 }
-.overdrive-track {
+.ink-track {
   height: 14px;
-  background: var(--surface);
+  background: var(--paper-tint);
   border-radius: 8px;
-  border: 2px solid var(--border);
+  border: 2px solid var(--border-ink);
   overflow: hidden;
   position: relative;
 }
-.overdrive-fill {
+.ink-fill {
   height: 100%;
-  background: linear-gradient(90deg, var(--accent), var(--accent-hover));
+  background: var(--pen-green);
   border-radius: 6px;
   transition: width 0.6s var(--spring);
-  box-shadow: 0 0 12px rgba(163, 230, 53, 0.35);
   position: relative;
 }
-.overdrive-fill.low {
-  background: linear-gradient(90deg, var(--danger), #F87171);
-  box-shadow: 0 0 12px rgba(251, 113, 133, 0.35);
-}
-.overdrive-label {
+.ink-fill.low { background: var(--pen-pink); }
+.ink-label {
   display: flex;
   justify-content: space-between;
   font-size: 0.62rem;
   font-weight: 700;
   letter-spacing: 0.5px;
-  color: var(--text2);
+  color: var(--ink-muted);
   margin-top: 5px;
 }
-.overdrive-label .lbl { color: var(--text2); }
-.overdrive-label #stepCounter { color: var(--operator); }
-.overdrive-label #overdriveText { color: var(--accent); }
-.overdrive-label #overdriveText.low { color: var(--danger); }
+.ink-label .lbl { color: var(--ink-muted); font-family: var(--font-hand); font-size: 0.78rem; letter-spacing: 0; }
+.ink-label #stepCounter { color: var(--pen-blue); font-family: var(--font-mono); }
+.ink-label #inkText { color: var(--pen-green); font-weight: 800; }
+.ink-label #inkText.low { color: var(--pen-pink); }
 
-/* ===== MASCOT (Mecha-Rex) ===== */
+/* ===== MASCOT (pen-doodle dino) ===== */
 .mascot { display: inline-block; width: 64px; height: 64px; }
 .mascot svg { width: 100%; height: 100%; display: block; overflow: visible; }
-.mascot .mascot-visor { transition: fill 0.3s ease; }
-
-.mascot.idle { animation: mascotBreath 2.6s ease-in-out infinite; }
-@keyframes mascotBreath {
-  0%, 100% { transform: translateY(0) scaleY(1); }
-  50% { transform: translateY(-1.5px) scaleY(1.02); }
-}
-
+.mascot .mascot-splatter, .mascot .mascot-squiggle { opacity: 0; transition: opacity 0.15s ease; }
 .mascot .mascot-jaw { transform-box: fill-box; transform-origin: 50% 0; }
 
-.mascot.chomp { animation: chompGlow 0.45s ease; }
-.mascot.chomp .mascot-jaw { animation: jawSnap 0.45s var(--spring); }
-@keyframes jawSnap {
-  0%, 100% { transform: translateY(0); }
-  40% { transform: translateY(6px) rotate(4deg); }
-}
-@keyframes chompGlow {
-  0%, 100% { filter: drop-shadow(0 0 0 rgba(163,230,53,0)); }
-  50% { filter: drop-shadow(0 0 14px var(--accent)); }
+.mascot.idle { animation: doodleWobble 2.8s ease-in-out infinite; }
+@keyframes doodleWobble {
+  0%, 100% { transform: rotate(-1.5deg) translateY(0); }
+  50% { transform: rotate(1.5deg) translateY(-1px); }
 }
 
-.mascot.error { animation: mascotGlitch 0.4s ease; }
-.mascot.error .mascot-visor { fill: var(--danger); filter: drop-shadow(0 0 6px var(--danger)); }
-@keyframes mascotGlitch {
-  0%, 100% { transform: translateX(0); }
-  20% { transform: translateX(-3px); }
-  40% { transform: translateX(3px); }
-  60% { transform: translateX(-2px); }
-  80% { transform: translateX(2px); }
+.mascot.chomp .mascot-jaw { animation: jawChomp 0.45s var(--spring); }
+.mascot.chomp .mascot-splatter { opacity: 1; }
+@keyframes jawChomp {
+  0%, 100% { transform: translateY(0) rotate(0); }
+  40% { transform: translateY(4px) rotate(7deg); }
 }
 
-.mascot.cooldown { opacity: 0.55; }
-.mascot.cooldown .mascot-visor { fill: var(--text2); filter: none; }
+.mascot.error { animation: doodleShake 0.4s ease; }
+.mascot.error .mascot-squiggle { opacity: 1; }
+@keyframes doodleShake {
+  0%, 100% { transform: translateX(0) rotate(0); }
+  25% { transform: translateX(-3px) rotate(-4deg); }
+  50% { transform: translateX(3px) rotate(3deg); }
+  75% { transform: translateX(-2px) rotate(-2deg); }
+}
 
-/* ===== MASTER FOOD CHAIN (ARENA) ===== */
+.mascot.cooldown { opacity: 0.5; animation: none; filter: grayscale(0.3); }
+
+/* ===== FOOD CHAIN (equation on the page) ===== */
 .food-chain-area {
   flex: 1;
   display: flex;
@@ -226,13 +217,13 @@ body::before {
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
-  gap: 4px;
-  padding: 18px 14px;
-  background: var(--surface);
-  border-radius: 14px;
-  border: 2px solid var(--border);
+  gap: 5px;
+  padding: 18px 16px;
+  background: var(--paper-card);
+  border-radius: 12px;
+  border: 2px solid var(--border-ink);
   max-width: 100%;
-  box-shadow: 0 4px 0 var(--hard-shadow);
+  box-shadow: 3px 3px 0 var(--border-ink);
   position: relative;
   transition: transform 0.4s var(--spring);
 }
@@ -248,37 +239,25 @@ body::before {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 8px 10px;
-  border-radius: 10px;
+  padding: 6px 4px;
+  border-radius: 6px;
   font-family: var(--font-mono);
   font-weight: 800;
-  font-size: 1.3rem;
-  transition: all 0.2s var(--spring);
+  font-size: 1.45rem;
+  transition: background 0.15s, color 0.15s;
   position: relative;
 }
-.food-token.num {
-  background: var(--surface3);
-  color: var(--text);
-  border: 2px solid var(--border);
-  min-width: 42px;
-}
-.food-token.op {
-  color: var(--operator);
-  font-size: 1.4rem;
-  padding: 4px 5px;
-  text-shadow: 0 0 8px rgba(56, 189, 248, 0.35);
-}
-.food-token.paren {
-  color: var(--bracket);
-  font-size: 1.5rem;
-  padding: 0 2px;
-}
+.food-token.num { color: var(--ink); min-width: 34px; }
+.food-token.op { color: var(--pen-blue); font-size: 1.5rem; padding: 2px 3px; }
+.food-token.paren { color: var(--pen-pink); font-size: 1.55rem; padding: 0 1px; }
 
-/* Hover/touch preview highlight — glowing cyan/lime outline */
-.food-token.chunk-highlight { outline: 2px solid var(--accent); outline-offset: 1px; }
-.food-token.num.chunk-highlight,
-.food-token.paren.chunk-highlight { outline-color: var(--accent); box-shadow: 0 0 12px rgba(163, 230, 53, 0.5); }
-.food-token.op.chunk-highlight { outline-color: var(--operator); box-shadow: 0 0 12px rgba(56, 189, 248, 0.5); }
+/* Hover/touch highlighter sweep + dashed ink underline */
+.food-token.chunk-highlight {
+  background: var(--highlighter);
+  color: var(--ink) !important;
+  border-bottom: 2px dashed var(--ink);
+  border-radius: 3px;
+}
 
 .sup {
   font-size: 0.65em;
@@ -293,22 +272,33 @@ body::before {
   margin-left: 1px;
 }
 
-.food-token.crunch-collapse { animation: crunchCollapse 0.5s var(--spring) forwards; }
-@keyframes crunchCollapse {
-  0% { transform: scale(1); opacity: 1; }
-  30% { transform: scale(0.7); opacity: 0.8; }
-  60% { transform: scale(0.3) rotate(-8deg); opacity: 0.4; }
-  100% { transform: scale(0); opacity: 0; }
+/* Scribble-collapse (strike-through + shrink) */
+.food-token.crunch-collapse {
+  text-decoration: line-through;
+  text-decoration-color: var(--pen-pink);
+  text-decoration-thickness: 2px;
+  animation: scribbleOut 0.5s var(--spring) forwards;
 }
-.food-token.crunch-result { animation: crunchResult 0.4s var(--spring) forwards; }
-@keyframes crunchResult {
-  0% { transform: scale(0); opacity: 0; }
-  50% { transform: scale(1.3); opacity: 1; }
-  100% { transform: scale(1); opacity: 1; }
+@keyframes scribbleOut {
+  0% { transform: scale(1); opacity: 1; }
+  100% { transform: scale(0.55) rotate(-5deg); opacity: 0; }
+}
+/* Hand-drawn circle around the snapped result */
+.food-token.crunch-result {
+  color: var(--pen-green);
+  border: 2px solid var(--pen-green);
+  border-radius: 50%;
+  padding: 5px 8px;
+  animation: resultCircle 0.45s var(--spring);
+}
+@keyframes resultCircle {
+  0% { transform: scale(0.4); }
+  60% { transform: scale(1.18); }
+  100% { transform: scale(1); }
 }
 
 .mascot-stage {
-  margin-top: 16px;
+  margin-top: 14px;
   position: relative;
   height: 70px;
   display: flex;
@@ -328,39 +318,37 @@ body::before {
 .prompt {
   text-align: center;
   font-size: 0.9rem;
-  color: var(--text2);
+  color: var(--ink-muted);
   font-weight: 700;
   flex: 1;
 }
-.prompt strong { color: var(--text); }
+.prompt strong { color: var(--ink); }
 
 .bodmas-toggle {
   padding: 8px 14px;
   min-height: 40px;
   border-radius: 10px;
-  background: var(--surface2);
-  border: 2px solid var(--border);
-  font-size: 0.68rem;
-  font-weight: 800;
-  letter-spacing: 0.5px;
-  color: var(--text2);
+  background: var(--paper-card);
+  border: 2px solid var(--border-ink);
+  font-family: var(--font-hand);
+  font-size: 0.85rem;
+  color: var(--ink-muted);
   cursor: pointer;
-  font-family: inherit;
   display: inline-flex; align-items: center; gap: 3px;
-  transition: all 0.2s var(--spring);
+  transition: transform 0.12s var(--spring), box-shadow 0.12s var(--spring);
   flex-shrink: 0;
-  box-shadow: 0 3px 0 var(--hard-shadow);
+  box-shadow: 3px 3px 0 var(--border-ink);
 }
-.bodmas-toggle:hover { border-color: var(--operator); color: var(--operator); }
-.bodmas-toggle:active { transform: translateY(2px); box-shadow: 0 1px 0 var(--hard-shadow); }
-.bodmas-toggle.open { border-color: var(--accent); color: var(--accent); }
-.bodmas-toggle.pulse-hint { animation: pulseHint 1s ease-in-out 3; border-color: var(--accent); }
+.bodmas-toggle:hover { color: var(--pen-blue); }
+.bodmas-toggle:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 var(--border-ink); }
+.bodmas-toggle.open { border-color: var(--pen-blue); color: var(--pen-blue); }
+.bodmas-toggle.pulse-hint { animation: pulseHint 1s ease-in-out 3; border-color: var(--pen-blue); }
 @keyframes pulseHint {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(163, 230, 53, 0); }
-  50% { box-shadow: 0 0 0 7px rgba(163, 230, 53, 0.35); }
+  0%, 100% { box-shadow: 0 0 0 0 rgba(29, 78, 216, 0); }
+  50% { box-shadow: 0 0 0 6px rgba(29, 78, 216, 0.22); }
 }
 
-/* ===== FEEDBACK BANNER ===== */
+/* ===== STICKY-NOTE FEEDBACK BANNER ===== */
 .feedback-slot {
   display: flex;
   justify-content: center;
@@ -371,19 +359,19 @@ body::before {
   display: none;
   width: 100%;
   padding: 10px 14px;
-  border-radius: 10px;
-  border: 2px solid var(--border);
-  background: var(--surface2);
+  border-radius: 8px;
+  border: 2px solid var(--border-ink);
+  background: var(--paper-card);
   font-size: 0.78rem;
   font-weight: 700;
   text-align: center;
   line-height: 1.35;
-  box-shadow: 0 4px 0 var(--hard-shadow);
+  box-shadow: 3px 3px 0 var(--border-ink);
 }
 .feedback-banner.show { display: block; animation: bannerIn 0.25s var(--spring); }
-.feedback-banner.error { border-color: var(--danger); color: var(--danger); }
-.feedback-banner.info { border-color: var(--operator); color: var(--operator); }
-.feedback-banner.success { border-color: var(--accent); color: var(--accent); }
+.feedback-banner.error { border-color: var(--pen-pink); color: var(--pen-pink); }
+.feedback-banner.info { border-color: var(--pen-blue); color: var(--pen-blue); }
+.feedback-banner.success { border-color: var(--pen-green); color: var(--pen-green); }
 @keyframes bannerIn {
   from { opacity: 0; transform: translateY(6px); }
   to { opacity: 1; transform: translateY(0); }
@@ -410,9 +398,9 @@ body::before {
   padding: 16px 14px;
   min-height: 62px;
   border-radius: 12px;
-  background: var(--surface2);
-  border: 2px solid var(--border);
-  color: var(--text);
+  background: var(--paper-card);
+  border: 2px solid var(--border-ink);
+  color: var(--ink);
   font-family: var(--font-mono);
   font-size: 1.15rem;
   font-weight: 800;
@@ -422,14 +410,12 @@ body::before {
   align-items: center;
   justify-content: center;
   gap: 6px;
-  box-shadow: 0 4px 0 var(--hard-shadow);
+  box-shadow: 3px 3px 0 var(--border-ink);
   position: relative;
-  overflow: hidden;
 }
-.chunk-card:active { transform: translateY(3px); box-shadow: 0 1px 0 var(--hard-shadow); }
-.chunk-card.shake { animation: cardShake 0.4s ease; border-color: var(--danger); }
-.chunk-card .op-sym { color: var(--operator); }
-.chunk-card .paren-sym { color: var(--bracket); }
+.chunk-card:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 var(--border-ink); }
+.chunk-card.shake { animation: cardShake 0.4s ease; border-color: var(--pen-pink); }
+.chunk-card .op-sym { color: var(--pen-blue); }
 
 @keyframes cardShake {
   0%, 100% { transform: translateX(0); }
@@ -443,34 +429,34 @@ body::before {
   padding: 16px 14px;
   min-height: 62px;
   border-radius: 12px;
-  background: var(--surface2);
-  border: 2px solid var(--border);
-  color: var(--text);
+  background: var(--paper-card);
+  border: 2px solid var(--border-ink);
+  color: var(--ink);
   font-family: var(--font-mono);
   font-size: 1.35rem;
   font-weight: 800;
   cursor: pointer;
   transition: transform 0.12s var(--spring), box-shadow 0.12s var(--spring);
-  box-shadow: 0 4px 0 var(--hard-shadow);
+  box-shadow: 3px 3px 0 var(--border-ink);
 }
-.answer-btn:active { transform: translateY(3px); box-shadow: 0 1px 0 var(--hard-shadow); }
+.answer-btn:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 var(--border-ink); }
 .answer-btn.correct {
-  background: var(--accent);
-  border-color: var(--accent);
-  color: var(--bg);
+  background: var(--pen-green);
+  border-color: var(--pen-green);
+  color: var(--paper-card);
 }
 .answer-btn.wrong {
-  background: var(--danger);
-  border-color: var(--danger);
-  color: var(--bg);
+  background: var(--pen-pink);
+  border-color: var(--pen-pink);
+  color: var(--paper-card);
   animation: cardShake 0.4s ease;
 }
 
-/* ===== BODMAS CHEAT SHEET (Modal) ===== */
+/* ===== BODMAS CHEAT SHEET (sticky-note modal) ===== */
 .cheat-backdrop {
   position: fixed;
   inset: 0;
-  background: rgba(2, 6, 23, 0.78);
+  background: rgba(30, 41, 59, 0.35);
   z-index: 99;
   opacity: 0;
   pointer-events: none;
@@ -482,7 +468,7 @@ body::before {
   position: fixed;
   left: 50%;
   top: 50%;
-  transform: translate(-50%, -50%) scale(0.9);
+  transform: translate(-50%, -50%) scale(0.9) rotate(-1deg);
   z-index: 100;
   opacity: 0;
   pointer-events: none;
@@ -490,13 +476,13 @@ body::before {
   width: 90%;
   max-width: 380px;
 }
-.cheat-sheet.open { opacity: 1; pointer-events: auto; transform: translate(-50%, -50%) scale(1); }
+.cheat-sheet.open { opacity: 1; pointer-events: auto; transform: translate(-50%, -50%) scale(1) rotate(-1deg); }
 .cheat-panel {
-  background: var(--surface2);
-  border: 2px solid var(--border);
-  border-radius: 14px;
+  background: var(--paper-card);
+  border: 2px solid var(--border-ink);
+  border-radius: 12px;
   padding: 20px 18px;
-  box-shadow: 0 8px 0 var(--hard-shadow);
+  box-shadow: 4px 4px 0 var(--border-ink);
   position: relative;
 }
 .cheat-close {
@@ -506,9 +492,9 @@ body::before {
   width: 38px;
   height: 38px;
   border-radius: 8px;
-  background: var(--surface);
-  border: 2px solid var(--border);
-  color: var(--text2);
+  background: var(--paper-tint);
+  border: 2px solid var(--border-ink);
+  color: var(--ink-muted);
   font-size: 1rem;
   font-weight: 700;
   cursor: pointer;
@@ -518,12 +504,12 @@ body::before {
   font-family: inherit;
   transition: all 0.15s;
 }
-.cheat-close:hover { border-color: var(--accent); color: var(--accent); }
+.cheat-close:hover { border-color: var(--pen-pink); color: var(--pen-pink); }
 .cheat-title {
-  font-size: 0.7rem;
-  font-weight: 800;
-  color: var(--accent);
-  letter-spacing: 1.5px;
+  font-family: var(--font-hand);
+  font-size: 1.05rem;
+  color: var(--ink);
+  letter-spacing: 0.5px;
   margin-bottom: 10px;
 }
 .cheat-row {
@@ -531,14 +517,14 @@ body::before {
   align-items: center;
   gap: 10px;
   padding: 7px 0;
-  border-bottom: 1px solid rgba(51, 65, 85, 0.6);
+  border-bottom: 1px dashed rgba(51, 65, 85, 0.35);
 }
 .cheat-row:last-child { border-bottom: none; }
 .cheat-rank {
-  width: 22px; height: 22px;
-  border-radius: 6px;
-  background: var(--accent);
-  color: var(--bg);
+  width: 24px; height: 24px;
+  border-radius: 50%;
+  background: var(--pen-blue);
+  color: var(--paper-card);
   font-family: var(--font-mono);
   font-size: 0.7rem;
   font-weight: 800;
@@ -549,36 +535,37 @@ body::before {
   font-family: var(--font-mono);
   font-size: 1.05rem;
   font-weight: 800;
-  color: var(--text);
+  color: var(--ink);
   min-width: 44px;
 }
-.cheat-row[data-tier="B"] .cheat-symbol { color: var(--bracket); }
-.cheat-row[data-tier="O"] .cheat-symbol { color: var(--accent); }
+.cheat-row[data-tier="B"] .cheat-symbol { color: var(--pen-pink); }
+.cheat-row[data-tier="O"] .cheat-symbol,
 .cheat-row[data-tier="DM"] .cheat-symbol,
-.cheat-row[data-tier="AS"] .cheat-symbol { color: var(--operator); }
+.cheat-row[data-tier="AS"] .cheat-symbol { color: var(--pen-blue); }
 .cheat-name {
   font-size: 0.78rem;
   font-weight: 700;
-  color: var(--text);
+  color: var(--ink);
   flex: 1;
 }
 .cheat-ltr {
   font-size: 0.6rem;
   font-weight: 800;
   letter-spacing: 0.5px;
-  color: var(--accent);
-  background: rgba(163, 230, 53, 0.12);
+  color: var(--ink);
+  background: var(--highlighter);
   padding: 3px 8px;
   border-radius: 6px;
+  border: 1px solid var(--border-ink);
   white-space: nowrap;
 }
 
-/* ===== SYSTEM COOLDOWN OVERLAY ===== */
-.cooldown-overlay {
+/* ===== OUT OF INK OVERLAY ===== */
+.out-of-ink-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(2, 6, 23, 0.92);
-  backdrop-filter: blur(4px);
+  background: rgba(250, 248, 245, 0.92);
+  backdrop-filter: blur(3px);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -586,37 +573,36 @@ body::before {
   z-index: 100;
   animation: fadeIn 0.4s ease;
 }
-.cooldown-overlay .mascot { width: 84px; height: 84px; margin-bottom: 16px; }
-.cooldown-title {
-  font-size: 1.25rem;
-  font-weight: 800;
-  color: var(--danger);
-  letter-spacing: 1px;
+.out-of-ink-overlay .mascot { width: 90px; height: 90px; margin-bottom: 16px; }
+.out-of-ink-title {
+  font-family: var(--font-hand);
+  font-size: 1.7rem;
+  color: var(--ink);
   margin-bottom: 6px;
 }
-.cooldown-text {
+.out-of-ink-text {
   font-size: 0.9rem;
-  color: var(--text2);
+  color: var(--ink-muted);
   margin-bottom: 22px;
   text-align: center;
   padding: 0 24px;
 }
-.reboot-btn {
+.refill-btn {
   padding: 14px 28px;
   min-height: 52px;
   border-radius: 12px;
-  border: 2px solid var(--accent);
-  background: var(--accent);
-  color: var(--bg);
+  border: 2px solid var(--pen-blue);
+  background: var(--pen-blue);
+  color: var(--paper-card);
   font-size: 0.95rem;
   font-weight: 800;
   letter-spacing: 0.5px;
   cursor: pointer;
   font-family: inherit;
-  box-shadow: 0 4px 0 var(--hard-shadow);
+  box-shadow: 3px 3px 0 var(--border-ink);
   transition: transform 0.12s var(--spring), box-shadow 0.12s var(--spring);
 }
-.reboot-btn:active { transform: translateY(3px); box-shadow: 0 1px 0 var(--hard-shadow); }
+.refill-btn:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 var(--border-ink); }
 
 @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
@@ -630,19 +616,19 @@ body::before {
   padding: 24px;
   text-align: center;
 }
-.start-mascot { width: 110px; height: 110px; margin-bottom: 12px; }
-.start-mascot svg { filter: drop-shadow(0 8px 24px rgba(163, 230, 53, 0.18)); }
+.start-mascot { width: 116px; height: 116px; margin-bottom: 10px; }
 .start-title {
-  font-size: 2.1rem;
-  font-weight: 800;
-  color: var(--text);
-  letter-spacing: 3px;
-  margin-bottom: 4px;
+  font-family: var(--font-hand);
+  font-size: 2.5rem;
+  color: var(--ink);
+  letter-spacing: 1px;
+  margin-bottom: 2px;
+  line-height: 1;
 }
-.start-title .accent { color: var(--accent); }
+.start-title .accent { color: var(--pen-blue); }
 .start-sub {
   font-size: 0.88rem;
-  color: var(--text2);
+  color: var(--ink-muted);
   margin-bottom: 26px;
   max-width: 290px;
   line-height: 1.5;
@@ -656,46 +642,46 @@ body::before {
   padding: 12px 16px;
   min-height: 46px;
   border-radius: 10px;
-  border: 2px solid var(--border);
-  background: var(--surface);
-  color: var(--text2);
+  border: 2px solid var(--border-ink);
+  background: var(--paper-card);
+  color: var(--ink-muted);
   font-size: 0.78rem;
   font-weight: 800;
   letter-spacing: 1px;
   cursor: pointer;
   transition: transform 0.12s var(--spring), box-shadow 0.12s var(--spring), background 0.2s, color 0.2s, border-color 0.2s;
   font-family: inherit;
-  box-shadow: 0 4px 0 var(--hard-shadow);
+  box-shadow: 3px 3px 0 var(--border-ink);
 }
-.diff-btn:active { transform: translateY(3px); box-shadow: 0 1px 0 var(--hard-shadow); }
+.diff-btn:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 var(--border-ink); }
 .diff-btn.active {
-  border-color: var(--accent);
-  background: var(--accent);
-  color: var(--bg);
+  border-color: var(--pen-blue);
+  background: var(--pen-blue);
+  color: var(--paper-card);
 }
 .play-btn {
   padding: 16px 44px;
   min-height: 56px;
   border-radius: 12px;
-  border: 2px solid var(--accent);
-  background: var(--accent);
-  color: var(--bg);
+  border: 2px solid var(--pen-green);
+  background: var(--pen-green);
+  color: var(--paper-card);
   font-size: 1.05rem;
   font-weight: 800;
-  letter-spacing: 2px;
+  letter-spacing: 1px;
   cursor: pointer;
   font-family: inherit;
-  box-shadow: 0 4px 0 var(--hard-shadow);
+  box-shadow: 3px 3px 0 var(--border-ink);
   transition: transform 0.12s var(--spring), box-shadow 0.12s var(--spring);
 }
-.play-btn:active { transform: translateY(3px); box-shadow: 0 1px 0 var(--hard-shadow); }
+.play-btn:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 var(--border-ink); }
 
 /* ===== LEVEL COMPLETE ===== */
 .level-card {
   position: fixed;
   inset: 0;
-  background: rgba(2, 6, 23, 0.9);
-  backdrop-filter: blur(6px);
+  background: rgba(250, 248, 245, 0.92);
+  backdrop-filter: blur(4px);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -711,15 +697,14 @@ body::before {
   100% { transform: scale(1); }
 }
 .level-title {
-  font-size: 1.4rem;
-  font-weight: 800;
-  color: var(--accent);
-  letter-spacing: 1px;
+  font-family: var(--font-hand);
+  font-size: 1.8rem;
+  color: var(--pen-green);
   margin-bottom: 6px;
 }
 .level-sub {
   font-size: 0.88rem;
-  color: var(--text2);
+  color: var(--ink-muted);
   margin-bottom: 24px;
   text-align: center;
 }
@@ -727,18 +712,18 @@ body::before {
   padding: 14px 32px;
   min-height: 52px;
   border-radius: 12px;
-  border: 2px solid var(--accent);
-  background: var(--accent);
-  color: var(--bg);
+  border: 2px solid var(--pen-blue);
+  background: var(--pen-blue);
+  color: var(--paper-card);
   font-size: 0.95rem;
   font-weight: 800;
   letter-spacing: 1px;
   cursor: pointer;
   font-family: inherit;
-  box-shadow: 0 4px 0 var(--hard-shadow);
+  box-shadow: 3px 3px 0 var(--border-ink);
   transition: transform 0.12s var(--spring), box-shadow 0.12s var(--spring);
 }
-.next-btn:active { transform: translateY(3px); box-shadow: 0 1px 0 var(--hard-shadow); }
+.next-btn:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 var(--border-ink); }
 
 /* ===== UTILS ===== */
 .hidden { display: none !important; }
@@ -746,12 +731,12 @@ body::before {
 .screen.active { display: flex; flex-direction: column; }
 
 @media (max-width: 380px) {
-  .food-token { font-size: 1.05rem; padding: 6px 8px; }
-  .food-token.op { font-size: 1.2rem; }
+  .food-token { font-size: 1.2rem; }
+  .food-token.op { font-size: 1.25rem; }
   .chunk-card, .answer-btn { font-size: 1.05rem; padding: 13px 10px; }
-  .brand { font-size: 0.9rem; letter-spacing: 1px; }
+  .brand { font-size: 1.25rem; }
   .evo-badge { max-width: 88px; }
-  .start-mascot { width: 90px; height: 90px; }
+  .start-mascot { width: 94px; height: 94px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -771,13 +756,13 @@ body::before {
   <div class="start-screen">
     <div class="mascot start-mascot idle" id="startMascot" aria-hidden="true"></div>
     <div class="start-title">MEGA<span class="accent">-</span>BITE</div>
-    <div class="start-sub">Solve BODMAS equations. Crunch the right operation first — charge your core.</div>
+    <div class="start-sub">Solve BODMAS equations on the page. Crunch the right operation first — don't run out of ink.</div>
     <div class="diff-row">
       <button class="diff-btn" data-d="easy">EASY</button>
       <button class="diff-btn active" data-d="medium">MEDIUM</button>
       <button class="diff-btn" data-d="hard">HARD</button>
     </div>
-    <button class="play-btn" id="playBtn">ENGAGE</button>
+    <button class="play-btn" id="playBtn">START SOLVING</button>
   </div>
 </div>
 
@@ -787,26 +772,26 @@ body::before {
     <button class="mute-btn" id="muteBtn" aria-label="Toggle sound"></button>
     <div class="brand">MEGA-BITE</div>
     <div class="hud">
-      <div class="evo-badge" id="evoBadge"><span id="evoName">CYBER-HATCHLING</span></div>
+      <div class="evo-badge" id="evoBadge"><span id="evoName">MARGIN SKETCH</span></div>
       <div class="streak-badge" aria-label="Streak"><span class="streak-label">STREAK</span><span id="streakVal">0</span></div>
     </div>
   </div>
 
-  <div class="overdrive-wrap">
-    <div class="overdrive-track">
-      <div class="overdrive-fill" id="overdriveFill" style="width: 100%"></div>
+  <div class="ink-wrap">
+    <div class="ink-track">
+      <div class="ink-fill" id="inkFill" style="width: 100%"></div>
     </div>
-    <div class="overdrive-label">
-      <span class="lbl">OVERDRIVE</span>
+    <div class="ink-label">
+      <span class="lbl">INK ENERGY</span>
       <span id="stepCounter"></span>
-      <span id="overdriveText">CHARGED</span>
+      <span id="inkText">LOCKED IN</span>
     </div>
   </div>
 
   <div class="food-chain-area">
     <div class="food-chain" id="foodChain"></div>
     <div class="mascot-stage">
-      <div class="mascot idle" id="kaijuMascot" aria-hidden="true"></div>
+      <div class="mascot idle" id="doodleMascot" aria-hidden="true"></div>
     </div>
   </div>
 
@@ -825,7 +810,7 @@ body::before {
 <div class="cheat-sheet" id="cheatSheet" role="dialog" aria-label="BODMAS priority">
   <div class="cheat-panel">
     <button class="cheat-close" id="cheatClose" aria-label="Close">×</button>
-    <div class="cheat-title">BODMAS PRIORITY</div>
+    <div class="cheat-title">BODMAS Priority</div>
     <div class="cheat-row" data-tier="B">
       <div class="cheat-rank">1</div>
       <div class="cheat-symbol">( )</div>
@@ -851,19 +836,19 @@ body::before {
   </div>
 </div>
 
-<!-- SYSTEM COOLDOWN OVERLAY -->
-<div id="cooldownOverlay" class="cooldown-overlay hidden">
+<!-- OUT OF INK OVERLAY -->
+<div id="outOfInkOverlay" class="out-of-ink-overlay hidden">
   <div class="mascot cooldown" id="cooldownMascot" aria-hidden="true"></div>
-  <div class="cooldown-title">OVERDRIVE DEPLETED</div>
-  <div class="cooldown-text">System Cooldown — reboot to keep crunching.</div>
-  <button class="reboot-btn" id="rebootBtn">REBOOT CORE ⚡</button>
+  <div class="out-of-ink-title">OUT OF INK</div>
+  <div class="out-of-ink-text">Doodle ran dry! Refill your pen to keep crunching.</div>
+  <button class="refill-btn" id="refillBtn">REFILL PEN ✒️</button>
 </div>
 
 <!-- LEVEL COMPLETE -->
 <div id="levelCard" class="level-card hidden">
   <div class="mascot level-mascot" id="levelMascot" aria-hidden="true"></div>
-  <div class="level-title" id="levelTitle">EQUATION CLEARED</div>
-  <div class="level-sub" id="levelSub">Level 1 • CYBER-HATCHLING</div>
+  <div class="level-title" id="levelTitle">PAGE CLEARED!</div>
+  <div class="level-sub" id="levelSub">Level 1 • MARGIN SKETCH</div>
   <button class="next-btn" id="nextBtn">NEXT →</button>
 </div>
 
@@ -871,25 +856,38 @@ body::before {
 
 <script>
 /* =========================================================
-   MEGA-BITE — Syntactic Reducer Engine (Arcade Kaiju)
+   MEGA-BITE — Syntactic Reducer Engine (Notebook Doodle)
    ========================================================= */
 
 const LS_KEY = 'megabite_v1';
 const LS_MUTE = 'megabite_muted';
 
-/* -------------------- MASCOT (inline SVG) -------------------- */
+/* -------------------- MASCOT (inline line-art dino) -------------------- */
 const MASCOT_SVG = `
-<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Mecha-Rex">
-  <path d="M5 14 L13 12 L13 30 L5 32 Z" fill="#151C2C" stroke="#334155" stroke-width="2" stroke-linejoin="round"/>
-  <path d="M59 14 L51 12 L51 30 L59 32 Z" fill="#151C2C" stroke="#334155" stroke-width="2" stroke-linejoin="round"/>
-  <path d="M13 8 L22 3 L42 3 L51 8 L54 24 L48 36 L16 36 L10 24 Z" fill="#283548" stroke="#334155" stroke-width="2" stroke-linejoin="round"/>
-  <path d="M16 12 L22 7 L42 7 L48 12 L48 18 L16 18 Z" fill="#151C2C" stroke="#334155" stroke-width="2" stroke-linejoin="round"/>
-  <rect class="mascot-visor" x="20" y="11" width="24" height="5" rx="2.5" fill="#A3E635"/>
+<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="#1E293B" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="Doodle dinosaur">
+  <path d="M13 42 C7 40 3 33 6 25 C7.5 21 11 20 13 23"/>
+  <path d="M15 43 C13 35 21 29 31 29 C41 29 48 33 51 40 C52 44 50 47 46 47 C37 48 27 49 19 46 C16 45 15 44 15 43 Z"/>
+  <path d="M24 29 L26 22 L28 29"/>
+  <path d="M33 28 L35 20 L37 28"/>
+  <path d="M47 33 C52 30 56 30 58.5 33.5 L60 38 L57 40 L49 40"/>
+  <circle cx="55" cy="35" r="1.7" fill="#1E293B" stroke="none"/>
   <g class="mascot-jaw">
-    <path d="M16 36 L48 36 L44 46 L20 46 Z" fill="#151C2C" stroke="#334155" stroke-width="2" stroke-linejoin="round"/>
-    <path d="M20 36 L22.5 41 L25 36 L27.5 41 L30 36 L32.5 41 L35 36 L37.5 41 L40 36 L42.5 41 L45 36" fill="#F8FAFC" stroke="#334155" stroke-width="1" stroke-linejoin="round"/>
-    <circle cx="26" cy="42.5" r="1.4" fill="#94A3B8"/>
-    <circle cx="38" cy="42.5" r="1.4" fill="#94A3B8"/>
+    <path d="M49 40 L57 40 L53 45 L47 43"/>
+  </g>
+  <path d="M51 40 L52.3 43 L53.6 40"/>
+  <path d="M24 46 L23 55"/>
+  <path d="M36 47 L36 56"/>
+  <path d="M44 45 L46 54"/>
+  <path d="M20 39 L24 43"/>
+  <path d="M27 38 L31 42"/>
+  <path d="M41 38 L45 42"/>
+  <g class="mascot-splatter" stroke="#1D4ED8" stroke-width="2">
+    <path d="M60 30 L65 27"/>
+    <path d="M61 36 L66 35"/>
+    <path d="M60 42 L65 44"/>
+  </g>
+  <g class="mascot-squiggle" stroke="#BE123C" stroke-width="2">
+    <path d="M44 17 l3 -3 l3 3 l3 -3"/>
   </g>
 </svg>`;
 
@@ -897,7 +895,7 @@ const ICON_SOUND = '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" 
 const ICON_MUTE = '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4Z" fill="currentColor" stroke="none"/><path d="m16 9 5 5"/><path d="m21 9-5 5"/></svg>';
 
 function mountMascots() {
-  ['startMascot', 'kaijuMascot', 'levelMascot', 'cooldownMascot'].forEach(id => {
+  ['startMascot', 'doodleMascot', 'levelMascot', 'cooldownMascot'].forEach(id => {
     const el = document.getElementById(id);
     if (el) el.innerHTML = MASCOT_SVG;
   });
@@ -1015,7 +1013,6 @@ function findNextReduction(node) {
     if (a.insideBracket !== b.insideBracket) return b.insideBracket - a.insideBracket;
     const ra = tierRank[a.node.tier], rb = tierRank[b.node.tier];
     if (ra !== rb) return ra - rb;
-    // Left-associative: deeper path wins (deepest-left), then leftmost child
     if (a.path.length !== b.path.length) return b.path.length - a.path.length;
     for (let i = 0; i < a.path.length; i++) {
       if (a.path[i] !== b.path[i]) {
@@ -1170,7 +1167,6 @@ function rand(a, b) { return Math.floor(Math.random() * (b - a + 1)) + a; }
 
 function generateEquation(diff) {
   let expr;
-  // Helper: generate clean division (a/b always whole number)
   function cleanDiv(bMin, bMax, multMin, multMax) {
     const b = rand(bMin, bMax);
     const mult = rand(multMin, multMax);
@@ -1340,9 +1336,9 @@ function playFanfare() {
 
 /* -------------------- STATE -------------------- */
 const EVOLUTION_STAGES = [
-  { name: 'CYBER-HATCHLING', threshold: 0 },
-  { name: 'APEX RAPTOR', threshold: 3 },
-  { name: 'MECHA-REX', threshold: 8 },
+  { name: 'MARGIN SKETCH', threshold: 0 },
+  { name: 'INK RAPTOR', threshold: 3 },
+  { name: 'NOTEBOOK REX', threshold: 8 },
 ];
 
 let state = {
@@ -1352,14 +1348,14 @@ let state = {
   bestStreak: 0,
   totalEquations: 0,
   correctEquations: 0,
-  overdrive: 100,
+  inkEnergy: 100,
   ast: null,
   totalStepsOriginal: 0,
   phase: 'select',
   selectedChunk: null,
   correctAnswer: null,
   isProcessing: false,
-  overdriveTimer: null,
+  inkTimer: null,
   cheatSheetOpen: false,
   roundsPlayed: 0,
   currentCandidates: [],
@@ -1408,52 +1404,52 @@ function updateStepCounter() {
   }
 }
 
-/* -------------------- OVERDRIVE CORE -------------------- */
-function startOverdriveTimer() {
-  stopOverdriveTimer();
-  state.overdriveTimer = setInterval(() => {
-    if (state.phase === 'select' && state.overdrive > 0) {
-      state.overdrive = Math.max(0, state.overdrive - 0.1);
-      renderOverdrive();
-      if (state.overdrive === 0) showCooldown();
+/* -------------------- INK ENERGY -------------------- */
+function startInkTimer() {
+  stopInkTimer();
+  state.inkTimer = setInterval(() => {
+    if (state.phase === 'select' && state.inkEnergy > 0) {
+      state.inkEnergy = Math.max(0, state.inkEnergy - 0.1);
+      renderInkEnergy();
+      if (state.inkEnergy === 0) showOutOfInk();
     }
   }, 1000);
 }
 
-function stopOverdriveTimer() {
-  if (state.overdriveTimer) clearInterval(state.overdriveTimer);
-  state.overdriveTimer = null;
+function stopInkTimer() {
+  if (state.inkTimer) clearInterval(state.inkTimer);
+  state.inkTimer = null;
 }
 
-function chargeCore() {
-  state.overdrive = Math.min(100, state.overdrive + 15);
-  renderOverdrive();
+function refillInk() {
+  state.inkEnergy = Math.min(100, state.inkEnergy + 15);
+  renderInkEnergy();
 }
 
-function renderOverdrive() {
-  const fill = document.getElementById('overdriveFill');
-  const text = document.getElementById('overdriveText');
-  fill.style.width = state.overdrive + '%';
-  fill.classList.toggle('low', state.overdrive < 30);
-  text.classList.toggle('low', state.overdrive < 30);
-  if (state.overdrive > 70) text.textContent = 'CHARGED';
-  else if (state.overdrive > 30) text.textContent = 'DRAINING';
-  else if (state.overdrive > 0) text.textContent = 'CRITICAL!';
-  else text.textContent = 'OVERHEATED';
+function renderInkEnergy() {
+  const fill = document.getElementById('inkFill');
+  const text = document.getElementById('inkText');
+  fill.style.width = state.inkEnergy + '%';
+  fill.classList.toggle('low', state.inkEnergy < 30);
+  text.classList.toggle('low', state.inkEnergy < 30);
+  if (state.inkEnergy > 70) text.textContent = 'LOCKED IN';
+  else if (state.inkEnergy > 30) text.textContent = 'FADING';
+  else if (state.inkEnergy > 0) text.textContent = 'RUNNING DRY!';
+  else text.textContent = 'OUT OF INK';
 }
 
-function showCooldown() {
-  stopOverdriveTimer();
-  $('cooldownOverlay').classList.remove('hidden');
-  $('kaijuMascot').classList.add('cooldown');
+function showOutOfInk() {
+  stopInkTimer();
+  $('outOfInkOverlay').classList.remove('hidden');
+  $('doodleMascot').classList.add('cooldown');
 }
 
-function rebootCore() {
-  state.overdrive = 50;
-  renderOverdrive();
-  $('cooldownOverlay').classList.add('hidden');
-  $('kaijuMascot').classList.remove('cooldown');
-  startOverdriveTimer();
+function refillPen() {
+  state.inkEnergy = 50;
+  renderInkEnergy();
+  $('outOfInkOverlay').classList.add('hidden');
+  $('doodleMascot').classList.remove('cooldown');
+  startInkTimer();
 }
 
 /* -------------------- EVOLUTION -------------------- */
@@ -1650,18 +1646,18 @@ function handleVisualDistractorTap(distractor, correctNode, btn) {
 
   playThud();
   btn.classList.add('shake');
-  $('kaijuMascot').classList.add('error');
+  $('doodleMascot').classList.add('error');
 
   state.streak = 0;
   $('streakVal').textContent = state.streak;
 
-  const msg = `${distractor.leftVal} and ${distractor.rightVal} belong to different chunks — the ${distractor.op} connects bigger pieces. Try a smaller chunk.`;
+  const msg = `${distractor.leftVal} and ${distractor.rightVal} belong to different chunks — the ${OPSYMBOLS[distractor.op] || distractor.op} connects bigger pieces. Try a smaller chunk.`;
   showFeedback(msg, 'error');
   pulseRules();
 
   setTimeout(() => {
     btn.classList.remove('shake');
-    $('kaijuMascot').classList.remove('error');
+    $('doodleMascot').classList.remove('error');
   }, 500);
 }
 
@@ -1685,7 +1681,7 @@ function handleChunkSelect(candidate, correctNode, btn) {
   } else {
     playThud();
     btn.classList.add('shake');
-    $('kaijuMascot').classList.add('error');
+    $('doodleMascot').classList.add('error');
 
     state.streak = 0;
     $('streakVal').textContent = state.streak;
@@ -1716,7 +1712,7 @@ function handleChunkSelect(candidate, correctNode, btn) {
 
     setTimeout(() => {
       btn.classList.remove('shake');
-      $('kaijuMascot').classList.remove('error');
+      $('doodleMascot').classList.remove('error');
     }, 500);
   }
 }
@@ -1728,10 +1724,10 @@ function handleAnswerSelect(val, correct, btn) {
     state.isProcessing = true;
     btn.classList.add('correct');
     playChomp();
-    $('kaijuMascot').classList.add('chomp');
+    $('doodleMascot').classList.add('chomp');
     $('foodChain').classList.add('arena-shake');
 
-    chargeCore();
+    refillInk();
 
     const chunkNode = state.selectedChunk.node;
     const tokensToCollapse = [];
@@ -1768,7 +1764,7 @@ function handleAnswerSelect(val, correct, btn) {
         state.phase = 'select';
         state.selectedChunk = null;
         state.isProcessing = false;
-        $('kaijuMascot').classList.remove('chomp');
+        $('doodleMascot').classList.remove('chomp');
         renderActionTray();
       }
     }, 500);
@@ -1801,7 +1797,7 @@ function loadLevel() {
   renderFoodChain();
   renderActionTray();
   renderEvolution();
-  renderOverdrive();
+  renderInkEnergy();
   updateStepCounter();
 }
 
@@ -1812,7 +1808,7 @@ function levelComplete() {
   saveState();
 
   const evo = getEvolution();
-  $('levelTitle').textContent = 'EQUATION CLEARED';
+  $('levelTitle').textContent = 'PAGE CLEARED!';
   $('levelSub').textContent = `Level ${state.level} • ${evo.name}`;
   $('levelCard').classList.remove('hidden');
 }
@@ -1830,10 +1826,10 @@ $('playBtn').onclick = () => {
   ensureAudio();
   $('startScreen').classList.remove('active');
   $('gameScreen').classList.add('active');
-  state.overdrive = 100;
-  renderOverdrive();
+  state.inkEnergy = 100;
+  renderInkEnergy();
   loadLevel();
-  startOverdriveTimer();
+  startInkTimer();
 };
 
 function renderMute() {
@@ -1846,8 +1842,8 @@ $('muteBtn').onclick = () => {
   renderMute();
 };
 
-$('rebootBtn').onclick = () => {
-  rebootCore();
+$('refillBtn').onclick = () => {
+  refillPen();
 };
 
 $('nextBtn').onclick = () => {
