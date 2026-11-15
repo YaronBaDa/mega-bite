@@ -59,7 +59,7 @@ body {
 .app::before {
   content: '';
   position: absolute;
-  left: 22px;
+  left: 14px;
   top: 0;
   bottom: 0;
   width: 2px;
@@ -73,23 +73,22 @@ body {
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 12px 16px 8px;
+  padding: 12px 16px 8px 24px;
   flex-shrink: 0;
 }
 
 .icon-btn {
   width: 44px; height: 44px;
   border-radius: 10px;
-  background: var(--paper-card);
-  border: 2px solid var(--border-ink);
-  color: var(--ink);
+  background: transparent;
+  border: 1.5px solid var(--ink-muted);
+  color: var(--ink-muted);
   cursor: pointer;
   display: flex; align-items: center; justify-content: center;
-  transition: transform 0.12s var(--spring), box-shadow 0.12s var(--spring);
+  transition: color 0.15s, border-color 0.15s;
   flex-shrink: 0;
-  box-shadow: 3px 3px 0 var(--border-ink);
 }
-.icon-btn:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 var(--border-ink); }
+.icon-btn:hover { color: var(--ink); border-color: var(--ink); }
 .start-settings {
   position: absolute;
   top: 12px;
@@ -143,7 +142,7 @@ body {
 
 /* ===== INK ENERGY METER ===== */
 .ink-wrap {
-  padding: 0 16px 12px;
+  padding: 0 16px 12px 24px;
   flex-shrink: 0;
 }
 .ink-track {
@@ -156,12 +155,16 @@ body {
 }
 .ink-fill {
   height: 100%;
-  background: var(--pen-green);
-  border-radius: 6px;
+  background-color: var(--pen-green);
+  background-image: repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.16) 0px, rgba(255, 255, 255, 0.16) 4px, transparent 4px, transparent 8px);
+  border-radius: 4px;
   transition: width 0.6s var(--spring);
   position: relative;
 }
-.ink-fill.low { background: var(--pen-pink); }
+.ink-fill.low {
+  background-color: var(--pen-pink);
+  background-image: repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.16) 0px, rgba(255, 255, 255, 0.16) 4px, transparent 4px, transparent 8px);
+}
 .ink-label {
   display: flex;
   justify-content: space-between;
@@ -177,8 +180,8 @@ body {
 .ink-label #inkText.low { color: var(--pen-pink); }
 
 /* ===== MASCOT (pen-doodle dino) ===== */
-.mascot { display: inline-block; width: 64px; height: 64px; }
-.mascot svg { width: 100%; height: 100%; display: block; overflow: visible; }
+.mascot { display: inline-block; width: 76px; height: 76px; }
+.mascot svg { width: 100%; height: 100%; display: block; overflow: visible; stroke: var(--ink); fill: none; }
 .mascot .mascot-splatter, .mascot .mascot-squiggle { opacity: 0; transition: opacity 0.15s ease; }
 .mascot .mascot-jaw { transform-box: fill-box; transform-origin: 50% 0; }
 
@@ -210,12 +213,15 @@ body {
 .food-chain-area {
   flex: 1;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 0 16px;
+  padding: 16px 16px 44px 24px;
   min-height: 0;
   position: relative;
+}
+.food-chain-wrap {
+  position: relative;
+  width: 100%;
 }
 
 .food-chain {
@@ -224,11 +230,11 @@ body {
   align-items: center;
   justify-content: center;
   gap: 1px;
-  padding: 18px 16px;
+  width: 100%;
+  padding: 28px 20px;
   background: var(--paper-card);
   border-radius: 12px;
   border: 2px solid var(--border-ink);
-  max-width: 100%;
   box-shadow: 3px 3px 0 var(--border-ink);
   position: relative;
   transition: transform 0.4s var(--spring);
@@ -249,13 +255,13 @@ body {
   border-radius: 6px;
   font-family: var(--font-ui);
   font-weight: 800;
-  font-size: 1.45rem;
+  font-size: 1.75rem;
   transition: background 0.15s, color 0.15s;
   position: relative;
 }
-.food-token.num { color: var(--ink); min-width: 28px; }
-.food-token.op { color: var(--pen-blue); font-size: 1.5rem; padding: 1px 2px; }
-.food-token.paren { color: var(--pen-pink); font-size: 1.55rem; padding: 0 1px; }
+.food-token.num { color: var(--ink); min-width: 32px; }
+.food-token.op { color: var(--pen-blue); font-size: 1.8rem; padding: 1px 2px; }
+.food-token.paren { color: var(--pen-pink); font-size: 1.85rem; padding: 0 1px; }
 
 /* Hover/touch highlighter sweep + dashed ink underline */
 .food-token.chunk-highlight {
@@ -265,17 +271,16 @@ body {
   border-radius: 3px;
 }
 
-.sup {
-  font-size: 0.65em;
-  vertical-align: super;
-  line-height: 0;
-}
+.sup,
 .food-token sup,
 .chunk-card sup {
-  font-size: 0.6em;
-  vertical-align: super;
-  line-height: 0;
-  margin-left: 1px;
+  margin-left: 0;
+  font-size: 0.55em;
+  font-weight: 800;
+  vertical-align: baseline;
+  position: relative;
+  top: -0.55em;
+  color: var(--pen-pink);
 }
 
 /* Scribble-collapse (strike-through + shrink) */
@@ -304,12 +309,13 @@ body {
 }
 
 .mascot-stage {
-  margin-top: 14px;
-  position: relative;
-  height: 70px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  position: absolute;
+  right: 8px;
+  bottom: -30px;
+  width: 76px;
+  height: 76px;
+  z-index: 3;
+  pointer-events: none;
 }
 
 /* ===== PROMPT ROW ===== */
@@ -318,7 +324,7 @@ body {
   align-items: center;
   justify-content: center;
   gap: 8px;
-  padding: 8px 16px 6px;
+  padding: 8px 16px 6px 24px;
   flex-shrink: 0;
 }
 .prompt {
@@ -358,7 +364,7 @@ body {
 .feedback-slot {
   display: flex;
   justify-content: center;
-  padding: 0 16px;
+  padding: 0 16px 0 24px;
   flex-shrink: 0;
 }
 .feedback-banner {
@@ -385,7 +391,7 @@ body {
 
 /* ===== ACTION TRAY ===== */
 .action-tray {
-  padding: 8px 16px 16px;
+  padding: 8px 16px 16px 24px;
   flex-shrink: 0;
   min-height: 180px;
   display: flex;
@@ -399,6 +405,7 @@ body {
   gap: 10px;
 }
 .tray-grid.single { grid-template-columns: 1fr; }
+.tray-grid.three-items > :last-child { grid-column: 1 / -1; }
 
 .chunk-card {
   padding: 16px 14px;
@@ -873,14 +880,16 @@ body {
   </div>
 
   <div class="food-chain-area">
-    <div class="food-chain" id="foodChain"></div>
-    <div class="mascot-stage">
-      <div class="mascot idle" id="doodleMascot" aria-hidden="true"></div>
+    <div class="food-chain-wrap">
+      <div class="food-chain" id="foodChain"></div>
+      <div class="mascot-stage">
+        <div class="mascot idle" id="doodleMascot" aria-hidden="true"></div>
+      </div>
     </div>
   </div>
 
   <div class="prompt-row">
-    <div class="prompt" id="prompt">Which operation do you crunch first?</div>
+    <div class="prompt" id="prompt">Which bite goes first?</div>
     <button class="bodmas-toggle" id="bodmasToggle" aria-label="BODMAS rules">? RULES</button>
   </div>
 
@@ -969,30 +978,32 @@ const LS_MUTE = 'megabite_muted';
 
 /* -------------------- MASCOT (inline line-art dino) -------------------- */
 const MASCOT_SVG = `
-<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="#1E293B" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="Doodle dinosaur">
-  <path d="M13 42 C7 40 3 33 6 25 C7.5 21 11 20 13 23"/>
-  <path d="M15 43 C13 35 21 29 31 29 C41 29 48 33 51 40 C52 44 50 47 46 47 C37 48 27 49 19 46 C16 45 15 44 15 43 Z"/>
-  <path d="M24 29 L26 22 L28 29"/>
-  <path d="M33 28 L35 20 L37 28"/>
-  <path d="M47 33 C52 30 56 30 58.5 33.5 L60 38 L57 40 L49 40"/>
-  <circle cx="55" cy="35" r="1.7" fill="#1E293B" stroke="none"/>
+<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="Doodle T-Rex">
+  <path d="M14 58 C21 60 43 60 50 57" stroke="#475569" stroke-width="1.5" opacity="0.55"/>
+  <path d="M19 43 C11 41 4 35 5 27 C5.5 24 9 23 11 25"/>
+  <path d="M21 44 C19 33 23 23 31 20 C38 18 43 22 44 29 C45 36 42 43 36 46 C29 49 24 48 21 45 C20 44 20 43 21 44 Z"/>
+  <path d="M27 20 L29 12 L32 20" stroke="#1D4ED8"/>
+  <path d="M35 19 L37 10 L40 19" stroke="#1D4ED8"/>
+  <path d="M40 20 C43 13 51 11 56 16 L60 23 L56 28 L44 27 C41 27 39 25 40 20 Z"/>
+  <circle cx="51" cy="20" r="1.7" fill="#BE123C" stroke="none"/>
   <g class="mascot-jaw">
-    <path d="M49 40 L57 40 L53 45 L47 43"/>
+    <path d="M44 27 L56 27 L52 34 L43 31"/>
   </g>
-  <path d="M51 40 L52.3 43 L53.6 40"/>
-  <path d="M24 46 L23 55"/>
-  <path d="M36 47 L36 56"/>
-  <path d="M44 45 L46 54"/>
-  <path d="M20 39 L24 43"/>
-  <path d="M27 38 L31 42"/>
-  <path d="M41 38 L45 42"/>
+  <path d="M47 27 L48.5 30 L50 27"/>
+  <path d="M35 28 L32 32 L30 31"/>
+  <path d="M35 28 L30 31 L29 34"/>
+  <path d="M25 46 L23 55"/>
+  <path d="M35 46 L36 56"/>
+  <path d="M23 32 L27 36" opacity="0.7"/>
+  <path d="M28 31 L32 35" opacity="0.7"/>
+  <path d="M32 30 L36 34" opacity="0.7"/>
   <g class="mascot-splatter" stroke="#1D4ED8" stroke-width="2">
-    <path d="M60 30 L65 27"/>
-    <path d="M61 36 L66 35"/>
-    <path d="M60 42 L65 44"/>
+    <path d="M58 25 L64 22"/>
+    <path d="M59 30 L65 29"/>
+    <path d="M58 34 L63 36"/>
   </g>
   <g class="mascot-squiggle" stroke="#BE123C" stroke-width="2">
-    <path d="M44 17 l3 -3 l3 3 l3 -3"/>
+    <path d="M42 7 l3 -3 l3 3 l3 -3"/>
   </g>
 </svg>`;
 
@@ -1170,7 +1181,7 @@ function getChunkHTML(node) {
   const l = node.left.type === 'bracket' ? '(' + astToString(node.left.inner) + ')' : String(node.left.value);
   const r = node.right.type === 'bracket' ? '(' + astToString(node.right.inner) + ')' : String(node.right.value);
   if (node.op === '^') {
-    return `${l}<span class="sup">${r}</span>`;
+    return `${l}<sup>${r}</sup>`;
   }
   return `${l} <span class="op-sym">${OPSYMBOLS[node.op] || node.op}</span> ${r}`;
 }
@@ -1651,7 +1662,7 @@ function renderActionTray() {
   tray.innerHTML = '';
 
   if (state.phase === 'select') {
-    renderPrompt('Which operation do you crunch <strong>first</strong>?');
+    renderPrompt('Which bite goes <strong>first</strong>?');
 
     const candidates = findCandidateChunks(state.ast);
     const visualDistractors = findVisualDistractors(state.ast);
@@ -1659,8 +1670,6 @@ function renderActionTray() {
     state.currentCandidates = candidates;
 
     const grid = document.createElement('div');
-    const totalOptions = candidates.length + visualDistractors.length;
-    grid.className = 'tray-grid' + (totalOptions === 1 ? ' single' : '');
 
     const seen = new Set();
     const allOptions = [];
@@ -1682,6 +1691,9 @@ function renderActionTray() {
     });
 
     allOptions.sort(() => Math.random() - 0.5);
+
+    const totalOptions = allOptions.length;
+    grid.className = 'tray-grid' + (totalOptions === 1 ? ' single' : (totalOptions === 3 ? ' three-items' : ''));
 
     allOptions.forEach(opt => {
       const btn = document.createElement('button');
