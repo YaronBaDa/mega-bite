@@ -98,7 +98,7 @@ body {
 
 .brand {
   flex: 1;
-  text-align: center;
+  text-align: left;
   font-family: var(--font-ui);
   font-size: 1.45rem;
   font-weight: 800;
@@ -106,39 +106,22 @@ body {
   letter-spacing: 0.5px;
 }
 
-.hud {
+.page-tracker {
   display: flex;
   align-items: center;
   gap: 6px;
   flex-shrink: 0;
 }
-
-.evo-badge {
-  padding: 5px 10px;
-  border-radius: 8px;
-  background: var(--paper-card);
-  border: 1.5px solid var(--border-ink);
-  font-family: var(--font-ui);
-  font-size: 0.82rem;
-  color: var(--ink-muted);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-width: 122px;
-  box-shadow: 2px 2px 0 var(--border-ink);
+.page-tracker .stamp {
+  width: 14px;
+  height: 14px;
+  border: 2px solid var(--ink);
+  border-radius: 50%;
+  background: transparent;
 }
-
-.streak-badge {
-  padding: 5px 10px;
-  border-radius: 8px;
-  background: var(--paper-card);
-  border: 1.5px solid var(--border-ink);
-  display: flex; align-items: center; gap: 4px;
-  box-shadow: 2px 2px 0 var(--border-ink);
+.page-tracker .stamp.filled {
+  background: var(--ink);
 }
-.streak-label { color: var(--ink-muted); font-family: var(--font-ui); font-size: 0.72rem; }
-.streak-badge #streakVal { color: var(--pen-green); font-family: var(--font-ui); font-weight: 800; font-size: 0.85rem; }
-.evo-badge #levelVal { color: var(--pen-blue); font-weight: 800; }
 
 /* ===== INK ENERGY METER ===== */
 .ink-wrap {
@@ -215,13 +198,9 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 16px 16px 44px 24px;
+  padding: 16px 16px 16px 24px;
   min-height: 0;
   position: relative;
-}
-.food-chain-wrap {
-  position: relative;
-  width: 100%;
 }
 
 .food-chain {
@@ -261,7 +240,7 @@ body {
 }
 .food-token.num { color: var(--ink); min-width: 32px; }
 .food-token.op { color: var(--pen-blue); font-size: 1.8rem; padding: 1px 2px; }
-.food-token.paren { color: var(--pen-pink); font-size: 1.85rem; padding: 0 1px; }
+.food-token.paren { color: var(--pen-blue); font-size: 1.85rem; padding: 0 1px; }
 
 /* Hover/touch highlighter sweep + dashed ink underline */
 .food-token.chunk-highlight {
@@ -280,7 +259,7 @@ body {
   vertical-align: baseline;
   position: relative;
   top: -0.55em;
-  color: var(--pen-pink);
+  color: var(--pen-blue);
 }
 
 /* Scribble-collapse (strike-through + shrink) */
@@ -306,16 +285,6 @@ body {
   0% { transform: scale(0.4); }
   60% { transform: scale(1.18); }
   100% { transform: scale(1); }
-}
-
-.mascot-stage {
-  position: absolute;
-  right: 8px;
-  bottom: -30px;
-  width: 76px;
-  height: 76px;
-  z-index: 3;
-  pointer-events: none;
 }
 
 /* ===== PROMPT ROW ===== */
@@ -551,7 +520,7 @@ body {
   color: var(--ink);
   min-width: 44px;
 }
-.cheat-row[data-tier="B"] .cheat-symbol { color: var(--pen-pink); }
+.cheat-row[data-tier="B"] .cheat-symbol,
 .cheat-row[data-tier="O"] .cheat-symbol,
 .cheat-row[data-tier="DM"] .cheat-symbol,
 .cheat-row[data-tier="AS"] .cheat-symbol { color: var(--pen-blue); }
@@ -686,7 +655,7 @@ body {
 .play-btn:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 var(--border-ink); }
 
 /* ===== LEVEL COMPLETE ===== */
-.level-card {
+.page-card {
   position: fixed;
   inset: 0;
   background: rgba(250, 248, 245, 0.92);
@@ -699,19 +668,34 @@ body {
   animation: fadeIn 0.4s ease;
   padding: 24px;
 }
-.level-mascot { width: 100px; height: 100px; margin-bottom: 12px; animation: evoPop 0.6s var(--spring); }
+.page-mascot { width: 96px; height: 96px; margin-bottom: 10px; animation: evoPop 0.6s var(--spring); }
 @keyframes evoPop {
   0% { transform: scale(0); }
   60% { transform: scale(1.25); }
   100% { transform: scale(1); }
 }
-.level-title {
+.page-title {
   font-family: var(--font-ui);
-  font-size: 1.8rem;
-  color: var(--pen-green);
-  margin-bottom: 6px;
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--ink);
+  margin-bottom: 14px;
 }
-.level-sub {
+.stamp-badge {
+  display: inline-block;
+  padding: 10px 22px;
+  border: 3px solid var(--ink);
+  border-radius: 10px;
+  font-weight: 800;
+  font-size: 1.05rem;
+  letter-spacing: 1px;
+  transform: rotate(-4deg);
+  margin-bottom: 14px;
+}
+.stamp-badge.flawless { color: var(--pen-green); border-color: var(--pen-green); }
+.stamp-badge.solid { color: var(--pen-blue); border-color: var(--pen-blue); }
+.stamp-badge.cleared { color: var(--ink); border-color: var(--ink); }
+.page-sub {
   font-size: 0.88rem;
   color: var(--ink-muted);
   margin-bottom: 24px;
@@ -830,7 +814,6 @@ body {
   .food-token.op { font-size: 1.25rem; }
   .chunk-card, .answer-btn { font-size: 1.05rem; padding: 13px 10px; }
   .brand { font-size: 1.25rem; }
-  .evo-badge { max-width: 88px; }
   .start-mascot { width: 94px; height: 94px; }
 }
 
@@ -860,12 +843,9 @@ body {
 <!-- GAME SCREEN -->
 <div id="gameScreen" class="screen">
   <div class="header">
-    <button class="icon-btn" id="settingsBtn" aria-label="Settings"></button>
     <div class="brand">MEGA-BITE</div>
-    <div class="hud">
-      <div class="evo-badge" id="evoBadge">LV <span id="levelVal">1</span></div>
-      <div class="streak-badge" aria-label="Streak"><span class="streak-label">STREAK</span><span id="streakVal">0</span></div>
-    </div>
+    <div class="page-tracker" id="pageTracker" aria-label="Page progress"></div>
+    <button class="icon-btn" id="settingsBtn" aria-label="Settings"></button>
   </div>
 
   <div class="ink-wrap">
@@ -880,12 +860,7 @@ body {
   </div>
 
   <div class="food-chain-area">
-    <div class="food-chain-wrap">
-      <div class="food-chain" id="foodChain"></div>
-      <div class="mascot-stage">
-        <div class="mascot idle" id="doodleMascot" aria-hidden="true"></div>
-      </div>
-    </div>
+    <div class="food-chain" id="foodChain"></div>
   </div>
 
   <div class="prompt-row">
@@ -937,12 +912,13 @@ body {
   <button class="refill-btn" id="refillBtn">REFILL PEN ✒️</button>
 </div>
 
-<!-- LEVEL COMPLETE -->
-<div id="levelCard" class="level-card hidden">
-  <div class="mascot level-mascot" id="levelMascot" aria-hidden="true"></div>
-  <div class="level-title" id="levelTitle">PAGE CLEARED!</div>
-  <div class="level-sub" id="levelSub">Level 1 • MARGIN SKETCH</div>
-  <button class="next-btn" id="nextBtn">NEXT →</button>
+<!-- PAGE COMPLETE -->
+<div id="pageCard" class="page-card hidden">
+  <div class="mascot page-mascot" id="pageMascot" aria-hidden="true"></div>
+  <div class="page-title" id="pageTitle">PAGE 1 COMPLETE!</div>
+  <div class="stamp-badge" id="stampBadge">★ FLAWLESS PAGE</div>
+  <div class="page-sub" id="pageSub">5 equations • 0 mistakes</div>
+  <button class="next-btn" id="nextBtn">NEXT PAGE →</button>
 </div>
 
 <!-- SETTINGS MODAL -->
@@ -1012,7 +988,7 @@ const ICON_MUTE = '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" s
 const ICON_GEAR = '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>';
 
 function mountMascots() {
-  ['startMascot', 'doodleMascot', 'levelMascot', 'cooldownMascot'].forEach(id => {
+  ['startMascot', 'pageMascot', 'cooldownMascot'].forEach(id => {
     const el = document.getElementById(id);
     if (el) el.innerHTML = MASCOT_SVG;
   });
@@ -1210,8 +1186,10 @@ function findVisualDistractors(node) {
       const right = tokens[i+2];
       const isReal = op.astNode.left === left.astNode && op.astNode.right === right.astNode;
       if (!isReal) {
+        const sym = OPSYMBOLS[op.value] || op.value;
         distractors.push({
-          display: `${left.value} ${OPSYMBOLS[op.value] || op.value} ${right.value}`,
+          display: `${left.value} ${sym} ${right.value}`,
+          html: `${left.value} <span class="op-sym">${sym}</span> ${right.value}`,
           op: op.value,
           leftVal: left.value,
           rightVal: right.value,
@@ -1459,19 +1437,11 @@ function playFanfare() {
 }
 
 /* -------------------- STATE -------------------- */
-const EVOLUTION_STAGES = [
-  { name: 'MARGIN SKETCH', threshold: 0 },
-  { name: 'INK RAPTOR', threshold: 3 },
-  { name: 'NOTEBOOK REX', threshold: 8 },
-];
-
 let state = {
   difficulty: 'medium',
-  level: 1,
-  streak: 0,
-  bestStreak: 0,
-  totalEquations: 0,
-  correctEquations: 0,
+  pageNumber: 1,
+  equationsInPage: 0,
+  pageMistakes: 0,
   inkEnergy: 100,
   ast: null,
   totalStepsOriginal: 0,
@@ -1481,7 +1451,6 @@ let state = {
   isProcessing: false,
   inkTimer: null,
   cheatSheetOpen: false,
-  roundsPlayed: 0,
   currentCandidates: [],
 };
 
@@ -1489,20 +1458,22 @@ function loadState() {
   try {
     const data = JSON.parse(localStorage.getItem(LS_KEY));
     if (data) {
-      state.level = data.level || 1;
-      state.bestStreak = data.bestStreak || 0;
-      state.totalEquations = data.totalEquations || 0;
-      state.correctEquations = data.correctEquations || 0;
+      state.pageNumber = data.pageNumber || 1;
+      state.equationsInPage = data.equationsInPage || 0;
+      state.pageMistakes = data.pageMistakes || 0;
+      if (state.equationsInPage >= 5) {
+        state.equationsInPage = 0;
+        state.pageNumber++;
+      }
     }
   } catch (e) {}
 }
 
 function saveState() {
   localStorage.setItem(LS_KEY, JSON.stringify({
-    level: state.level,
-    bestStreak: state.bestStreak,
-    totalEquations: state.totalEquations,
-    correctEquations: state.correctEquations,
+    pageNumber: state.pageNumber,
+    equationsInPage: state.equationsInPage,
+    pageMistakes: state.pageMistakes,
   }));
 }
 
@@ -1565,28 +1536,24 @@ function renderInkEnergy() {
 function showOutOfInk() {
   stopInkTimer();
   $('outOfInkOverlay').classList.remove('hidden');
-  $('doodleMascot').classList.add('cooldown');
 }
 
 function refillPen() {
   state.inkEnergy = 50;
   renderInkEnergy();
   $('outOfInkOverlay').classList.add('hidden');
-  $('doodleMascot').classList.remove('cooldown');
   startInkTimer();
 }
 
-/* -------------------- EVOLUTION -------------------- */
-function getEvolution() {
-  let stage = EVOLUTION_STAGES[0];
-  for (const s of EVOLUTION_STAGES) {
-    if (state.level >= s.threshold) stage = s;
+/* -------------------- PAGE TRACKER -------------------- */
+function renderPageTracker() {
+  const tracker = $('pageTracker');
+  if (!tracker) return;
+  let html = '';
+  for (let i = 0; i < 5; i++) {
+    html += `<span class="stamp${i < state.equationsInPage ? ' filled' : ''}"></span>`;
   }
-  return stage;
-}
-
-function renderLevel() {
-  $('levelVal').textContent = state.level;
+  tracker.innerHTML = html;
 }
 
 /* -------------------- RENDERING -------------------- */
@@ -1703,7 +1670,7 @@ function renderActionTray() {
         btn._previewNodes = [opt.data.node, opt.data.node.left, opt.data.node.right];
         btn.onclick = () => handleChunkSelect(opt.data, correct, btn);
       } else {
-        btn.textContent = opt.data.display;
+        btn.innerHTML = opt.data.html;
         btn._previewNodes = opt.data.astNodes || [];
         btn.onclick = () => handleVisualDistractorTap(opt.data, correct, btn);
       }
@@ -1770,10 +1737,9 @@ function handleVisualDistractorTap(distractor, correctNode, btn) {
 
   playThud();
   btn.classList.add('shake');
-  $('doodleMascot').classList.add('error');
 
-  state.streak = 0;
-  $('streakVal').textContent = state.streak;
+  state.pageMistakes++;
+  saveState();
 
   const msg = `${distractor.leftVal} and ${distractor.rightVal} belong to different chunks — the ${OPSYMBOLS[distractor.op] || distractor.op} connects bigger pieces. Try a smaller chunk.`;
   showFeedback(msg, 'error');
@@ -1781,7 +1747,6 @@ function handleVisualDistractorTap(distractor, correctNode, btn) {
 
   setTimeout(() => {
     btn.classList.remove('shake');
-    $('doodleMascot').classList.remove('error');
   }, 500);
 }
 
@@ -1794,10 +1759,6 @@ function handleChunkSelect(candidate, correctNode, btn) {
     state.phase = 'answer';
     playSnap();
 
-    state.streak++;
-    if (state.streak > state.bestStreak) state.bestStreak = state.streak;
-    $('streakVal').textContent = state.streak;
-
     highlightTokens([candidate.node, candidate.node.left, candidate.node.right]);
     clearFeedback();
 
@@ -1805,10 +1766,9 @@ function handleChunkSelect(candidate, correctNode, btn) {
   } else {
     playThud();
     btn.classList.add('shake');
-    $('doodleMascot').classList.add('error');
 
-    state.streak = 0;
-    $('streakVal').textContent = state.streak;
+    state.pageMistakes++;
+    saveState();
 
     const correctTier = correctNode.tier;
     const candidateTier = candidate.node.tier;
@@ -1836,7 +1796,6 @@ function handleChunkSelect(candidate, correctNode, btn) {
 
     setTimeout(() => {
       btn.classList.remove('shake');
-      $('doodleMascot').classList.remove('error');
     }, 500);
   }
 }
@@ -1848,7 +1807,6 @@ function handleAnswerSelect(val, correct, btn) {
     state.isProcessing = true;
     btn.classList.add('correct');
     playChomp();
-    $('doodleMascot').classList.add('chomp');
     $('foodChain').classList.add('arena-shake');
 
     refillInk();
@@ -1877,7 +1835,7 @@ function handleAnswerSelect(val, correct, btn) {
         renderFoodChain();
         const finalToken = document.querySelector('#foodChain .food-token.num');
         if (finalToken) finalToken.classList.add('crunch-result');
-        setTimeout(() => levelComplete(), 500);
+        setTimeout(() => onEquationSolved(), 500);
       } else {
         renderFoodChain();
         document.querySelectorAll('#foodChain .food-token.num').forEach(tok => {
@@ -1888,13 +1846,15 @@ function handleAnswerSelect(val, correct, btn) {
         state.phase = 'select';
         state.selectedChunk = null;
         state.isProcessing = false;
-        $('doodleMascot').classList.remove('chomp');
         renderActionTray();
       }
     }, 500);
   } else {
     btn.classList.add('wrong');
     playThud();
+
+    state.pageMistakes++;
+    saveState();
 
     const symbols = { '+': 'Addition (+)', '-': 'Subtraction (−)', '*': 'Multiplication (×)', '/': 'Division (÷)', '^': 'Power' };
     const node = state.selectedChunk.node;
@@ -1912,29 +1872,50 @@ function loadLevel() {
   state.phase = 'select';
   state.selectedChunk = null;
   state.isProcessing = false;
-  state.totalEquations++;
-  state.roundsPlayed++;
   clearChunkHighlights();
   clearFeedback();
   closeCheatSheet();
 
   renderFoodChain();
   renderActionTray();
-  renderLevel();
   renderInkEnergy();
   updateStepCounter();
 }
 
-function levelComplete() {
-  playFanfare();
-  state.correctEquations++;
-  state.level++;
+function onEquationSolved() {
+  state.equationsInPage++;
+  renderPageTracker();
   saveState();
 
-  const evo = getEvolution();
-  $('levelTitle').textContent = 'PAGE CLEARED!';
-  $('levelSub').textContent = `Level ${state.level} • ${evo.name}`;
-  $('levelCard').classList.remove('hidden');
+  if (state.equationsInPage >= 5) {
+    showPageComplete();
+  } else {
+    loadLevel();
+  }
+}
+
+function showPageComplete() {
+  playFanfare();
+  const m = state.pageMistakes;
+  let badgeText, badgeClass;
+  if (m === 0) { badgeText = '★ FLAWLESS PAGE'; badgeClass = 'flawless'; }
+  else if (m <= 2) { badgeText = '✓ SOLID WORK'; badgeClass = 'solid'; }
+  else { badgeText = '✎ PAGE CLEARED'; badgeClass = 'cleared'; }
+  $('pageTitle').textContent = `PAGE ${state.pageNumber} COMPLETE!`;
+  $('stampBadge').textContent = badgeText;
+  $('stampBadge').className = 'stamp-badge ' + badgeClass;
+  $('pageSub').textContent = `5 equations • ${m} mistake${m === 1 ? '' : 's'}`;
+  $('pageCard').classList.remove('hidden');
+}
+
+function nextPage() {
+  state.pageNumber++;
+  state.equationsInPage = 0;
+  state.pageMistakes = 0;
+  saveState();
+  $('pageCard').classList.add('hidden');
+  renderPageTracker();
+  loadLevel();
 }
 
 /* -------------------- EVENT HANDLERS -------------------- */
@@ -1985,8 +1966,7 @@ $('refillBtn').onclick = () => {
 };
 
 $('nextBtn').onclick = () => {
-  $('levelCard').classList.add('hidden');
-  loadLevel();
+  nextPage();
 };
 
 $('bodmasToggle').onclick = () => {
@@ -2005,7 +1985,7 @@ $('cheatClose').onclick = () => {
 mountMascots();
 mountIcons();
 loadState();
-renderLevel();
+renderPageTracker();
 renderSoundToggle();
 </script>
 </body>
