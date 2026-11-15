@@ -77,7 +77,7 @@ body {
   flex-shrink: 0;
 }
 
-.mute-btn {
+.icon-btn {
   width: 44px; height: 44px;
   border-radius: 10px;
   background: var(--paper-card);
@@ -89,13 +89,20 @@ body {
   flex-shrink: 0;
   box-shadow: 3px 3px 0 var(--border-ink);
 }
-.mute-btn:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 var(--border-ink); }
+.icon-btn:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 var(--border-ink); }
+.start-settings {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 5;
+}
 
 .brand {
   flex: 1;
   text-align: center;
   font-family: var(--font-ui);
   font-size: 1.45rem;
+  font-weight: 800;
   color: var(--ink);
   letter-spacing: 0.5px;
 }
@@ -132,6 +139,7 @@ body {
 }
 .streak-label { color: var(--ink-muted); font-family: var(--font-ui); font-size: 0.72rem; }
 .streak-badge #streakVal { color: var(--pen-green); font-family: var(--font-ui); font-weight: 800; font-size: 0.85rem; }
+.evo-badge #levelVal { color: var(--pen-blue); font-weight: 800; }
 
 /* ===== INK ENERGY METER ===== */
 .ink-wrap {
@@ -215,7 +223,7 @@ body {
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
-  gap: 5px;
+  gap: 1px;
   padding: 18px 16px;
   background: var(--paper-card);
   border-radius: 12px;
@@ -237,7 +245,7 @@ body {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 6px 4px;
+  padding: 4px 2px;
   border-radius: 6px;
   font-family: var(--font-ui);
   font-weight: 800;
@@ -245,8 +253,8 @@ body {
   transition: background 0.15s, color 0.15s;
   position: relative;
 }
-.food-token.num { color: var(--ink); min-width: 34px; }
-.food-token.op { color: var(--pen-blue); font-size: 1.5rem; padding: 2px 3px; }
+.food-token.num { color: var(--ink); min-width: 28px; }
+.food-token.op { color: var(--pen-blue); font-size: 1.5rem; padding: 1px 2px; }
 .food-token.paren { color: var(--pen-pink); font-size: 1.55rem; padding: 0 1px; }
 
 /* Hover/touch highlighter sweep + dashed ink underline */
@@ -314,7 +322,7 @@ body {
   flex-shrink: 0;
 }
 .prompt {
-  text-align: center;
+  text-align: left;
   font-size: 0.9rem;
   color: var(--ink-muted);
   font-weight: 700;
@@ -618,6 +626,7 @@ body {
 .start-title {
   font-family: var(--font-ui);
   font-size: 2.5rem;
+  font-weight: 800;
   color: var(--ink);
   letter-spacing: 1px;
   margin-bottom: 2px;
@@ -630,11 +639,6 @@ body {
   margin-bottom: 26px;
   max-width: 290px;
   line-height: 1.5;
-}
-.diff-row {
-  display: flex;
-  gap: 8px;
-  margin-bottom: 20px;
 }
 .diff-btn {
   padding: 12px 16px;
@@ -723,6 +727,92 @@ body {
 }
 .next-btn:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 var(--border-ink); }
 
+/* ===== SETTINGS MODAL ===== */
+.settings-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(30, 41, 59, 0.35);
+  z-index: 99;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+.settings-backdrop.open { opacity: 1; pointer-events: auto; }
+.settings-sheet {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%) scale(0.9) rotate(-1deg);
+  z-index: 100;
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.3s var(--spring);
+  width: 90%;
+  max-width: 340px;
+}
+.settings-sheet.open { opacity: 1; pointer-events: auto; transform: translate(-50%, -50%) scale(1) rotate(-1deg); }
+.settings-panel {
+  background: var(--paper-card);
+  border: 2px solid var(--border-ink);
+  border-radius: 12px;
+  padding: 20px 18px;
+  box-shadow: 4px 4px 0 var(--border-ink);
+  position: relative;
+}
+.settings-close {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  width: 38px;
+  height: 38px;
+  border-radius: 8px;
+  background: var(--paper-tint);
+  border: 2px solid var(--border-ink);
+  color: var(--ink-muted);
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: inherit;
+  transition: all 0.15s;
+}
+.settings-close:hover { border-color: var(--pen-pink); color: var(--pen-pink); }
+.settings-title {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: var(--ink);
+  letter-spacing: 0.5px;
+  margin-bottom: 14px;
+}
+.settings-group { margin-bottom: 16px; }
+.settings-group:last-child { margin-bottom: 0; }
+.settings-label {
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 1px;
+  color: var(--ink-muted);
+  margin-bottom: 8px;
+}
+.settings-diff-row { display: flex; gap: 8px; }
+.sound-toggle {
+  width: 100%;
+  padding: 12px 14px;
+  min-height: 48px;
+  border-radius: 10px;
+  background: var(--paper-card);
+  border: 2px solid var(--border-ink);
+  color: var(--ink);
+  font-weight: 800;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  font-family: inherit;
+  box-shadow: 3px 3px 0 var(--border-ink);
+  transition: transform 0.12s var(--spring), box-shadow 0.12s var(--spring);
+}
+.sound-toggle:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 var(--border-ink); }
+
 /* ===== UTILS ===== */
 .hidden { display: none !important; }
 .screen { display: none; height: 100%; }
@@ -751,15 +841,11 @@ body {
 
 <!-- START SCREEN -->
 <div id="startScreen" class="screen active">
+  <button class="icon-btn start-settings" id="startSettingsBtn" aria-label="Settings"></button>
   <div class="start-screen">
     <div class="mascot start-mascot idle" id="startMascot" aria-hidden="true"></div>
     <div class="start-title">MEGA<span class="accent">-</span>BITE</div>
     <div class="start-sub">Solve BODMAS equations on the page. Crunch the right operation first — don't run out of ink.</div>
-    <div class="diff-row">
-      <button class="diff-btn" data-d="easy">EASY</button>
-      <button class="diff-btn active" data-d="medium">MEDIUM</button>
-      <button class="diff-btn" data-d="hard">HARD</button>
-    </div>
     <button class="play-btn" id="playBtn">START SOLVING</button>
   </div>
 </div>
@@ -767,10 +853,10 @@ body {
 <!-- GAME SCREEN -->
 <div id="gameScreen" class="screen">
   <div class="header">
-    <button class="mute-btn" id="muteBtn" aria-label="Toggle sound"></button>
+    <button class="icon-btn" id="settingsBtn" aria-label="Settings"></button>
     <div class="brand">MEGA-BITE</div>
     <div class="hud">
-      <div class="evo-badge" id="evoBadge"><span id="evoName">MARGIN SKETCH</span></div>
+      <div class="evo-badge" id="evoBadge">LV <span id="levelVal">1</span></div>
       <div class="streak-badge" aria-label="Streak"><span class="streak-label">STREAK</span><span id="streakVal">0</span></div>
     </div>
   </div>
@@ -850,6 +936,27 @@ body {
   <button class="next-btn" id="nextBtn">NEXT →</button>
 </div>
 
+<!-- SETTINGS MODAL -->
+<div class="settings-backdrop" id="settingsBackdrop"></div>
+<div class="settings-sheet" id="settingsSheet" role="dialog" aria-label="Settings">
+  <div class="settings-panel">
+    <button class="settings-close" id="settingsClose" aria-label="Close">×</button>
+    <div class="settings-title">Settings</div>
+    <div class="settings-group">
+      <div class="settings-label">DIFFICULTY</div>
+      <div class="settings-diff-row">
+        <button class="diff-btn" data-d="easy">EASY</button>
+        <button class="diff-btn active" data-d="medium">MEDIUM</button>
+        <button class="diff-btn" data-d="hard">HARD</button>
+      </div>
+    </div>
+    <div class="settings-group">
+      <div class="settings-label">SOUND</div>
+      <button class="sound-toggle" id="soundToggle"></button>
+    </div>
+  </div>
+</div>
+
 </div>
 
 <script>
@@ -891,12 +998,20 @@ const MASCOT_SVG = `
 
 const ICON_SOUND = '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4Z" fill="currentColor" stroke="none"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.5 5.5a9.5 9.5 0 0 1 0 13"/></svg>';
 const ICON_MUTE = '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4Z" fill="currentColor" stroke="none"/><path d="m16 9 5 5"/><path d="m21 9-5 5"/></svg>';
+const ICON_GEAR = '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>';
 
 function mountMascots() {
   ['startMascot', 'doodleMascot', 'levelMascot', 'cooldownMascot'].forEach(id => {
     const el = document.getElementById(id);
     if (el) el.innerHTML = MASCOT_SVG;
   });
+}
+
+function mountIcons() {
+  const g1 = document.getElementById('settingsBtn');
+  if (g1) g1.innerHTML = ICON_GEAR;
+  const g2 = document.getElementById('startSettingsBtn');
+  if (g2) g2.innerHTML = ICON_GEAR;
 }
 
 /* -------------------- TOKENIZER & AST -------------------- */
@@ -1459,9 +1574,8 @@ function getEvolution() {
   return stage;
 }
 
-function renderEvolution() {
-  const evo = getEvolution();
-  $('evoName').textContent = evo.name;
+function renderLevel() {
+  $('levelVal').textContent = state.level;
 }
 
 /* -------------------- RENDERING -------------------- */
@@ -1794,7 +1908,7 @@ function loadLevel() {
 
   renderFoodChain();
   renderActionTray();
-  renderEvolution();
+  renderLevel();
   renderInkEnergy();
   updateStepCounter();
 }
@@ -1830,15 +1944,29 @@ $('playBtn').onclick = () => {
   startInkTimer();
 };
 
-function renderMute() {
-  $('muteBtn').innerHTML = isMuted ? ICON_MUTE : ICON_SOUND;
+function renderSoundToggle() {
+  $('soundToggle').innerHTML = (isMuted ? ICON_MUTE : ICON_SOUND) + ' <span>' + (isMuted ? 'OFF' : 'ON') + '</span>';
 }
 
-$('muteBtn').onclick = () => {
+$('soundToggle').onclick = () => {
   isMuted = !isMuted;
   localStorage.setItem(LS_MUTE, isMuted ? '1' : '0');
-  renderMute();
+  renderSoundToggle();
 };
+
+function openSettings() {
+  $('settingsSheet').classList.add('open');
+  $('settingsBackdrop').classList.add('open');
+}
+function closeSettings() {
+  $('settingsSheet').classList.remove('open');
+  $('settingsBackdrop').classList.remove('open');
+}
+
+$('settingsBtn').onclick = openSettings;
+$('startSettingsBtn').onclick = openSettings;
+$('settingsClose').onclick = closeSettings;
+$('settingsBackdrop').onclick = closeSettings;
 
 $('refillBtn').onclick = () => {
   refillPen();
@@ -1863,9 +1991,10 @@ $('cheatClose').onclick = () => {
 
 /* -------------------- INIT -------------------- */
 mountMascots();
+mountIcons();
 loadState();
-renderEvolution();
-renderMute();
+renderLevel();
+renderSoundToggle();
 </script>
 </body>
 </html>
