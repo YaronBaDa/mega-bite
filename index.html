@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <title>MEGA-BITE</title>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Architects+Daughter&family=Plus+Jakarta+Sans:wght@600;700;800&family=JetBrains+Mono:wght@700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&display=swap');
 
 :root {
   --paper: #FAF8F5;
@@ -20,9 +20,7 @@
   --pen-green: #15803D;
   --highlighter: #FEF08A;
   --border-ink: #334155;
-  --font-hand: 'Architects Daughter', cursive;
   --font-ui: 'Plus Jakarta Sans', sans-serif;
-  --font-mono: 'JetBrains Mono', monospace;
   --spring: cubic-bezier(0.175, 0.885, 0.32, 1.275);
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
 }
@@ -96,7 +94,7 @@ body {
 .brand {
   flex: 1;
   text-align: center;
-  font-family: var(--font-hand);
+  font-family: var(--font-ui);
   font-size: 1.45rem;
   color: var(--ink);
   letter-spacing: 0.5px;
@@ -114,7 +112,7 @@ body {
   border-radius: 8px;
   background: var(--paper-card);
   border: 1.5px solid var(--border-ink);
-  font-family: var(--font-hand);
+  font-family: var(--font-ui);
   font-size: 0.82rem;
   color: var(--ink-muted);
   white-space: nowrap;
@@ -132,8 +130,8 @@ body {
   display: flex; align-items: center; gap: 4px;
   box-shadow: 2px 2px 0 var(--border-ink);
 }
-.streak-label { color: var(--ink-muted); font-family: var(--font-hand); font-size: 0.72rem; }
-.streak-badge #streakVal { color: var(--pen-green); font-family: var(--font-mono); font-weight: 800; font-size: 0.85rem; }
+.streak-label { color: var(--ink-muted); font-family: var(--font-ui); font-size: 0.72rem; }
+.streak-badge #streakVal { color: var(--pen-green); font-family: var(--font-ui); font-weight: 800; font-size: 0.85rem; }
 
 /* ===== INK ENERGY METER ===== */
 .ink-wrap {
@@ -165,8 +163,8 @@ body {
   color: var(--ink-muted);
   margin-top: 5px;
 }
-.ink-label .lbl { color: var(--ink-muted); font-family: var(--font-hand); font-size: 0.78rem; letter-spacing: 0; }
-.ink-label #stepCounter { color: var(--pen-blue); font-family: var(--font-mono); }
+.ink-label .lbl { color: var(--ink-muted); font-family: var(--font-ui); font-size: 0.78rem; letter-spacing: 0; }
+.ink-label #stepCounter { color: var(--pen-blue); font-family: var(--font-ui); }
 .ink-label #inkText { color: var(--pen-green); font-weight: 800; }
 .ink-label #inkText.low { color: var(--pen-pink); }
 
@@ -241,7 +239,7 @@ body {
   justify-content: center;
   padding: 6px 4px;
   border-radius: 6px;
-  font-family: var(--font-mono);
+  font-family: var(--font-ui);
   font-weight: 800;
   font-size: 1.45rem;
   transition: background 0.15s, color 0.15s;
@@ -330,7 +328,7 @@ body {
   border-radius: 10px;
   background: var(--paper-card);
   border: 2px solid var(--border-ink);
-  font-family: var(--font-hand);
+  font-family: var(--font-ui);
   font-size: 0.85rem;
   color: var(--ink-muted);
   cursor: pointer;
@@ -401,7 +399,7 @@ body {
   background: var(--paper-card);
   border: 2px solid var(--border-ink);
   color: var(--ink);
-  font-family: var(--font-mono);
+  font-family: var(--font-ui);
   font-size: 1.15rem;
   font-weight: 800;
   cursor: pointer;
@@ -432,7 +430,7 @@ body {
   background: var(--paper-card);
   border: 2px solid var(--border-ink);
   color: var(--ink);
-  font-family: var(--font-mono);
+  font-family: var(--font-ui);
   font-size: 1.35rem;
   font-weight: 800;
   cursor: pointer;
@@ -506,7 +504,7 @@ body {
 }
 .cheat-close:hover { border-color: var(--pen-pink); color: var(--pen-pink); }
 .cheat-title {
-  font-family: var(--font-hand);
+  font-family: var(--font-ui);
   font-size: 1.05rem;
   color: var(--ink);
   letter-spacing: 0.5px;
@@ -525,14 +523,14 @@ body {
   border-radius: 50%;
   background: var(--pen-blue);
   color: var(--paper-card);
-  font-family: var(--font-mono);
+  font-family: var(--font-ui);
   font-size: 0.7rem;
   font-weight: 800;
   display: flex; align-items: center; justify-content: center;
   flex-shrink: 0;
 }
 .cheat-symbol {
-  font-family: var(--font-mono);
+  font-family: var(--font-ui);
   font-size: 1.05rem;
   font-weight: 800;
   color: var(--ink);
@@ -575,7 +573,7 @@ body {
 }
 .out-of-ink-overlay .mascot { width: 90px; height: 90px; margin-bottom: 16px; }
 .out-of-ink-title {
-  font-family: var(--font-hand);
+  font-family: var(--font-ui);
   font-size: 1.7rem;
   color: var(--ink);
   margin-bottom: 6px;
@@ -618,7 +616,7 @@ body {
 }
 .start-mascot { width: 116px; height: 116px; margin-bottom: 10px; }
 .start-title {
-  font-family: var(--font-hand);
+  font-family: var(--font-ui);
   font-size: 2.5rem;
   color: var(--ink);
   letter-spacing: 1px;
@@ -697,7 +695,7 @@ body {
   100% { transform: scale(1); }
 }
 .level-title {
-  font-family: var(--font-hand);
+  font-family: var(--font-ui);
   font-size: 1.8rem;
   color: var(--pen-green);
   margin-bottom: 6px;
