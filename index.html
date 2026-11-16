@@ -19,6 +19,8 @@
   --pen-pink: #BE123C;
   --pen-red: #E11D48;
   --pen-green: #15803D;
+  --overdrive: #0284C7;
+  --overdrive-cyan: #38BDF8;
   --highlighter: #FEF08A;
   --border-ink: #334155;
   --font-ui: 'Lexend', sans-serif;
@@ -172,6 +174,11 @@ body {
   background-image: repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.16) 0px, rgba(255, 255, 255, 0.16) 4px, transparent 4px, transparent 8px);
 }
 .ink-fill.locked { box-shadow: 0 0 8px rgba(29, 78, 216, 0.5); }
+.ink-fill.overdrive {
+  background-color: var(--overdrive);
+  background-image: repeating-linear-gradient(45deg, rgba(56, 189, 248, 0.3) 0px, rgba(56, 189, 248, 0.3) 4px, transparent 4px, transparent 8px);
+  box-shadow: 0 0 12px rgba(56, 189, 248, 0.65);
+}
 .ink-label {
   display: flex;
   justify-content: space-between;
@@ -185,6 +192,7 @@ body {
 .ink-label #stepCounter { color: var(--pen-blue); font-family: var(--font-ui); }
 .ink-label #inkText { color: var(--ink-muted); font-weight: 800; }
 .ink-label #inkText.locked { color: var(--pen-blue); text-shadow: 0 0 8px rgba(29, 78, 216, 0.35); }
+.ink-label #inkText.overdrive { color: var(--overdrive-cyan); text-shadow: 0 0 10px rgba(56, 189, 248, 0.5); }
 
 /* ===== MASCOT (pen-sketch dino) ===== */
 .mascot { display: inline-block; width: 76px; height: 76px; }
@@ -226,6 +234,23 @@ body {
   min-height: 0;
   position: relative;
 }
+.bonus-badge {
+  position: absolute;
+  top: 2px;
+  left: 50%;
+  transform: translateX(-50%) rotate(-4deg);
+  background: var(--pen-red);
+  color: #fff;
+  font-family: var(--font-ui);
+  font-weight: 800;
+  font-size: 0.72rem;
+  letter-spacing: 1.5px;
+  padding: 4px 14px;
+  border-radius: 6px;
+  box-shadow: 2px 2px 0 var(--border-ink);
+  z-index: 2;
+  pointer-events: none;
+}
 
 .food-chain {
   display: flex;
@@ -266,6 +291,11 @@ body {
 .food-token.num { color: var(--ink); min-width: 32px; }
 .food-token.op { color: var(--pen-blue); font-size: 1.8rem; padding: 1px 2px; }
 .food-token.paren { color: var(--pen-blue); font-size: 1.85rem; padding: 0 1px; }
+/* Overdrive electric-cyan pen tint */
+body.overdrive .food-token.op,
+body.overdrive .food-token.paren,
+body.overdrive .food-token sup,
+body.overdrive .chunk-card .op-sym { color: var(--overdrive-cyan); }
 
 /* Hover/touch highlighter sweep + dashed ink underline */
 .food-token.chunk-highlight {
@@ -729,6 +759,24 @@ body {
 }
 .play-btn:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 var(--border-ink); }
 
+.daily-btn {
+  padding: 14px 32px;
+  min-height: 52px;
+  border-radius: 12px;
+  border: 2px solid var(--pen-red);
+  background: var(--paper-card);
+  color: var(--pen-red);
+  font-size: 0.95rem;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  font-family: inherit;
+  box-shadow: 3px 3px 0 var(--pen-red);
+  transition: transform 0.12s var(--spring), box-shadow 0.12s var(--spring);
+  margin-top: 12px;
+}
+.daily-btn:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 var(--pen-red); }
+
 /* Notation pill toggle (BODMAS | PEMDAS) */
 .notation-toggle {
   display: inline-flex;
@@ -801,6 +849,20 @@ body {
 .stamp-badge.flawless { color: var(--pen-green); border-color: var(--pen-green); }
 .stamp-badge.speed { color: var(--pen-blue); border-color: var(--pen-blue); }
 .stamp-badge.cleared { color: var(--ink); border-color: var(--ink); }
+.bonus-hunter {
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  color: var(--ink-muted);
+  margin-bottom: 8px;
+}
+.bonus-hunter.unlocked {
+  color: var(--pen-red);
+  border: 2px solid var(--pen-red);
+  border-radius: 8px;
+  padding: 4px 12px;
+  transform: rotate(-2deg);
+}
 .page-sub {
   font-size: 0.88rem;
   color: var(--ink-muted);
@@ -823,6 +885,47 @@ body {
   transition: transform 0.12s var(--spring), box-shadow 0.12s var(--spring);
 }
 .next-btn:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 var(--border-ink); }
+
+.share-btn {
+  padding: 14px 28px;
+  min-height: 52px;
+  border-radius: 12px;
+  border: 2px solid var(--pen-red);
+  background: var(--pen-red);
+  color: #fff;
+  font-size: 0.95rem;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  font-family: inherit;
+  box-shadow: 3px 3px 0 var(--border-ink);
+  transition: transform 0.12s var(--spring), box-shadow 0.12s var(--spring);
+}
+.share-btn:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 var(--border-ink); }
+.menu-btn {
+  padding: 10px 20px;
+  min-height: 44px;
+  border-radius: 10px;
+  border: 2px solid var(--border-ink);
+  background: var(--paper-card);
+  color: var(--ink-muted);
+  font-size: 0.85rem;
+  font-weight: 800;
+  cursor: pointer;
+  font-family: inherit;
+  box-shadow: 2px 2px 0 var(--border-ink);
+  transition: transform 0.12s var(--spring), box-shadow 0.12s var(--spring);
+  margin-top: 10px;
+}
+.menu-btn:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 var(--border-ink); }
+.daily-note {
+  font-size: 0.75rem;
+  color: var(--pen-red);
+  font-weight: 700;
+  margin-top: 2px;
+  margin-bottom: 12px;
+  text-align: center;
+}
 
 /* ===== SETTINGS MODAL ===== */
 .settings-backdrop {
@@ -959,6 +1062,7 @@ body {
       <button class="notation-btn" data-n="pemdas">PEMDAS</button>
     </div>
     <button class="play-btn" id="playBtn">Start Page 1</button>
+    <button class="daily-btn" id="dailyBtn">Daily Pop Quiz</button>
   </div>
 </div>
 
@@ -984,6 +1088,7 @@ body {
   <div class="feedback-slot" aria-live="polite"><div class="feedback-banner" id="feedbackBanner"></div></div>
 
   <div class="food-chain-area">
+    <div class="bonus-badge hidden" id="bonusBadge">BONUS PROBLEM</div>
     <div class="food-chain" id="foodChain"></div>
   </div>
 
@@ -1049,8 +1154,20 @@ body {
   <div class="mascot page-mascot" id="pageMascot" aria-hidden="true"></div>
   <div class="page-title" id="pageTitle">PAGE 1 CLEARED!</div>
   <div class="stamp-badge" id="stampBadge">★ FLAWLESS CLEAR</div>
+  <div class="bonus-hunter" id="bonusHunter"></div>
   <div class="page-sub" id="pageSub">5 equations • 0 mistakes • 0s</div>
   <button class="next-btn" id="nextBtn">Flip to Page 2 →</button>
+</div>
+
+<!-- DAILY POP QUIZ COMPLETE -->
+<div id="dailyCard" class="page-card hidden">
+  <div class="mascot page-mascot" id="dailyMascot" aria-hidden="true"></div>
+  <div class="page-title" id="dailyTitle">DAILY POP QUIZ CLEARED!</div>
+  <div class="stamp-badge" id="dailyStamp">★ FLAWLESS CLEAR</div>
+  <div class="daily-note hidden" id="dailyNote">You already cleared today's quiz</div>
+  <div class="page-sub" id="dailySub">5 equations • 0 mistakes • 0s</div>
+  <button class="share-btn" id="shareBtn">Share Score</button>
+  <button class="menu-btn" id="dailyMenuBtn">Back to Menu</button>
 </div>
 
 <!-- SETTINGS MODAL -->
@@ -1089,6 +1206,11 @@ body {
 
 const LS_KEY = 'crunch_v1';
 const LS_MUTE = 'crunch_muted';
+const LS_BONUS = 'crunch_bonus';
+const LS_DAILY_PREFIX = 'crunch_daily_';
+const APP_URL = 'https://yaronbada.github.io/mega-bite/';
+const BONUS_HUNTER_GOAL = 10;
+const DAILY_PAR = 60;
 
 /* -------------------- MASCOT (inline line-art dino) -------------------- */
 const MASCOT_SVG = `
@@ -1126,7 +1248,7 @@ const ICON_MUTE = '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" s
 const ICON_GEAR = '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>';
 
 function mountMascots() {
-  ['startMascot', 'pageMascot', 'cooldownMascot'].forEach(id => {
+  ['startMascot', 'pageMascot', 'cooldownMascot', 'dailyMascot'].forEach(id => {
     const el = document.getElementById(id);
     if (el) el.innerHTML = MASCOT_SVG;
   });
@@ -1422,7 +1544,48 @@ function generateDistractors(correct, node) {
 }
 
 /* -------------------- EQUATION GENERATOR -------------------- */
-function rand(a, b) { return Math.floor(Math.random() * (b - a + 1)) + a; }
+let _rng = () => Math.random();
+function rand(a, b) { return Math.floor(_rng() * (b - a + 1)) + a; }
+
+function mulberry32(a) {
+  return function() {
+    a |= 0; a = a + 0x6D2B79F5 | 0;
+    let t = Math.imul(a ^ (a >>> 15), 1 | a);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+
+/* Deterministic date-based PRNG seed */
+function seededRandom(seed) {
+  let h = 2166136261;
+  for (let i = 0; i < seed.length; i++) {
+    h ^= seed.charCodeAt(i);
+    h = Math.imul(h, 16777619);
+  }
+  return mulberry32(h >>> 0);
+}
+
+/* Bonus problem: multi-step expression with >=3 precedence tiers or a tie-breaker */
+function generateBonusEquation() {
+  const t = rand(1, 3);
+  if (t === 1) {
+    const d = rand(2, 5), e = rand(2, 4);
+    const Y = d * e;
+    const c = rand(2, 5);
+    const minSum = Math.ceil(Y / c);
+    const a = rand(Math.max(2, minSum - 8), 8);
+    const b = rand(Math.max(2, minSum - a), 8);
+    return `(${a} + ${b}) * ${c} - ${d} * ${e}`;
+  } else if (t === 2) {
+    const a = rand(2, 5), b = rand(2, 4), c = rand(2, 5);
+    return `${a}^2 * ${b} + ${c}^2`;
+  } else {
+    const a = rand(6, 12), b = rand(2, 5), c = rand(2, 4);
+    const d = rand(2, 5), e = rand(2, 4);
+    return `${a} - ${b} * ${c} + ${d} * ${e}`;
+  }
+}
 
 function generateEquation(diff) {
   let expr;
@@ -1613,6 +1776,25 @@ function playMarker() {
   });
 }
 
+function playOverdriveChime() {
+  if (isMuted) return;
+  ensureAudio();
+  const t = audioCtx.currentTime;
+  // crisp upward harmonic chime
+  [523.25, 659.25, 783.99, 1046.50].forEach((f, i) => {
+    const osc = audioCtx.createOscillator();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(f, t + i * 0.07);
+    const gain = audioCtx.createGain();
+    gain.gain.setValueAtTime(0, t + i * 0.07);
+    gain.gain.linearRampToValueAtTime(0.15, t + i * 0.07 + 0.02);
+    gain.gain.exponentialRampToValueAtTime(0.001, t + i * 0.07 + 0.5);
+    osc.connect(gain).connect(audioCtx.destination);
+    osc.start(t + i * 0.07);
+    osc.stop(t + i * 0.07 + 0.55);
+  });
+}
+
 /* -------------------- STATE -------------------- */
 let state = {
   difficulty: 'standard',
@@ -1632,6 +1814,13 @@ let state = {
   cheatSheetOpen: false,
   currentCandidates: [],
   pageStartTime: null,
+  mode: 'endless',
+  overdriveUntil: 0,
+  bonusCleared: 0,
+  dailyDate: '',
+  dailyDayNumber: 1,
+  dailyEquations: [],
+  dailyResult: null,
 };
 
 function loadState() {
@@ -1650,9 +1839,11 @@ function loadState() {
     }
   } catch (e) {}
   state.pageStartTime = Date.now();
+  state.bonusCleared = parseInt(localStorage.getItem(LS_BONUS) || '0', 10);
 }
 
 function saveState() {
+  if (state.mode === 'daily') return;
   localStorage.setItem(LS_KEY, JSON.stringify({
     pageNumber: state.pageNumber,
     equationsInPage: state.equationsInPage,
@@ -1660,6 +1851,10 @@ function saveState() {
     notation: state.notation,
     difficulty: state.difficulty,
   }));
+}
+
+function saveBonus() {
+  localStorage.setItem(LS_BONUS, String(state.bonusCleared));
 }
 
 /* Count total binop nodes in AST (number of crunches needed) */
@@ -1688,7 +1883,8 @@ function updateStepCounter() {
 function startInkTimer() {
   stopInkTimer();
   state.inkTimer = setInterval(() => {
-    if (state.phase === 'select' && state.inkEnergy > 0) {
+    const overdrivePause = state.flowStreak >= 5 && Date.now() < (state.overdriveUntil || 0);
+    if (state.phase === 'select' && state.inkEnergy > 0 && !overdrivePause) {
       state.inkEnergy = Math.max(0, state.inkEnergy - getInkDrain());
       renderInkEnergy();
       if (state.inkEnergy === 0) showOutOfInk();
@@ -1714,11 +1910,17 @@ function renderInkEnergy() {
 
 function renderComboBadge() {
   const el = document.getElementById('inkText');
+  const fill = document.getElementById('inkFill');
+  const overdrive = state.flowStreak >= 5;
   const locked = state.flowStreak >= 3;
   el.classList.toggle('locked', locked);
-  el.textContent = locked ? 'LOCKED IN • 2×' : 'LOCKED IN';
-  const fill = document.getElementById('inkFill');
+  el.classList.toggle('overdrive', overdrive);
+  if (overdrive) el.textContent = 'LOCKED IN • OVERDRIVE 2×';
+  else if (locked) el.textContent = 'LOCKED IN • 2×';
+  else el.textContent = 'LOCKED IN';
   fill.classList.toggle('locked', locked);
+  fill.classList.toggle('overdrive', overdrive);
+  document.body.classList.toggle('overdrive', overdrive);
 }
 
 function showOutOfInk() {
@@ -2099,6 +2301,10 @@ function handleAnswerSelect(val, correct, btn) {
 
     refillInk();
     state.flowStreak++;
+    if (state.flowStreak === 5) {
+      state.overdriveUntil = Date.now() + 8000;
+      playOverdriveChime();
+    }
     renderComboBadge();
 
     const chunkNode = state.selectedChunk.node;
@@ -2164,7 +2370,14 @@ function handleAnswerSelect(val, correct, btn) {
 
 /* -------------------- LEVEL FLOW -------------------- */
 function loadLevel() {
-  const expr = generateEquation(state.difficulty);
+  const isBonus = state.equationsInPage === 4;
+  let expr;
+  if (state.mode === 'daily') {
+    expr = state.dailyEquations[state.equationsInPage] || generateEquation('standard');
+  } else {
+    expr = isBonus ? generateBonusEquation() : generateEquation(state.difficulty);
+  }
+  $('bonusBadge').classList.toggle('hidden', !isBonus);
   state.ast = parseAST(tokenize(expr));
   state.totalStepsOriginal = countTotalSteps(state.ast);
   state.phase = 'select';
@@ -2185,8 +2398,16 @@ function onEquationSolved() {
   renderPageTracker();
   saveState();
 
+  if (state.equationsInPage === 5) {
+    state.inkEnergy = Math.min(100, state.inkEnergy + 25);
+    renderInkEnergy();
+    state.bonusCleared++;
+    saveBonus();
+  }
+
   if (state.equationsInPage >= 5) {
-    showPageComplete();
+    if (state.mode === 'daily') showDailyComplete();
+    else showPageComplete();
   } else {
     loadLevel();
   }
@@ -2194,6 +2415,7 @@ function onEquationSolved() {
 
 function showPageComplete() {
   playFanfare();
+  stopInkTimer();
   const m = state.pageMistakes;
   const elapsed = Math.max(0, Math.round((Date.now() - (state.pageStartTime || Date.now())) / 1000));
   const par = getParSeconds();
@@ -2204,9 +2426,115 @@ function showPageComplete() {
   $('pageTitle').textContent = `PAGE ${state.pageNumber} CLEARED!`;
   $('stampBadge').textContent = badgeText;
   $('stampBadge').className = 'stamp-badge ' + badgeClass;
+  renderBonusHunter();
   $('pageSub').textContent = `5 equations • ${m} mistake${m === 1 ? '' : 's'} • ${elapsed}s`;
   $('nextBtn').textContent = `Flip to Page ${state.pageNumber + 1} →`;
   $('pageCard').classList.remove('hidden');
+}
+
+/* -------------------- BONUS HUNTER -------------------- */
+function renderBonusHunter() {
+  const el = $('bonusHunter');
+  if (!el) return;
+  const n = state.bonusCleared;
+  if (n >= BONUS_HUNTER_GOAL) {
+    el.textContent = '★ BONUS HUNTER';
+    el.className = 'bonus-hunter unlocked';
+  } else {
+    el.textContent = `BONUS HUNTER ${n}/${BONUS_HUNTER_GOAL}`;
+    el.className = 'bonus-hunter';
+  }
+}
+
+/* -------------------- DAILY POP QUIZ -------------------- */
+function getDateStr() {
+  const d = new Date();
+  return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+}
+
+function getDayNumber() {
+  const now = new Date();
+  const epoch = new Date(now.getFullYear(), 0, 1);
+  return Math.floor((now.getTime() - epoch.getTime()) / 86400000) + 1;
+}
+
+function generateDailyEquations(dateStr) {
+  const prev = _rng;
+  _rng = seededRandom('crunch-daily-' + dateStr);
+  const eqs = [];
+  for (let i = 0; i < 5; i++) {
+    eqs.push(i === 4 ? generateBonusEquation() : generateEquation('standard'));
+  }
+  _rng = prev;
+  return eqs;
+}
+
+function loadDailyResult(dateStr) {
+  try {
+    return JSON.parse(localStorage.getItem(LS_DAILY_PREFIX + dateStr));
+  } catch (e) { return null; }
+}
+
+function saveDailyResult(result) {
+  localStorage.setItem(LS_DAILY_PREFIX + getDateStr(), JSON.stringify(result));
+}
+
+function getRankBadge(m, elapsed) {
+  if (m === 0 && elapsed < DAILY_PAR) return { text: '⚡ FLAWLESS SPEED CLEAR', cls: 'speed', plain: 'FLAWLESS SPEED CLEAR' };
+  if (m === 0) return { text: '★ FLAWLESS CLEAR', cls: 'flawless', plain: 'FLAWLESS CLEAR' };
+  return { text: '✓ PAGE CLEARED', cls: 'cleared', plain: 'PAGE CLEARED' };
+}
+
+function dailyEmojiRow(m, elapsed) {
+  const speed = m === 0 && elapsed < DAILY_PAR;
+  return (speed ? '⚡' : '🖊️') + '🖊️🖊️🖊️🏆';
+}
+
+function renderDailyCard(result, isRevisit) {
+  $('dailyTitle').textContent = `DAILY POP QUIZ #${result.dayNumber} CLEARED!`;
+  $('dailyStamp').textContent = result.badgeText;
+  $('dailyStamp').className = 'stamp-badge ' + (result.badgeClass || 'cleared');
+  $('dailySub').textContent = `5 equations • ${result.mistakes} mistake${result.mistakes === 1 ? '' : 's'} • ${result.elapsed}s`;
+  $('dailyNote').classList.toggle('hidden', !isRevisit);
+  $('dailyCard').classList.remove('hidden');
+}
+
+function showDailyComplete() {
+  playFanfare();
+  stopInkTimer();
+  const m = state.pageMistakes;
+  const elapsed = Math.max(0, Math.round((Date.now() - (state.pageStartTime || Date.now())) / 1000));
+  const badge = getRankBadge(m, elapsed);
+  state.dailyResult = {
+    dayNumber: state.dailyDayNumber,
+    elapsed,
+    mistakes: m,
+    badgeText: badge.text,
+    badgeClass: badge.cls,
+    badgePlain: badge.plain,
+    emojiRow: dailyEmojiRow(m, elapsed),
+  };
+  saveDailyResult(state.dailyResult);
+  renderDailyCard(state.dailyResult, false);
+}
+
+function copyShareText(text) {
+  const fallback = () => {
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.position = 'fixed';
+    ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.focus();
+    ta.select();
+    try { document.execCommand('copy'); } catch (e) {}
+    ta.remove();
+  };
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(() => {}, fallback);
+  } else {
+    fallback();
+  }
 }
 
 function nextPage() {
@@ -2227,6 +2555,7 @@ function nextPage() {
     game.classList.add('tear-in');
     void game.offsetWidth;
     game.classList.remove('tear-in');
+    startInkTimer();
   }, 350);
 }
 
@@ -2241,14 +2570,66 @@ document.querySelectorAll('.diff-btn').forEach(btn => {
 
 $('playBtn').onclick = () => {
   ensureAudio();
+  state.mode = 'endless';
+  loadState();
+  state.inkEnergy = 100;
+  state.flowStreak = 0;
+  state.overdriveUntil = 0;
   $('startScreen').classList.remove('active');
   $('gameScreen').classList.add('active');
-  state.inkEnergy = 100;
   state.pageStartTime = Date.now();
+  renderInkEnergy();
+  renderComboBadge();
+  renderPageTracker();
+  loadLevel();
+  startInkTimer();
+};
+
+$('dailyBtn').onclick = () => {
+  ensureAudio();
+  const dateStr = getDateStr();
+  const existing = loadDailyResult(dateStr);
+  if (existing) {
+    state.dailyResult = existing;
+    renderDailyCard(existing, true);
+    return;
+  }
+  state.mode = 'daily';
+  state.dailyDate = dateStr;
+  state.dailyDayNumber = getDayNumber();
+  state.dailyEquations = generateDailyEquations(dateStr);
+  state.equationsInPage = 0;
+  state.pageMistakes = 0;
+  state.pageNumber = 1;
+  state.pageStartTime = Date.now();
+  state.inkEnergy = 100;
+  state.flowStreak = 0;
+  state.overdriveUntil = 0;
+  $('startScreen').classList.remove('active');
+  $('gameScreen').classList.add('active');
+  renderPageTracker();
   renderInkEnergy();
   renderComboBadge();
   loadLevel();
   startInkTimer();
+};
+
+$('shareBtn').onclick = () => {
+  const r = state.dailyResult;
+  if (!r) return;
+  const text = `CRUNCH • Daily Pop Quiz #${r.dayNumber} 🖊️\nPage Cleared in ${r.elapsed}s (${r.badgePlain})\n${r.emojiRow}\nCan you beat my time? ${APP_URL}`;
+  copyShareText(text);
+  const btn = $('shareBtn');
+  btn.textContent = 'Copied! ✓';
+  setTimeout(() => { btn.textContent = 'Share Score'; }, 2000);
+};
+
+$('dailyMenuBtn').onclick = () => {
+  stopInkTimer();
+  $('dailyCard').classList.add('hidden');
+  $('gameScreen').classList.remove('active');
+  $('startScreen').classList.add('active');
+  state.mode = 'endless';
 };
 
 function renderSoundToggle() {
