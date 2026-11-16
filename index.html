@@ -17,6 +17,7 @@
   --ink-muted: #475569;
   --pen-blue: #1D4ED8;
   --pen-pink: #BE123C;
+  --pen-red: #E11D48;
   --pen-green: #15803D;
   --highlighter: #FEF08A;
   --border-ink: #334155;
@@ -60,13 +61,34 @@ body {
 .app::before {
   content: '';
   position: absolute;
-  left: 14px;
+  left: 15px;
   top: 0;
   bottom: 0;
-  width: 2px;
-  background: var(--margin-pink);
+  width: 1px;
+  background: rgba(225, 29, 72, 0.25);
   z-index: 0;
   pointer-events: none;
+}
+
+/* Perforated punch holes down the left margin */
+.punch-holes {
+  position: absolute;
+  left: 4px;
+  top: 0;
+  bottom: 0;
+  width: 12px;
+  z-index: 0;
+  pointer-events: none;
+}
+.punch-hole {
+  position: absolute;
+  left: 0;
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: rgba(30, 41, 59, 0.08);
+  box-shadow: inset 0 2px 3px rgba(0, 0, 0, 0.28), inset 0 -1px 1px rgba(255, 255, 255, 0.35);
+  transform: translateY(-50%);
 }
 
 /* ===== HEADER ===== */
@@ -213,7 +235,8 @@ body {
   gap: 1px;
   width: 100%;
   padding: 28px 20px;
-  background: var(--paper-card);
+  background-color: var(--paper-card);
+  background-image: repeating-linear-gradient(to bottom, transparent 0, transparent 27px, rgba(59, 130, 246, 0.09) 27px, rgba(59, 130, 246, 0.09) 28px);
   border-radius: 12px;
   border: 2px solid var(--border-ink);
   box-shadow: 3px 3px 0 var(--border-ink);
@@ -237,7 +260,7 @@ body {
   font-family: var(--font-ui);
   font-weight: 800;
   font-size: 1.75rem;
-  transition: background 0.15s, color 0.15s;
+  transition: background 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
   position: relative;
 }
 .food-token.num { color: var(--ink); min-width: 32px; }
@@ -264,29 +287,65 @@ body {
   color: var(--pen-blue);
 }
 
-/* Scribble-collapse (strike-through + shrink) */
-.food-token.crunch-collapse {
-  text-decoration: line-through;
-  text-decoration-color: var(--pen-pink);
-  text-decoration-thickness: 2px;
-  animation: scribbleOut 0.5s var(--spring) forwards;
+/* Implode/evaporate the solved chunk's tokens */
+.food-token.crunch-implode {
+  animation: implodeOut 0.28s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
-@keyframes scribbleOut {
-  0% { transform: scale(1); opacity: 1; }
-  100% { transform: scale(0.55) rotate(-5deg); opacity: 0; }
+@keyframes implodeOut {
+  0% { transform: scale(1); opacity: 1; filter: blur(0); }
+  100% { transform: scale(0.15); opacity: 0; filter: blur(4px); }
 }
-/* Hand-drawn circle around the snapped result */
-.food-token.crunch-result {
-  color: var(--pen-green);
-  border: 2px solid var(--pen-green);
+/* New digit pops in as red teacher ink, then settles to standard ink */
+.food-token.crunch-pop {
+  color: var(--pen-red);
+  background: rgba(225, 29, 72, 0.08);
+  box-shadow: inset 0 -3px 0 var(--pen-red);
+  border-radius: 4px;
+  animation: popIn 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+@keyframes popIn {
+  0% { transform: scale(0.15); opacity: 0; }
+  60% { transform: scale(1.18); opacity: 1; }
+  100% { transform: scale(1); opacity: 1; }
+}
+/* Ink-puff particles + red-pen mark overlays */
+.ink-puff {
+  position: absolute;
+  width: 6px; height: 6px;
   border-radius: 50%;
-  padding: 5px 8px;
-  animation: resultCircle 0.45s var(--spring);
+  background: var(--pen-red);
+  pointer-events: none;
+  animation: puffOut 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
-@keyframes resultCircle {
-  0% { transform: scale(0.4); }
-  60% { transform: scale(1.18); }
-  100% { transform: scale(1); }
+@keyframes puffOut {
+  0% { transform: translate(0, 0) scale(1); opacity: 0.9; }
+  100% { transform: translate(var(--dx), var(--dy)) scale(0.2); opacity: 0; }
+}
+.red-overlay {
+  position: absolute;
+  inset: 0;
+  width: 100%; height: 100%;
+  pointer-events: none;
+  overflow: visible;
+}
+.red-overlay line, .red-overlay ellipse {
+  stroke: var(--pen-red);
+  stroke-width: 3;
+  stroke-linecap: round;
+  fill: none;
+}
+.red-x { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; overflow: visible; }
+.red-x line {
+  stroke: var(--pen-red);
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-dasharray: 22;
+  stroke-dashoffset: 22;
+  animation: drawLine 200ms ease-out forwards;
+}
+.red-x line.x2 { animation-delay: 100ms; }
+@keyframes drawLine {
+  to { stroke-dashoffset: 0; }
 }
 
 /* ===== PROMPT ROW ===== */
@@ -331,30 +390,32 @@ body {
   50% { box-shadow: 0 0 0 6px rgba(29, 78, 216, 0.22); }
 }
 
-/* ===== STICKY-NOTE FEEDBACK BANNER ===== */
+/* ===== RED-INK MARGIN NOTE (above the equation) ===== */
 .feedback-slot {
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
+  align-items: flex-end;
   padding: 0 16px 0 24px;
+  min-height: 24px;
   flex-shrink: 0;
 }
 .feedback-banner {
   display: none;
-  width: 100%;
-  padding: 10px 14px;
-  border-radius: 8px;
-  border: 2px solid var(--border-ink);
-  background: var(--paper-card);
-  font-size: 0.78rem;
+  font-size: 0.82rem;
   font-weight: 700;
-  text-align: center;
-  line-height: 1.35;
-  box-shadow: 3px 3px 0 var(--border-ink);
+  font-style: italic;
+  text-align: left;
+  line-height: 1.4;
+  color: var(--pen-red);
+  padding: 0 0 1px 12px;
+  border-left: 3px solid var(--pen-red);
+  border-radius: 2px;
+  background: transparent;
 }
 .feedback-banner.show { display: block; animation: bannerIn 0.25s var(--spring); }
-.feedback-banner.error { border-color: var(--pen-pink); color: var(--pen-pink); }
-.feedback-banner.info { border-color: var(--pen-blue); color: var(--pen-blue); }
-.feedback-banner.success { border-color: var(--pen-green); color: var(--pen-green); }
+.feedback-banner.error { color: var(--pen-red); border-color: var(--pen-red); }
+.feedback-banner.info { color: var(--pen-blue); border-color: var(--pen-blue); }
+.feedback-banner.success { color: var(--pen-green); border-color: var(--pen-green); }
 @keyframes bannerIn {
   from { opacity: 0; transform: translateY(6px); }
   to { opacity: 1; transform: translateY(0); }
@@ -398,7 +459,7 @@ body {
   position: relative;
 }
 .chunk-card:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 var(--border-ink); }
-.chunk-card.shake { animation: cardShake 0.4s ease; border-color: var(--pen-pink); }
+.chunk-card.shake { animation: cardShake 0.4s ease; border-color: var(--pen-red); }
 .chunk-card .op-sym { color: var(--pen-blue); }
 
 @keyframes cardShake {
@@ -410,6 +471,7 @@ body {
 }
 
 .answer-btn {
+  position: relative;
   padding: 16px 14px;
   min-height: 62px;
   border-radius: 12px;
@@ -425,14 +487,14 @@ body {
 }
 .answer-btn:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 var(--border-ink); }
 .answer-btn.correct {
-  background: var(--pen-green);
-  border-color: var(--pen-green);
+  background: var(--pen-red);
+  border-color: var(--pen-red);
   color: var(--paper-card);
 }
 .answer-btn.wrong {
-  background: var(--pen-pink);
-  border-color: var(--pen-pink);
-  color: var(--paper-card);
+  background: var(--paper-card);
+  border-color: var(--pen-red);
+  color: var(--pen-red);
   animation: cardShake 0.4s ease;
 }
 
@@ -857,6 +919,13 @@ body {
 .screen { display: none; height: 100%; }
 .screen.active { display: flex; flex-direction: column; }
 
+/* Page tear-away transition */
+#gameScreen {
+  transition: transform 350ms cubic-bezier(0.4, 0, 0.2, 1), opacity 350ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+#gameScreen.tear-out { transform: translateX(-105%) rotate(-4deg); opacity: 0; }
+#gameScreen.tear-in { transition: none; transform: translateX(105%) rotate(4deg); opacity: 0; }
+
 @media (max-width: 380px) {
   .food-token { font-size: 1.2rem; }
   .food-token.op { font-size: 1.25rem; }
@@ -876,6 +945,7 @@ body {
 </head>
 <body>
 <div class="app">
+<div class="punch-holes" id="punchHoles" aria-hidden="true"></div>
 
 <!-- START SCREEN -->
 <div id="startScreen" class="screen active">
@@ -911,6 +981,8 @@ body {
     </div>
   </div>
 
+  <div class="feedback-slot" aria-live="polite"><div class="feedback-banner" id="feedbackBanner"></div></div>
+
   <div class="food-chain-area">
     <div class="food-chain" id="foodChain"></div>
   </div>
@@ -919,8 +991,6 @@ body {
     <div class="prompt" id="prompt">Which operation crunches first?</div>
     <button class="rules-toggle" id="rulesToggle" aria-label="Order of operations rules">? RULES</button>
   </div>
-
-  <div class="feedback-slot" aria-live="polite"><div class="feedback-banner" id="feedbackBanner"></div></div>
 
   <div class="action-tray" id="actionTray"></div>
 </div>
@@ -1067,6 +1137,18 @@ function mountIcons() {
   if (g1) g1.innerHTML = ICON_GEAR;
   const g2 = document.getElementById('startSettingsBtn');
   if (g2) g2.innerHTML = ICON_GEAR;
+}
+
+function mountPunchHoles() {
+  const c = document.getElementById('punchHoles');
+  if (!c) return;
+  const N = 9;
+  for (let i = 0; i < N; i++) {
+    const h = document.createElement('div');
+    h.className = 'punch-hole';
+    h.style.top = ((i + 0.5) / N * 100) + '%';
+    c.appendChild(h);
+  }
 }
 
 /* -------------------- TOKENIZER & AST -------------------- */
@@ -1512,6 +1594,25 @@ function playFanfare() {
   });
 }
 
+function playMarker() {
+  if (isMuted) return;
+  ensureAudio();
+  const t = audioCtx.currentTime;
+  // dry-marker squeak: two quick high-pitched friction sweeps
+  [0, 0.09].forEach((offset, i) => {
+    const osc = audioCtx.createOscillator();
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(i === 0 ? 1150 : 900, t + offset);
+    osc.frequency.exponentialRampToValueAtTime(i === 0 ? 500 : 420, t + offset + 0.08);
+    const gain = audioCtx.createGain();
+    gain.gain.setValueAtTime(0.09, t + offset);
+    gain.gain.exponentialRampToValueAtTime(0.001, t + offset + 0.09);
+    osc.connect(gain).connect(audioCtx.destination);
+    osc.start(t + offset);
+    osc.stop(t + offset + 0.1);
+  });
+}
+
 /* -------------------- STATE -------------------- */
 let state = {
   difficulty: 'standard',
@@ -1813,12 +1914,114 @@ function pulseRules() {
   setTimeout(() => t.classList.remove('pulse-hint'), 4200);
 }
 
+/* Red-pen mark overlays (draw-in via stroke-dashoffset) */
+const SVG_NS = 'http://www.w3.org/2000/svg';
+
+function drawRedSlash(tokens) {
+  if (!tokens.length) return;
+  const chain = $('foodChain');
+  const cr = chain.getBoundingClientRect();
+  const first = tokens[0].getBoundingClientRect();
+  const last = tokens[tokens.length - 1].getBoundingClientRect();
+  const x1 = first.left - cr.left + 3;
+  const y1 = first.top - cr.top + 3;
+  const x2 = last.right - cr.left - 3;
+  const y2 = last.bottom - cr.top - 3;
+  const svg = document.createElementNS(SVG_NS, 'svg');
+  svg.setAttribute('class', 'red-overlay');
+  svg.setAttribute('viewBox', '0 0 ' + cr.width + ' ' + cr.height);
+  const line = document.createElementNS(SVG_NS, 'line');
+  line.setAttribute('x1', x1);
+  line.setAttribute('y1', y1);
+  line.setAttribute('x2', x2);
+  line.setAttribute('y2', y2);
+  const len = Math.hypot(x2 - x1, y2 - y1);
+  line.setAttribute('stroke-dasharray', len);
+  line.setAttribute('stroke-dashoffset', len);
+  svg.appendChild(line);
+  chain.appendChild(svg);
+  requestAnimationFrame(() => {
+    line.style.transition = 'stroke-dashoffset 200ms ease-out';
+    line.setAttribute('stroke-dashoffset', '0');
+  });
+}
+
+function burstInkPuff(tokens) {
+  if (!tokens.length) return;
+  const chain = $('foodChain');
+  const cr = chain.getBoundingClientRect();
+  const first = tokens[0].getBoundingClientRect();
+  const last = tokens[tokens.length - 1].getBoundingClientRect();
+  const cx = (first.left + last.right) / 2 - cr.left;
+  const cy = (first.top + last.bottom) / 2 - cr.top;
+  for (let i = 0; i < 7; i++) {
+    const p = document.createElement('span');
+    p.className = 'ink-puff';
+    p.style.left = cx + 'px';
+    p.style.top = cy + 'px';
+    p.style.setProperty('--dx', (Math.random() * 56 - 28) + 'px');
+    p.style.setProperty('--dy', (Math.random() * 44 - 22) + 'px');
+    chain.appendChild(p);
+    setTimeout(() => p.remove(), 320);
+  }
+}
+
+function drawRedX(btn) {
+  if (!btn) return;
+  btn.querySelectorAll('.red-x').forEach(el => el.remove());
+  const svg = document.createElementNS(SVG_NS, 'svg');
+  svg.setAttribute('class', 'red-x');
+  svg.setAttribute('viewBox', '0 0 24 24');
+  svg.setAttribute('aria-hidden', 'true');
+  const l1 = document.createElementNS(SVG_NS, 'line');
+  l1.setAttribute('x1', '5'); l1.setAttribute('y1', '5');
+  l1.setAttribute('x2', '19'); l1.setAttribute('y2', '19');
+  const l2 = document.createElementNS(SVG_NS, 'line');
+  l2.setAttribute('class', 'x2');
+  l2.setAttribute('x1', '19'); l2.setAttribute('y1', '5');
+  l2.setAttribute('x2', '5'); l2.setAttribute('y2', '19');
+  svg.appendChild(l1);
+  svg.appendChild(l2);
+  btn.appendChild(svg);
+  setTimeout(() => svg.remove(), 700);
+}
+
+function drawRedCircle(el) {
+  if (!el) return;
+  const chain = $('foodChain');
+  const cr = chain.getBoundingClientRect();
+  const r = el.getBoundingClientRect();
+  const cx = r.left - cr.left + r.width / 2;
+  const cy = r.top - cr.top + r.height / 2;
+  const rx = r.width / 2 + 9;
+  const ry = r.height / 2 + 9;
+  const svg = document.createElementNS(SVG_NS, 'svg');
+  svg.setAttribute('class', 'red-overlay');
+  svg.setAttribute('viewBox', '0 0 ' + cr.width + ' ' + cr.height);
+  const ell = document.createElementNS(SVG_NS, 'ellipse');
+  ell.setAttribute('cx', cx);
+  ell.setAttribute('cy', cy);
+  ell.setAttribute('rx', rx);
+  ell.setAttribute('ry', ry);
+  const len = Math.PI * (3 * (rx + ry) - Math.sqrt((3 * rx + ry) * (rx + 3 * ry)));
+  ell.setAttribute('stroke-dasharray', len);
+  ell.setAttribute('stroke-dashoffset', len);
+  svg.appendChild(ell);
+  chain.appendChild(svg);
+  requestAnimationFrame(() => {
+    ell.style.transition = 'stroke-dashoffset 250ms ease-out';
+    ell.setAttribute('stroke-dashoffset', '0');
+  });
+  setTimeout(() => svg.remove(), 900);
+}
+
 /* -------------------- CHUNK SELECTION -------------------- */
 function handleVisualDistractorTap(distractor, correctNode, btn) {
   if (state.isProcessing) return;
 
   playThud();
   btn.classList.add('shake');
+  drawRedX(btn);
 
   state.pageMistakes++;
   state.flowStreak = 0;
@@ -1850,6 +2053,7 @@ function handleChunkSelect(candidate, correctNode, btn) {
   } else {
     playThud();
     btn.classList.add('shake');
+    drawRedX(btn);
 
     state.pageMistakes++;
     state.flowStreak = 0;
@@ -1907,7 +2111,9 @@ function handleAnswerSelect(val, correct, btn) {
       if (chunkNode.right.type === 'bracket' && tok._astNode === chunkNode.right) tokensToCollapse.push(tok);
     });
 
-    tokensToCollapse.forEach(tok => tok.classList.add('crunch-collapse'));
+    tokensToCollapse.forEach(tok => tok.classList.add('crunch-implode'));
+    drawRedSlash(tokensToCollapse);
+    burstInkPuff(tokensToCollapse);
 
     setTimeout(() => {
       $('foodChain').classList.remove('arena-shake');
@@ -1920,13 +2126,18 @@ function handleAnswerSelect(val, correct, btn) {
       if (state.ast.type === 'num') {
         renderFoodChain();
         const finalToken = document.querySelector('#foodChain .food-token.num');
-        if (finalToken) finalToken.classList.add('crunch-result');
-        setTimeout(() => onEquationSolved(), 500);
+        if (finalToken) {
+          finalToken.classList.add('crunch-pop');
+          drawRedCircle(finalToken);
+          playMarker();
+          setTimeout(() => onEquationSolved(), 700);
+        }
       } else {
         renderFoodChain();
         document.querySelectorAll('#foodChain .food-token.num').forEach(tok => {
           if (tok._astNode && tok._astNode.type === 'num' && tok._astNode.value === correct) {
-            tok.classList.add('crunch-result');
+            tok.classList.add('crunch-pop');
+            setTimeout(() => tok.classList.remove('crunch-pop'), 2000);
           }
         });
         state.phase = 'select';
@@ -1934,10 +2145,11 @@ function handleAnswerSelect(val, correct, btn) {
         state.isProcessing = false;
         renderActionTray();
       }
-    }, 500);
+    }, 280);
   } else {
     btn.classList.add('wrong');
     playThud();
+    drawRedX(btn);
 
     state.pageMistakes++;
     state.flowStreak = 0;
@@ -2003,9 +2215,19 @@ function nextPage() {
   state.pageMistakes = 0;
   state.pageStartTime = Date.now();
   saveState();
-  $('pageCard').classList.add('hidden');
   renderPageTracker();
-  loadLevel();
+
+  const game = $('gameScreen');
+  $('pageCard').classList.add('hidden');
+  game.classList.add('tear-out');
+
+  setTimeout(() => {
+    loadLevel();
+    game.classList.remove('tear-out');
+    game.classList.add('tear-in');
+    void game.offsetWidth;
+    game.classList.remove('tear-in');
+  }, 350);
 }
 
 /* -------------------- EVENT HANDLERS -------------------- */
@@ -2116,6 +2338,7 @@ function getInkDrain() {
 /* -------------------- INIT -------------------- */
 mountMascots();
 mountIcons();
+mountPunchHoles();
 loadState();
 renderPageTracker();
 renderSoundToggle();
