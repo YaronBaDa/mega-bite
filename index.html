@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-<title>MEGA-BITE</title>
+<title>CRUNCH</title>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,800&family=Lexend:wght@400;500;600;700&display=swap');
 
 :root {
   --paper: #FAF8F5;
@@ -20,7 +20,8 @@
   --pen-green: #15803D;
   --highlighter: #FEF08A;
   --border-ink: #334155;
-  --font-ui: 'Plus Jakarta Sans', sans-serif;
+  --font-ui: 'Lexend', sans-serif;
+  --font-brand: 'Fraunces', serif;
   --spring: cubic-bezier(0.175, 0.885, 0.32, 1.275);
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
 }
@@ -99,7 +100,7 @@ body {
 .brand {
   flex: 1;
   text-align: left;
-  font-family: var(--font-ui);
+  font-family: var(--font-brand);
   font-size: 1.45rem;
   font-weight: 800;
   color: var(--ink);
@@ -123,7 +124,7 @@ body {
   background: var(--ink);
 }
 
-/* ===== INK ENERGY METER ===== */
+/* ===== INK METER ===== */
 .ink-wrap {
   padding: 0 16px 12px 24px;
   flex-shrink: 0;
@@ -148,6 +149,7 @@ body {
   background-color: var(--pen-pink);
   background-image: repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.16) 0px, rgba(255, 255, 255, 0.16) 4px, transparent 4px, transparent 8px);
 }
+.ink-fill.locked { box-shadow: 0 0 8px rgba(29, 78, 216, 0.5); }
 .ink-label {
   display: flex;
   justify-content: space-between;
@@ -159,17 +161,17 @@ body {
 }
 .ink-label .lbl { color: var(--ink-muted); font-family: var(--font-ui); font-size: 0.78rem; letter-spacing: 0; }
 .ink-label #stepCounter { color: var(--pen-blue); font-family: var(--font-ui); }
-.ink-label #inkText { color: var(--pen-green); font-weight: 800; }
-.ink-label #inkText.low { color: var(--pen-pink); }
+.ink-label #inkText { color: var(--ink-muted); font-weight: 800; }
+.ink-label #inkText.locked { color: var(--pen-blue); text-shadow: 0 0 8px rgba(29, 78, 216, 0.35); }
 
-/* ===== MASCOT (pen-doodle dino) ===== */
+/* ===== MASCOT (pen-sketch dino) ===== */
 .mascot { display: inline-block; width: 76px; height: 76px; }
 .mascot svg { width: 100%; height: 100%; display: block; overflow: visible; stroke: var(--ink); fill: none; }
 .mascot .mascot-splatter, .mascot .mascot-squiggle { opacity: 0; transition: opacity 0.15s ease; }
 .mascot .mascot-jaw { transform-box: fill-box; transform-origin: 50% 0; }
 
-.mascot.idle { animation: doodleWobble 2.8s ease-in-out infinite; }
-@keyframes doodleWobble {
+.mascot.idle { animation: mascotWobble 2.8s ease-in-out infinite; }
+@keyframes mascotWobble {
   0%, 100% { transform: rotate(-1.5deg) translateY(0); }
   50% { transform: rotate(1.5deg) translateY(-1px); }
 }
@@ -181,9 +183,9 @@ body {
   40% { transform: translateY(4px) rotate(7deg); }
 }
 
-.mascot.error { animation: doodleShake 0.4s ease; }
+.mascot.error { animation: mascotShake 0.4s ease; }
 .mascot.error .mascot-squiggle { opacity: 1; }
-@keyframes doodleShake {
+@keyframes mascotShake {
   0%, 100% { transform: translateX(0) rotate(0); }
   25% { transform: translateX(-3px) rotate(-4deg); }
   50% { transform: translateX(3px) rotate(3deg); }
@@ -305,7 +307,7 @@ body {
 }
 .prompt strong { color: var(--ink); }
 
-.bodmas-toggle {
+.rules-toggle {
   padding: 8px 14px;
   min-height: 40px;
   border-radius: 10px;
@@ -320,10 +322,10 @@ body {
   flex-shrink: 0;
   box-shadow: 3px 3px 0 var(--border-ink);
 }
-.bodmas-toggle:hover { color: var(--pen-blue); }
-.bodmas-toggle:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 var(--border-ink); }
-.bodmas-toggle.open { border-color: var(--pen-blue); color: var(--pen-blue); }
-.bodmas-toggle.pulse-hint { animation: pulseHint 1s ease-in-out 3; border-color: var(--pen-blue); }
+.rules-toggle:hover { color: var(--pen-blue); }
+.rules-toggle:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 var(--border-ink); }
+.rules-toggle.open { border-color: var(--pen-blue); color: var(--pen-blue); }
+.rules-toggle.pulse-hint { animation: pulseHint 1s ease-in-out 3; border-color: var(--pen-blue); }
 @keyframes pulseHint {
   0%, 100% { box-shadow: 0 0 0 0 rgba(29, 78, 216, 0); }
   50% { box-shadow: 0 0 0 6px rgba(29, 78, 216, 0.22); }
@@ -434,7 +436,7 @@ body {
   animation: cardShake 0.4s ease;
 }
 
-/* ===== BODMAS CHEAT SHEET (sticky-note modal) ===== */
+/* ===== ORDER OF OPERATIONS MODAL (sticky-note) ===== */
 .cheat-backdrop {
   position: fixed;
   inset: 0;
@@ -524,13 +526,25 @@ body {
 .cheat-row[data-tier="O"] .cheat-symbol,
 .cheat-row[data-tier="DM"] .cheat-symbol,
 .cheat-row[data-tier="AS"] .cheat-symbol { color: var(--pen-blue); }
+.cheat-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
 .cheat-name {
   font-size: 0.78rem;
   font-weight: 700;
   color: var(--ink);
-  flex: 1;
+}
+.cheat-hint {
+  font-size: 0.62rem;
+  font-weight: 600;
+  color: var(--ink-muted);
 }
 .cheat-ltr {
+  align-self: flex-start;
+  display: inline-block;
   font-size: 0.6rem;
   font-weight: 800;
   letter-spacing: 0.5px;
@@ -600,7 +614,7 @@ body {
 }
 .start-mascot { width: 116px; height: 116px; margin-bottom: 10px; }
 .start-title {
-  font-family: var(--font-ui);
+  font-family: var(--font-brand);
   font-size: 2.5rem;
   font-weight: 800;
   color: var(--ink);
@@ -608,7 +622,6 @@ body {
   margin-bottom: 2px;
   line-height: 1;
 }
-.start-title .accent { color: var(--pen-blue); }
 .start-sub {
   font-size: 0.88rem;
   color: var(--ink-muted);
@@ -654,6 +667,35 @@ body {
 }
 .play-btn:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 var(--border-ink); }
 
+/* Notation pill toggle (BODMAS | PEMDAS) */
+.notation-toggle {
+  display: inline-flex;
+  background: var(--paper-tint);
+  border: 2px solid var(--border-ink);
+  border-radius: 10px;
+  padding: 3px;
+  gap: 3px;
+}
+.notation-btn {
+  padding: 8px 16px;
+  min-height: 38px;
+  border: none;
+  border-radius: 7px;
+  background: transparent;
+  color: var(--ink-muted);
+  font-family: var(--font-ui);
+  font-size: 0.8rem;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+.notation-btn.active {
+  background: var(--pen-blue);
+  color: var(--paper-card);
+}
+.start-notation { margin-bottom: 22px; }
+
 /* ===== LEVEL COMPLETE ===== */
 .page-card {
   position: fixed;
@@ -683,17 +725,19 @@ body {
 }
 .stamp-badge {
   display: inline-block;
-  padding: 10px 22px;
+  padding: 10px 20px;
   border: 3px solid var(--ink);
   border-radius: 10px;
   font-weight: 800;
-  font-size: 1.05rem;
+  font-size: 0.95rem;
   letter-spacing: 1px;
   transform: rotate(-4deg);
   margin-bottom: 14px;
+  text-align: center;
+  line-height: 1.25;
 }
 .stamp-badge.flawless { color: var(--pen-green); border-color: var(--pen-green); }
-.stamp-badge.solid { color: var(--pen-blue); border-color: var(--pen-blue); }
+.stamp-badge.speed { color: var(--pen-blue); border-color: var(--pen-blue); }
 .stamp-badge.cleared { color: var(--ink); border-color: var(--ink); }
 .page-sub {
   font-size: 0.88rem;
@@ -804,6 +848,9 @@ body {
 }
 .sound-toggle:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 var(--border-ink); }
 
+/* Numbers align — timers, counters & equations */
+.food-token, .chunk-card, .answer-btn, .ink-label, .page-sub, .cheat-rank { font-variant-numeric: tabular-nums; }
+
 /* ===== UTILS ===== */
 .hidden { display: none !important; }
 .screen { display: none; height: 100%; }
@@ -834,16 +881,20 @@ body {
   <button class="icon-btn start-settings" id="startSettingsBtn" aria-label="Settings"></button>
   <div class="start-screen">
     <div class="mascot start-mascot idle" id="startMascot" aria-hidden="true"></div>
-    <div class="start-title">MEGA<span class="accent">-</span>BITE</div>
-    <div class="start-sub">Solve BODMAS equations on the page. Crunch the right operation first — don't run out of ink.</div>
-    <button class="play-btn" id="playBtn">START SOLVING</button>
+    <div class="start-title">CRUNCH</div>
+    <div class="start-sub">Crunch the numbers. Master the order. Don't run out of ink.</div>
+    <div class="notation-toggle start-notation" role="group" aria-label="Order of operations notation">
+      <button class="notation-btn active" data-n="bodmas">BODMAS</button>
+      <button class="notation-btn" data-n="pemdas">PEMDAS</button>
+    </div>
+    <button class="play-btn" id="playBtn">Start Page 1</button>
   </div>
 </div>
 
 <!-- GAME SCREEN -->
 <div id="gameScreen" class="screen">
   <div class="header">
-    <div class="brand">MEGA-BITE</div>
+    <div class="brand">CRUNCH</div>
     <div class="page-tracker" id="pageTracker" aria-label="Page progress"></div>
     <button class="icon-btn" id="settingsBtn" aria-label="Settings"></button>
   </div>
@@ -853,7 +904,7 @@ body {
       <div class="ink-fill" id="inkFill" style="width: 100%"></div>
     </div>
     <div class="ink-label">
-      <span class="lbl">INK ENERGY</span>
+      <span class="lbl">INK</span>
       <span id="stepCounter"></span>
       <span id="inkText">LOCKED IN</span>
     </div>
@@ -864,8 +915,8 @@ body {
   </div>
 
   <div class="prompt-row">
-    <div class="prompt" id="prompt">Which bite goes first?</div>
-    <button class="bodmas-toggle" id="bodmasToggle" aria-label="BODMAS rules">? RULES</button>
+    <div class="prompt" id="prompt">Which operation crunches first?</div>
+    <button class="rules-toggle" id="rulesToggle" aria-label="Order of operations rules">? RULES</button>
   </div>
 
   <div class="feedback-slot" aria-live="polite"><div class="feedback-banner" id="feedbackBanner"></div></div>
@@ -873,33 +924,43 @@ body {
   <div class="action-tray" id="actionTray"></div>
 </div>
 
-<!-- BODMAS CHEAT SHEET MODAL -->
+<!-- ORDER OF OPERATIONS MODAL -->
 <div class="cheat-backdrop" id="cheatBackdrop"></div>
-<div class="cheat-sheet" id="cheatSheet" role="dialog" aria-label="BODMAS priority">
+<div class="cheat-sheet" id="cheatSheet" role="dialog" aria-label="Order of operations">
   <div class="cheat-panel">
     <button class="cheat-close" id="cheatClose" aria-label="Close">×</button>
-    <div class="cheat-title">BODMAS Priority</div>
+    <div class="cheat-title">Order of Operations</div>
     <div class="cheat-row" data-tier="B">
       <div class="cheat-rank">1</div>
       <div class="cheat-symbol">( )</div>
-      <div class="cheat-name">Brackets</div>
+      <div class="cheat-info">
+        <div class="cheat-name" id="cheatNameB">Brackets</div>
+        <div class="cheat-hint">Always crunch inside first</div>
+      </div>
     </div>
     <div class="cheat-row" data-tier="O">
       <div class="cheat-rank">2</div>
       <div class="cheat-symbol">x<span class="sup">2</span> √</div>
-      <div class="cheat-name">Orders</div>
+      <div class="cheat-info">
+        <div class="cheat-name" id="cheatNameO">Orders</div>
+        <div class="cheat-hint">Powers and roots next</div>
+      </div>
     </div>
     <div class="cheat-row" data-tier="DM">
       <div class="cheat-rank">3</div>
       <div class="cheat-symbol">÷ ×</div>
-      <div class="cheat-name">Division &amp; Multiplication</div>
-      <div class="cheat-ltr">LEFT → RIGHT</div>
+      <div class="cheat-info">
+        <div class="cheat-name">Divide &amp; Multiply</div>
+        <div class="cheat-ltr">LEFT → RIGHT</div>
+      </div>
     </div>
     <div class="cheat-row" data-tier="AS">
       <div class="cheat-rank">4</div>
       <div class="cheat-symbol">+ −</div>
-      <div class="cheat-name">Addition &amp; Subtraction</div>
-      <div class="cheat-ltr">LEFT → RIGHT</div>
+      <div class="cheat-info">
+        <div class="cheat-name">Add &amp; Subtract</div>
+        <div class="cheat-ltr">LEFT → RIGHT</div>
+      </div>
     </div>
   </div>
 </div>
@@ -908,17 +969,17 @@ body {
 <div id="outOfInkOverlay" class="out-of-ink-overlay hidden">
   <div class="mascot cooldown" id="cooldownMascot" aria-hidden="true"></div>
   <div class="out-of-ink-title">OUT OF INK</div>
-  <div class="out-of-ink-text">Doodle ran dry! Refill your pen to keep crunching.</div>
-  <button class="refill-btn" id="refillBtn">REFILL PEN ✒️</button>
+  <div class="out-of-ink-text" id="outOfInkText">Your pen ran dry. Grab a fresh pen to clear the page.</div>
+  <button class="refill-btn" id="refillBtn">Fresh Pen (Retry)</button>
 </div>
 
 <!-- PAGE COMPLETE -->
 <div id="pageCard" class="page-card hidden">
   <div class="mascot page-mascot" id="pageMascot" aria-hidden="true"></div>
-  <div class="page-title" id="pageTitle">PAGE 1 COMPLETE!</div>
-  <div class="stamp-badge" id="stampBadge">★ FLAWLESS PAGE</div>
-  <div class="page-sub" id="pageSub">5 equations • 0 mistakes</div>
-  <button class="next-btn" id="nextBtn">NEXT PAGE →</button>
+  <div class="page-title" id="pageTitle">PAGE 1 CLEARED!</div>
+  <div class="stamp-badge" id="stampBadge">★ FLAWLESS CLEAR</div>
+  <div class="page-sub" id="pageSub">5 equations • 0 mistakes • 0s</div>
+  <button class="next-btn" id="nextBtn">Flip to Page 2 →</button>
 </div>
 
 <!-- SETTINGS MODAL -->
@@ -928,15 +989,21 @@ body {
     <button class="settings-close" id="settingsClose" aria-label="Close">×</button>
     <div class="settings-title">Settings</div>
     <div class="settings-group">
-      <div class="settings-label">DIFFICULTY</div>
-      <div class="settings-diff-row">
-        <button class="diff-btn" data-d="easy">EASY</button>
-        <button class="diff-btn active" data-d="medium">MEDIUM</button>
-        <button class="diff-btn" data-d="hard">HARD</button>
+      <div class="settings-label">NOTATION</div>
+      <div class="notation-toggle" role="group" aria-label="Notation">
+        <button class="notation-btn active" data-n="bodmas">BODMAS</button>
+        <button class="notation-btn" data-n="pemdas">PEMDAS</button>
       </div>
     </div>
     <div class="settings-group">
-      <div class="settings-label">SOUND</div>
+      <div class="settings-label">DIFFICULTY</div>
+      <div class="settings-diff-row">
+        <button class="diff-btn" data-d="warmup">WARM-UP</button>
+        <button class="diff-btn active" data-d="standard">STANDARD</button>
+        <button class="diff-btn" data-d="speedrun">SPEEDRUN</button>
+      </div>
+    </div>
+    <div class="settings-group">
       <button class="sound-toggle" id="soundToggle"></button>
     </div>
   </div>
@@ -946,15 +1013,15 @@ body {
 
 <script>
 /* =========================================================
-   MEGA-BITE — Syntactic Reducer Engine (Notebook Doodle)
+   CRUNCH — Syntactic Reducer Engine (Notebook)
    ========================================================= */
 
-const LS_KEY = 'megabite_v1';
-const LS_MUTE = 'megabite_muted';
+const LS_KEY = 'crunch_v1';
+const LS_MUTE = 'crunch_muted';
 
 /* -------------------- MASCOT (inline line-art dino) -------------------- */
 const MASCOT_SVG = `
-<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="Doodle T-Rex">
+<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="T-Rex mascot">
   <path d="M14 58 C21 60 43 60 50 57" stroke="#475569" stroke-width="1.5" opacity="0.55"/>
   <path d="M19 43 C11 41 4 35 5 27 C5.5 24 9 23 11 25"/>
   <path d="M21 44 C19 33 23 23 31 20 C38 18 43 22 44 29 C45 36 42 43 36 46 C29 49 24 48 21 45 C20 44 20 43 21 44 Z"/>
@@ -1092,7 +1159,7 @@ function astToString(node) {
   return astToString(node.left) + ' ' + node.op + ' ' + astToString(node.right);
 }
 
-/* Find the correct next reduction target per BODMAS */
+/* Find the correct next reduction target per order of operations */
 function findNextReduction(node) {
   let candidates = [];
   function walk(n, insideBracket, path) {
@@ -1160,6 +1227,13 @@ function getChunkHTML(node) {
     return `${l}<sup>${r}</sup>`;
   }
   return `${l} <span class="op-sym">${OPSYMBOLS[node.op] || node.op}</span> ${r}`;
+}
+
+function getChunkText(node) {
+  const l = node.left.type === 'bracket' ? '(' + astToString(node.left.inner) + ')' : String(node.left.value);
+  const r = node.right.type === 'bracket' ? '(' + astToString(node.right.inner) + ')' : String(node.right.value);
+  if (node.op === '^') return `${l}^${r}`;
+  return `${l} ${OPSYMBOLS[node.op] || node.op} ${r}`;
 }
 
 /* Find visual distractor chunks — adjacent num-op-num that cross AST boundaries */
@@ -1275,19 +1349,20 @@ function generateEquation(diff) {
     return { a: b * mult, b, result: mult };
   }
 
-  if (diff === 'easy') {
+  if (diff === 'warmup') {
     const t = rand(1, 3);
     if (t === 1) {
       const a = rand(2, 9), b = rand(2, 9), c = rand(2, 5);
       expr = `${a} + ${b} * ${c}`;
     } else if (t === 2) {
-      const a = rand(2, 8), b = rand(2, 8), c = rand(2, 5);
-      expr = `(${a} + ${b}) * ${c}`;
+      const a = rand(2, 8), b = rand(2, 8);
+      const c = rand(2, Math.min(5, a * b - 1));
+      expr = `${a} * ${b} - ${c}`;
     } else {
       const a = rand(8, 18), b = rand(2, 8), c = rand(2, 8);
       expr = `${a} - ${b} + ${c}`;
     }
-  } else if (diff === 'medium') {
+  } else if (diff === 'standard') {
     const t = rand(1, 4);
     if (t === 1) {
       const b = rand(2, 6);
@@ -1320,7 +1395,7 @@ function generateEquation(diff) {
       const a = rand(2, 5), b = rand(2, 4), c = rand(2, 5);
       expr = `${a}^2 * ${b} + ${c}^2`;
     } else if (t === 3) {
-      // Clean division on hard too — no truncated decimals
+      // Clean division on speedrun too — no truncated decimals
       const div = cleanDiv(3, 6, 2, 5);
       const c = rand(2, 5), d = rand(2, 9);
       expr = `${div.a} / ${div.b} * ${c} + ${d}`;
@@ -1339,14 +1414,14 @@ function toggleCheatSheet() {
   state.cheatSheetOpen = !state.cheatSheetOpen;
   $('cheatSheet').classList.toggle('open', state.cheatSheetOpen);
   $('cheatBackdrop').classList.toggle('open', state.cheatSheetOpen);
-  $('bodmasToggle').classList.toggle('open', state.cheatSheetOpen);
+  $('rulesToggle').classList.toggle('open', state.cheatSheetOpen);
 }
 
 function closeCheatSheet() {
   state.cheatSheetOpen = false;
   $('cheatSheet').classList.remove('open');
   $('cheatBackdrop').classList.remove('open');
-  $('bodmasToggle').classList.remove('open');
+  $('rulesToggle').classList.remove('open');
 }
 
 /* -------------------- AUDIO (Web Audio API) -------------------- */
@@ -1438,10 +1513,12 @@ function playFanfare() {
 
 /* -------------------- STATE -------------------- */
 let state = {
-  difficulty: 'medium',
+  difficulty: 'standard',
+  notation: 'bodmas',
   pageNumber: 1,
   equationsInPage: 0,
   pageMistakes: 0,
+  flowStreak: 0,
   inkEnergy: 100,
   ast: null,
   totalStepsOriginal: 0,
@@ -1452,6 +1529,7 @@ let state = {
   inkTimer: null,
   cheatSheetOpen: false,
   currentCandidates: [],
+  pageStartTime: null,
 };
 
 function loadState() {
@@ -1461,12 +1539,15 @@ function loadState() {
       state.pageNumber = data.pageNumber || 1;
       state.equationsInPage = data.equationsInPage || 0;
       state.pageMistakes = data.pageMistakes || 0;
+      state.notation = data.notation || 'bodmas';
+      state.difficulty = data.difficulty || 'standard';
       if (state.equationsInPage >= 5) {
         state.equationsInPage = 0;
         state.pageNumber++;
       }
     }
   } catch (e) {}
+  state.pageStartTime = Date.now();
 }
 
 function saveState() {
@@ -1474,6 +1555,8 @@ function saveState() {
     pageNumber: state.pageNumber,
     equationsInPage: state.equationsInPage,
     pageMistakes: state.pageMistakes,
+    notation: state.notation,
+    difficulty: state.difficulty,
   }));
 }
 
@@ -1499,12 +1582,12 @@ function updateStepCounter() {
   }
 }
 
-/* -------------------- INK ENERGY -------------------- */
+/* -------------------- INK METER -------------------- */
 function startInkTimer() {
   stopInkTimer();
   state.inkTimer = setInterval(() => {
     if (state.phase === 'select' && state.inkEnergy > 0) {
-      state.inkEnergy = Math.max(0, state.inkEnergy - 0.1);
+      state.inkEnergy = Math.max(0, state.inkEnergy - getInkDrain());
       renderInkEnergy();
       if (state.inkEnergy === 0) showOutOfInk();
     }
@@ -1523,18 +1606,24 @@ function refillInk() {
 
 function renderInkEnergy() {
   const fill = document.getElementById('inkFill');
-  const text = document.getElementById('inkText');
   fill.style.width = state.inkEnergy + '%';
   fill.classList.toggle('low', state.inkEnergy < 30);
-  text.classList.toggle('low', state.inkEnergy < 30);
-  if (state.inkEnergy > 70) text.textContent = 'LOCKED IN';
-  else if (state.inkEnergy > 30) text.textContent = 'FADING';
-  else if (state.inkEnergy > 0) text.textContent = 'RUNNING DRY!';
-  else text.textContent = 'OUT OF INK';
+}
+
+function renderComboBadge() {
+  const el = document.getElementById('inkText');
+  const locked = state.flowStreak >= 3;
+  el.classList.toggle('locked', locked);
+  el.textContent = locked ? 'LOCKED IN • 2×' : 'LOCKED IN';
+  const fill = document.getElementById('inkFill');
+  fill.classList.toggle('locked', locked);
 }
 
 function showOutOfInk() {
   stopInkTimer();
+  state.flowStreak = 0;
+  renderComboBadge();
+  $('outOfInkText').textContent = `Your pen ran dry on Equation ${state.equationsInPage + 1}. Grab a fresh pen to clear the page.`;
   $('outOfInkOverlay').classList.remove('hidden');
 }
 
@@ -1629,7 +1718,7 @@ function renderActionTray() {
   tray.innerHTML = '';
 
   if (state.phase === 'select') {
-    renderPrompt('Which bite goes <strong>first</strong>?');
+    renderPrompt('Which operation crunches <strong>first</strong>?');
 
     const candidates = findCandidateChunks(state.ast);
     const visualDistractors = findVisualDistractors(state.ast);
@@ -1681,7 +1770,7 @@ function renderActionTray() {
 
     tray.appendChild(grid);
   } else {
-    renderPrompt(`Solve: <strong>${getChunkHTML(state.selectedChunk.node)}</strong> = ?`);
+    renderPrompt(`Solve the chunk: <strong>${getChunkHTML(state.selectedChunk.node)}</strong>`);
     const grid = document.createElement('div');
     grid.className = 'tray-grid';
     const correct = state.correctAnswer;
@@ -1716,20 +1805,12 @@ function clearFeedback() {
 }
 
 function pulseRules() {
-  const t = $('bodmasToggle');
+  const t = $('rulesToggle');
   t.classList.remove('pulse-hint');
   void t.offsetWidth;
   t.classList.add('pulse-hint');
   setTimeout(() => t.classList.remove('pulse-hint'), 4200);
 }
-
-const TIER_NAMES = {
-  B: 'Brackets ( )',
-  O: 'Orders (x² √)',
-  DM: 'Multiplication & Division (× ÷)',
-  AS: 'Addition & Subtraction (+ −)',
-};
-const TIER_RANK = { B: 0, O: 1, DM: 2, AS: 3 };
 
 /* -------------------- CHUNK SELECTION -------------------- */
 function handleVisualDistractorTap(distractor, correctNode, btn) {
@@ -1739,9 +1820,11 @@ function handleVisualDistractorTap(distractor, correctNode, btn) {
   btn.classList.add('shake');
 
   state.pageMistakes++;
+  state.flowStreak = 0;
   saveState();
+  renderComboBadge();
 
-  const msg = `${distractor.leftVal} and ${distractor.rightVal} belong to different chunks — the ${OPSYMBOLS[distractor.op] || distractor.op} connects bigger pieces. Try a smaller chunk.`;
+  const msg = `${distractor.leftVal} and ${distractor.rightVal} aren't a real chunk — the ${OPSYMBOLS[distractor.op] || distractor.op} links bigger pieces.`;
   showFeedback(msg, 'error');
   pulseRules();
 
@@ -1768,28 +1851,28 @@ function handleChunkSelect(candidate, correctNode, btn) {
     btn.classList.add('shake');
 
     state.pageMistakes++;
+    state.flowStreak = 0;
     saveState();
+    renderComboBadge();
 
     const correctTier = correctNode.tier;
     const candidateTier = candidate.node.tier;
-
-    let msg;
     const currentCandidates = state.currentCandidates || [];
     const hasBracketChunk = currentCandidates.find(c => c.insideBracket);
+
+    let msg;
     if (hasBracketChunk && !candidate.insideBracket) {
-      msg = 'Always crunch inside the Brackets ( ) first!';
+      msg = state.notation === 'bodmas'
+        ? `Brackets first — crack what's inside before touching the outside.`
+        : `Parentheses first — crack what's inside before touching the outside.`;
     } else if (correctTier === candidateTier) {
-      if (correctTier === 'DM') {
-        msg = 'Division & Multiplication are tied — crunch LEFT to RIGHT!';
-      } else if (correctTier === 'AS') {
-        msg = 'Addition & Subtraction are tied — crunch LEFT to RIGHT!';
-      } else {
-        msg = 'Same priority — go LEFT to RIGHT!';
-      }
-    } else if (TIER_RANK[correctTier] < TIER_RANK[candidateTier]) {
-      msg = `Too early — ${TIER_NAMES[correctTier]} outranks ${TIER_NAMES[candidateTier]}.`;
+      msg = 'Equal rank — read left to right like a line of text.';
+    } else if (correctTier === 'O') {
+      msg = state.notation === 'bodmas'
+        ? `Orders first — powers and roots beat multiply and divide.`
+        : `Exponents first — powers and roots beat multiply and divide.`;
     } else {
-      msg = 'Try a different operation first.';
+      msg = `Multiply & divide beat add & subtract. Crunch ${getChunkText(correctNode)} first.`;
     }
     showFeedback(msg, 'error');
     pulseRules();
@@ -1810,6 +1893,8 @@ function handleAnswerSelect(val, correct, btn) {
     $('foodChain').classList.add('arena-shake');
 
     refillInk();
+    state.flowStreak++;
+    renderComboBadge();
 
     const chunkNode = state.selectedChunk.node;
     const tokensToCollapse = [];
@@ -1854,11 +1939,11 @@ function handleAnswerSelect(val, correct, btn) {
     playThud();
 
     state.pageMistakes++;
+    state.flowStreak = 0;
     saveState();
+    renderComboBadge();
 
-    const symbols = { '+': 'Addition (+)', '-': 'Subtraction (−)', '*': 'Multiplication (×)', '/': 'Division (÷)', '^': 'Power' };
-    const node = state.selectedChunk.node;
-    showFeedback(`Watch the sign — that's ${symbols[node.op]}, not something else.`, 'error');
+    showFeedback('Check the sign — verify your operation before submitting.', 'error');
 
     setTimeout(() => btn.classList.remove('wrong'), 500);
   }
@@ -1897,14 +1982,17 @@ function onEquationSolved() {
 function showPageComplete() {
   playFanfare();
   const m = state.pageMistakes;
+  const elapsed = Math.max(0, Math.round((Date.now() - (state.pageStartTime || Date.now())) / 1000));
+  const par = getParSeconds();
   let badgeText, badgeClass;
-  if (m === 0) { badgeText = '★ FLAWLESS PAGE'; badgeClass = 'flawless'; }
-  else if (m <= 2) { badgeText = '✓ SOLID WORK'; badgeClass = 'solid'; }
-  else { badgeText = '✎ PAGE CLEARED'; badgeClass = 'cleared'; }
-  $('pageTitle').textContent = `PAGE ${state.pageNumber} COMPLETE!`;
+  if (m === 0 && elapsed < par) { badgeText = '⚡ FLAWLESS SPEED CLEAR'; badgeClass = 'speed'; }
+  else if (m === 0) { badgeText = '★ FLAWLESS CLEAR'; badgeClass = 'flawless'; }
+  else { badgeText = '✓ PAGE CLEARED'; badgeClass = 'cleared'; }
+  $('pageTitle').textContent = `PAGE ${state.pageNumber} CLEARED!`;
   $('stampBadge').textContent = badgeText;
   $('stampBadge').className = 'stamp-badge ' + badgeClass;
-  $('pageSub').textContent = `5 equations • ${m} mistake${m === 1 ? '' : 's'}`;
+  $('pageSub').textContent = `5 equations • ${m} mistake${m === 1 ? '' : 's'} • ${elapsed}s`;
+  $('nextBtn').textContent = `Flip to Page ${state.pageNumber + 1} →`;
   $('pageCard').classList.remove('hidden');
 }
 
@@ -1912,6 +2000,7 @@ function nextPage() {
   state.pageNumber++;
   state.equationsInPage = 0;
   state.pageMistakes = 0;
+  state.pageStartTime = Date.now();
   saveState();
   $('pageCard').classList.add('hidden');
   renderPageTracker();
@@ -1921,9 +2010,9 @@ function nextPage() {
 /* -------------------- EVENT HANDLERS -------------------- */
 document.querySelectorAll('.diff-btn').forEach(btn => {
   btn.onclick = () => {
-    document.querySelectorAll('.diff-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
     state.difficulty = btn.dataset.d;
+    saveState();
+    renderDifficulty();
   };
 });
 
@@ -1932,13 +2021,15 @@ $('playBtn').onclick = () => {
   $('startScreen').classList.remove('active');
   $('gameScreen').classList.add('active');
   state.inkEnergy = 100;
+  state.pageStartTime = Date.now();
   renderInkEnergy();
+  renderComboBadge();
   loadLevel();
   startInkTimer();
 };
 
 function renderSoundToggle() {
-  $('soundToggle').innerHTML = (isMuted ? ICON_MUTE : ICON_SOUND) + ' <span>' + (isMuted ? 'OFF' : 'ON') + '</span>';
+  $('soundToggle').innerHTML = (isMuted ? ICON_MUTE : ICON_SOUND) + ' <span>SFX: ' + (isMuted ? 'OFF' : 'ON') + '</span>';
 }
 
 $('soundToggle').onclick = () => {
@@ -1969,7 +2060,7 @@ $('nextBtn').onclick = () => {
   nextPage();
 };
 
-$('bodmasToggle').onclick = () => {
+$('rulesToggle').onclick = () => {
   toggleCheatSheet();
 };
 
@@ -1981,12 +2072,55 @@ $('cheatClose').onclick = () => {
   closeCheatSheet();
 };
 
+/* -------------------- NOTATION / DIFFICULTY HELPERS -------------------- */
+function renderCheatSheet() {
+  const bodmas = state.notation === 'bodmas';
+  const b = document.getElementById('cheatNameB');
+  const o = document.getElementById('cheatNameO');
+  if (b) b.textContent = bodmas ? 'Brackets' : 'Parentheses';
+  if (o) o.textContent = bodmas ? 'Orders' : 'Exponents';
+}
+
+function renderNotation() {
+  document.querySelectorAll('.notation-btn').forEach(btn => btn.classList.toggle('active', btn.dataset.n === state.notation));
+  renderCheatSheet();
+}
+
+function setNotation(n) {
+  state.notation = n;
+  saveState();
+  renderNotation();
+}
+
+function renderDifficulty() {
+  document.querySelectorAll('.diff-btn').forEach(b => b.classList.toggle('active', b.dataset.d === state.difficulty));
+}
+
+document.querySelectorAll('.notation-btn').forEach(btn => {
+  btn.onclick = () => setNotation(btn.dataset.n);
+});
+
+function getParSeconds() {
+  if (state.difficulty === 'speedrun') return 90;
+  if (state.difficulty === 'warmup') return 40;
+  return 60;
+}
+
+function getInkDrain() {
+  if (state.difficulty === 'speedrun') return 0.18;
+  if (state.difficulty === 'warmup') return 0.06;
+  return 0.1;
+}
+
 /* -------------------- INIT -------------------- */
 mountMascots();
 mountIcons();
 loadState();
 renderPageTracker();
 renderSoundToggle();
+renderNotation();
+renderDifficulty();
+renderComboBadge();
 </script>
 </body>
 </html>
