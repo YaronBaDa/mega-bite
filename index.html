@@ -33,6 +33,7 @@
 html, body {
   height: 100%;
   overflow: hidden;
+  overscroll-behavior: none;
   font-family: var(--font-ui);
   background: var(--paper);
   color: var(--ink);
@@ -1017,9 +1018,286 @@ body.overdrive .chunk-card .op-sym { color: var(--overdrive-cyan); }
 /* Numbers align — timers, counters & equations */
 .food-token, .chunk-card, .answer-btn, .ink-label, .page-sub, .cheat-rank { font-variant-numeric: tabular-nums; }
 
+/* ===== STICKER ECOSYSTEM ===== */
+.sticker-pill {
+  position: absolute;
+  top: 60px;
+  right: 12px;
+  z-index: 7;
+  padding: 6px 12px;
+  border-radius: 20px;
+  border: 2px solid var(--border-ink);
+  background: var(--paper-card);
+  color: var(--ink);
+  font-family: var(--font-ui);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  box-shadow: 2px 2px 0 var(--border-ink);
+  font-variant-numeric: tabular-nums;
+}
+.sticker-pill:active { transform: translate(1px, 1px); box-shadow: 1px 1px 0 var(--border-ink); }
+.sticker-pill-page { top: 12px; right: 12px; }
+
+.sticker-canvas {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+}
+.sticker-canvas > * { pointer-events: auto; }
+
+.sticker {
+  position: absolute;
+  width: 92px;
+  height: 92px;
+  border-radius: 14px;
+  border: 3px solid #fff;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.18);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  padding: 6px;
+  color: #fff;
+  font-family: var(--font-ui);
+  font-weight: 800;
+  text-align: center;
+  overflow: hidden;
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  z-index: 5;
+}
+.sticker::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.38) 0%, rgba(255,255,255,0.06) 42%, rgba(255,255,255,0) 55%);
+  pointer-events: none;
+}
+.sticker .sticker-icon { width: 26px; height: 26px; flex-shrink: 0; }
+.sticker .sticker-icon svg { width: 100%; height: 100%; display: block; }
+.sticker .sticker-name { font-size: 0.58rem; letter-spacing: 0.4px; line-height: 1.1; word-break: break-word; }
+.sticker.dragging { cursor: grabbing; z-index: 20; }
+
+.sticker-rotate {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 2px solid #fff;
+  background: rgba(0, 0, 0, 0.28);
+  color: #fff;
+  font-size: 0.72rem;
+  font-weight: 800;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  touch-action: none;
+  z-index: 3;
+}
+
+.silhouette {
+  position: absolute;
+  width: 76px;
+  height: 76px;
+  border-radius: 14px;
+  border: 2px dashed rgba(30, 41, 59, 0.28);
+  background: rgba(30, 41, 59, 0.04);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(30, 41, 59, 0.35);
+  font-family: var(--font-ui);
+  font-size: 1.4rem;
+  font-weight: 800;
+  cursor: pointer;
+  z-index: 2;
+  transform: translate(-50%, -50%);
+}
+.silhouette-tooltip {
+  position: fixed;
+  z-index: 200;
+  max-width: 220px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: var(--ink);
+  color: #fff;
+  font-family: var(--font-ui);
+  font-size: 0.75rem;
+  font-weight: 700;
+  line-height: 1.4;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+  pointer-events: none;
+}
+
+/* Surface 2: left-margin unlock toast */
+#stickerToast {
+  position: absolute;
+  left: 4px;
+  top: 40%;
+  z-index: 40;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  pointer-events: none;
+  opacity: 0;
+  transform: translateX(-30px);
+  transition: opacity 0.28s ease, transform 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+}
+#stickerToast.toast-in { opacity: 1; transform: translateX(0); }
+#stickerToast.toast-out { opacity: 0; transform: translateX(-30px); }
+.sticker-mini { position: relative; width: 46px; height: 46px; }
+.sticker-mini .sticker-icon { width: 18px; height: 18px; }
+.toast-pill {
+  background: var(--pen-red);
+  color: #fff;
+  font-family: var(--font-ui);
+  font-size: 0.6rem;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  padding: 3px 8px;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.18);
+  white-space: nowrap;
+}
+
+/* Surface 3: slap onto PAGE CLEARED */
+.slap-zone {
+  position: absolute;
+  top: 64px;
+  right: 12px;
+  width: 90px;
+  height: 90px;
+  pointer-events: none;
+  z-index: 10;
+}
+.slap-wrap { position: absolute; inset: 0; }
+.sticker-slap {
+  position: absolute;
+  inset: 0;
+  width: 90px;
+  height: 90px;
+  animation: slapIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+@keyframes slapIn {
+  0% { transform: scale(1.6); opacity: 0; }
+  55% { transform: scale(0.94); opacity: 1; }
+  80% { transform: scale(1.08); opacity: 1; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+/* Surface 4: sticker sheet drawer */
+.sheet-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(30, 41, 59, 0.45);
+  z-index: 109;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+.sheet-backdrop.open { opacity: 1; pointer-events: auto; }
+.sheet-modal {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%) scale(0.9);
+  z-index: 110;
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.3s var(--spring);
+  width: 92%;
+  max-width: 400px;
+  max-height: 86vh;
+}
+.sheet-modal.open { opacity: 1; pointer-events: auto; transform: translate(-50%, -50%) scale(1); }
+.sheet-panel {
+  background: var(--paper-card);
+  border: 2px solid var(--border-ink);
+  border-radius: 12px;
+  padding: 18px 16px 20px;
+  box-shadow: 4px 4px 0 var(--border-ink);
+  position: relative;
+  max-height: 86vh;
+  overflow-y: auto;
+}
+.sheet-close {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  width: 38px;
+  height: 38px;
+  border-radius: 8px;
+  background: var(--paper-tint);
+  border: 2px solid var(--border-ink);
+  color: var(--ink-muted);
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: inherit;
+}
+.sheet-close:hover { border-color: var(--pen-red); color: var(--pen-red); }
+.sheet-title {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: var(--ink);
+  letter-spacing: 0.5px;
+  margin-bottom: 14px;
+}
+.sheet-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+.sheet-sticker {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 8px;
+  border-radius: 10px;
+  background: var(--paper-tint);
+}
+.sheet-sticker.locked { opacity: 0.85; }
+.sticker-sheet { position: relative; width: 72px; height: 72px; }
+.sticker-sheet .sticker-icon { width: 20px; height: 20px; }
+.sticker-sheet.locked-mat { filter: grayscale(0.6); opacity: 0.5; }
+.sheet-meta { text-align: center; width: 100%; }
+.sheet-earned {
+  font-size: 0.62rem;
+  font-weight: 700;
+  color: var(--pen-green);
+}
+.sheet-criteria {
+  font-size: 0.6rem;
+  font-weight: 600;
+  color: var(--ink-muted);
+  line-height: 1.3;
+}
+.sheet-progress {
+  font-size: 0.62rem;
+  font-weight: 800;
+  color: var(--pen-red);
+  margin-top: 2px;
+  font-variant-numeric: tabular-nums;
+}
+
 /* ===== UTILS ===== */
 .hidden { display: none !important; }
-.screen { display: none; height: 100%; }
+.screen { display: none; height: 100%; position: relative; }
 .screen.active { display: flex; flex-direction: column; }
 
 /* Page tear-away transition */
@@ -1053,6 +1331,7 @@ body.overdrive .chunk-card .op-sym { color: var(--overdrive-cyan); }
 <!-- START SCREEN -->
 <div id="startScreen" class="screen active">
   <button class="icon-btn start-settings" id="startSettingsBtn" aria-label="Settings"></button>
+  <button class="sticker-pill" id="stickerPill">Stickers 0/8</button>
   <div class="start-screen">
     <div class="mascot start-mascot idle" id="startMascot" aria-hidden="true"></div>
     <div class="start-title">CRUNCH</div>
@@ -1064,6 +1343,7 @@ body.overdrive .chunk-card .op-sym { color: var(--overdrive-cyan); }
     <button class="play-btn" id="playBtn">Start Page 1</button>
     <button class="daily-btn" id="dailyBtn">Daily Pop Quiz</button>
   </div>
+  <div class="sticker-canvas" id="stickerCanvas" aria-label="Sticker cover"></div>
 </div>
 
 <!-- GAME SCREEN -->
@@ -1086,6 +1366,7 @@ body.overdrive .chunk-card .op-sym { color: var(--overdrive-cyan); }
   </div>
 
   <div class="feedback-slot" aria-live="polite"><div class="feedback-banner" id="feedbackBanner"></div></div>
+  <div id="stickerToast" class="hidden" aria-live="polite"></div>
 
   <div class="food-chain-area">
     <div class="bonus-badge hidden" id="bonusBadge">BONUS PROBLEM</div>
@@ -1151,12 +1432,14 @@ body.overdrive .chunk-card .op-sym { color: var(--overdrive-cyan); }
 
 <!-- PAGE COMPLETE -->
 <div id="pageCard" class="page-card hidden">
+  <button class="sticker-pill sticker-pill-page" id="stickerPill2">Stickers 0/8</button>
   <div class="mascot page-mascot" id="pageMascot" aria-hidden="true"></div>
   <div class="page-title" id="pageTitle">PAGE 1 CLEARED!</div>
   <div class="stamp-badge" id="stampBadge">★ FLAWLESS CLEAR</div>
   <div class="bonus-hunter" id="bonusHunter"></div>
   <div class="page-sub" id="pageSub">5 equations • 0 mistakes • 0s</div>
   <button class="next-btn" id="nextBtn">Flip to Page 2 →</button>
+  <div class="slap-zone" id="slapZone"></div>
 </div>
 
 <!-- DAILY POP QUIZ COMPLETE -->
@@ -1168,6 +1451,16 @@ body.overdrive .chunk-card .op-sym { color: var(--overdrive-cyan); }
   <div class="page-sub" id="dailySub">5 equations • 0 mistakes • 0s</div>
   <button class="share-btn" id="shareBtn">Share Score</button>
   <button class="menu-btn" id="dailyMenuBtn">Back to Menu</button>
+</div>
+
+<!-- STICKER SHEET MODAL -->
+<div class="sheet-backdrop" id="sheetBackdrop"></div>
+<div class="sheet-modal" id="stickerSheet" role="dialog" aria-label="Sticker collection">
+  <div class="sheet-panel">
+    <button class="sheet-close" id="sheetClose" aria-label="Close">×</button>
+    <div class="sheet-title">STICKER SHEET</div>
+    <div class="sheet-grid" id="stickerGrid"></div>
+  </div>
 </div>
 
 <!-- SETTINGS MODAL -->
@@ -1208,8 +1501,9 @@ const LS_KEY = 'crunch_v1';
 const LS_MUTE = 'crunch_muted';
 const LS_BONUS = 'crunch_bonus';
 const LS_DAILY_PREFIX = 'crunch_daily_';
+const LS_STICKERS = 'crunch_stickers';
 const APP_URL = 'https://yaronbada.github.io/mega-bite/';
-const BONUS_HUNTER_GOAL = 10;
+const BONUS_HUNTER_GOAL = 5;
 const DAILY_PAR = 60;
 
 /* -------------------- MASCOT (inline line-art dino) -------------------- */
@@ -1821,6 +2115,10 @@ let state = {
   dailyDayNumber: 1,
   dailyEquations: [],
   dailyResult: null,
+  stickers: {},
+  bracketBreaks: 0,
+  powerBreaks: 0,
+  maxFlowStreak: 0,
 };
 
 function loadState() {
@@ -2308,6 +2606,17 @@ function handleAnswerSelect(val, correct, btn) {
     renderComboBadge();
 
     const chunkNode = state.selectedChunk.node;
+
+    if (state.selectedChunk.insideBracket || chunkNode.left.type === 'bracket' || chunkNode.right.type === 'bracket') {
+      state.bracketBreaks++;
+    }
+    if (chunkNode.op === '^') state.powerBreaks++;
+    state.maxFlowStreak = Math.max(state.maxFlowStreak, state.flowStreak);
+    saveStickers();
+    if (state.bracketBreaks >= 10) unlockSticker('bracket_breaker', 'toast');
+    if (state.powerBreaks >= 10) unlockSticker('power_surge', 'toast');
+    if (state.flowStreak >= 5) unlockSticker('locked_in', 'toast');
+
     const tokensToCollapse = [];
     document.querySelectorAll('#foodChain .food-token').forEach(tok => {
       if (tok._astNode === chunkNode || tok._astNode === chunkNode.left || tok._astNode === chunkNode.right) {
@@ -2419,6 +2728,11 @@ function showPageComplete() {
   const m = state.pageMistakes;
   const elapsed = Math.max(0, Math.round((Date.now() - (state.pageStartTime || Date.now())) / 1000));
   const par = getParSeconds();
+  if (state.pageNumber === 1) unlockSticker('first_crunch', 'slap');
+  if (m === 0) unlockSticker('flawless_ink', 'slap');
+  if (elapsed < 15) unlockSticker('speed_demon', 'slap');
+  if (state.bonusCleared >= 5) unlockSticker('bonus_hunter', 'slap');
+  if (state.pageNumber >= 10) unlockSticker('page_10_club', 'slap');
   let badgeText, badgeClass;
   if (m === 0 && elapsed < par) { badgeText = '⚡ FLAWLESS SPEED CLEAR'; badgeClass = 'speed'; }
   else if (m === 0) { badgeText = '★ FLAWLESS CLEAR'; badgeClass = 'flawless'; }
@@ -2505,6 +2819,9 @@ function showDailyComplete() {
   const m = state.pageMistakes;
   const elapsed = Math.max(0, Math.round((Date.now() - (state.pageStartTime || Date.now())) / 1000));
   const badge = getRankBadge(m, elapsed);
+  if (m === 0) unlockSticker('flawless_ink', 'silent');
+  if (elapsed < 15) unlockSticker('speed_demon', 'silent');
+  if (state.bonusCleared >= 5) unlockSticker('bonus_hunter', 'silent');
   state.dailyResult = {
     dayNumber: state.dailyDayNumber,
     elapsed,
@@ -2716,16 +3033,306 @@ function getInkDrain() {
   return 0.1;
 }
 
+/* -------------------- STICKER ECOSYSTEM -------------------- */
+const STICKERS = [
+  { id: 'first_crunch', name: 'FIRST CRUNCH', color: '#1D4ED8', group: 'page', dx: 0.13, dy: 0.16, drot: -10, criteria: 'Clear Page 1', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5z"/></svg>' },
+  { id: 'flawless_ink', name: 'FLAWLESS INK', color: '#15803D', group: 'page', dx: 0.84, dy: 0.20, drot: 8, criteria: 'Clear a page with 0 mistakes', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3s6 6.6 6 11a6 6 0 0 1-12 0c0-4.4 6-11 6-11z"/><path d="M9 14l2 2 4-4"/></svg>' },
+  { id: 'speed_demon', name: 'SPEED DEMON', color: '#F59E0B', group: 'page', dx: 0.13, dy: 0.55, drot: 6, criteria: 'Clear a page in under 15 seconds', icon: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M13 2 4 14h6l-1 8 9-12h-6z"/></svg>' },
+  { id: 'bracket_breaker', name: 'BRACKET BREAKER', color: '#E11D48', group: 'mid', dx: 0.85, dy: 0.52, drot: -7, criteria: 'Reduce 10 bracketed chunks', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 4H6a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h2"/><path d="M16 4h2a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-2"/><path d="M9 12h6"/></svg>' },
+  { id: 'power_surge', name: 'POWER SURGE', color: '#7C3AED', group: 'mid', dx: 0.16, dy: 0.36, drot: 11, criteria: 'Reduce 10 exponent/order chunks', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 20h8"/><path d="M15 8h4v4h-4z"/></svg>' },
+  { id: 'locked_in', name: 'LOCKED IN', color: '#0284C7', group: 'mid', dx: 0.83, dy: 0.36, drot: -12, criteria: 'Reach a 5× consecutive streak', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>' },
+  { id: 'bonus_hunter', name: 'BONUS HUNTER', color: '#DB2777', group: 'page', dx: 0.32, dy: 0.80, drot: 5, criteria: 'Solve 5 bonus problems', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 21h8"/><path d="M12 17v4"/><path d="M7 4h10v5a5 5 0 0 1-10 0z"/><path d="M7 5H4v1a3 3 0 0 0 3 3"/><path d="M17 5h3v1a3 3 0 0 1-3 3"/></svg>' },
+  { id: 'page_10_club', name: 'PAGE 10 CLUB', color: '#1E293B', group: 'page', dx: 0.68, dy: 0.80, drot: -6, criteria: 'Reach and clear Page 10', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3h8l4 4v12H7z"/><path d="M9 3v4h4"/><path d="M11 15h4"/><path d="M11 11h4"/></svg>' },
+];
+
+function loadStickers() {
+  try {
+    const d = JSON.parse(localStorage.getItem(LS_STICKERS));
+    if (d) {
+      state.stickers = d.stickers || {};
+      state.bracketBreaks = d.bracketBreaks || 0;
+      state.powerBreaks = d.powerBreaks || 0;
+      state.maxFlowStreak = d.maxFlowStreak || 0;
+    }
+  } catch (e) {}
+}
+
+function saveStickers() {
+  localStorage.setItem(LS_STICKERS, JSON.stringify({
+    stickers: state.stickers,
+    bracketBreaks: state.bracketBreaks,
+    powerBreaks: state.powerBreaks,
+    maxFlowStreak: state.maxFlowStreak,
+  }));
+}
+
+function isUnlocked(id) { return !!(state.stickers[id] && state.stickers[id].unlocked); }
+function unlockedCount() { return STICKERS.filter(st => isUnlocked(st.id)).length; }
+
+function stickerArtHTML(st) {
+  return '<div class="sticker-icon">' + st.icon + '</div><div class="sticker-name">' + st.name + '</div>';
+}
+
+function unlockSticker(id, surface) {
+  if (isUnlocked(id)) return false;
+  const st = STICKERS.find(x => x.id === id);
+  if (!st) return false;
+  state.stickers[id] = { unlocked: true, unlockedAt: Date.now(), x: st.dx, y: st.dy, rotation: st.drot };
+  saveStickers();
+  if (surface === 'toast') showStickerToast(id);
+  else if (surface === 'slap') slapSticker(id);
+  refreshStickerSurfaces();
+  return true;
+}
+
+function refreshStickerSurfaces() {
+  renderCoverStickers();
+  renderStickerSheet();
+  updateStickerPills();
+}
+
+function updateStickerPills() {
+  const n = unlockedCount();
+  ['stickerPill', 'stickerPill2'].forEach(pid => {
+    const el = document.getElementById(pid);
+    if (el) el.textContent = 'Stickers ' + n + '/8';
+  });
+}
+
+function getStickerProgressText(st) {
+  switch (st.id) {
+    case 'bracket_breaker': return state.bracketBreaks + '/10 brackets';
+    case 'power_surge': return state.powerBreaks + '/10 powers';
+    case 'locked_in': return state.maxFlowStreak + '/5 streak';
+    case 'bonus_hunter': return state.bonusCleared + '/5 bonus problems';
+    case 'page_10_club': return 'Page ' + Math.min(state.pageNumber, 10) + '/10';
+    default: return st.criteria;
+  }
+}
+
+/* Surface 1: draggable notebook cover */
+function renderCoverStickers() {
+  const canvas = document.getElementById('stickerCanvas');
+  if (!canvas) return;
+  canvas.innerHTML = '';
+  STICKERS.filter(st => isUnlocked(st.id)).forEach(st => {
+    const data = state.stickers[st.id];
+    const el = document.createElement('div');
+    el.className = 'sticker';
+    el.dataset.id = st.id;
+    el.style.background = st.color;
+    el.style.left = (data.x * 100) + '%';
+    el.style.top = (data.y * 100) + '%';
+    el.style.transform = 'translate(-50%,-50%) rotate(' + data.rotation + 'deg)';
+    el.innerHTML = stickerArtHTML(st) + '<button class="sticker-rotate" aria-label="Rotate sticker">↻</button>';
+    attachCoverDrag(el, st.id);
+    const rot = el.querySelector('.sticker-rotate');
+    rot.addEventListener('pointerdown', e => e.stopPropagation());
+    rot.addEventListener('click', e => { e.stopPropagation(); rotateSticker(st.id); });
+    canvas.appendChild(el);
+  });
+  const locked = STICKERS.filter(st => !isUnlocked(st.id)).slice(0, 3);
+  const silPos = [['15%', '26%'], ['85%', '26%'], ['85%', '70%']];
+  locked.forEach((st, i) => {
+    const el = document.createElement('div');
+    el.className = 'silhouette';
+    el.style.left = silPos[i][0];
+    el.style.top = silPos[i][1];
+    el.textContent = '?';
+    el.dataset.id = st.id;
+    el.addEventListener('click', e => { e.stopPropagation(); showSilhouetteTooltip(st, el); });
+    canvas.appendChild(el);
+  });
+}
+
+function attachCoverDrag(el, id) {
+  el.addEventListener('pointerdown', e => {
+    if (e.target.closest('.sticker-rotate')) return;
+    e.preventDefault();
+    try { el.setPointerCapture(e.pointerId); } catch (err) {}
+    el.classList.add('dragging');
+    const canvas = document.getElementById('stickerCanvas');
+    const rect = canvas.getBoundingClientRect();
+    const move = ev => {
+      const x = Math.max(0.05, Math.min(0.95, (ev.clientX - rect.left) / rect.width));
+      const y = Math.max(0.05, Math.min(0.95, (ev.clientY - rect.top) / rect.height));
+      state.stickers[id].x = x;
+      state.stickers[id].y = y;
+      el.style.left = (x * 100) + '%';
+      el.style.top = (y * 100) + '%';
+    };
+    const up = () => {
+      el.classList.remove('dragging');
+      saveStickers();
+      el.removeEventListener('pointermove', move);
+      el.removeEventListener('pointerup', up);
+      el.removeEventListener('pointercancel', up);
+    };
+    el.addEventListener('pointermove', move);
+    el.addEventListener('pointerup', up);
+    el.addEventListener('pointercancel', up);
+  });
+}
+
+function rotateSticker(id) {
+  const d = state.stickers[id];
+  if (!d) return;
+  d.rotation = d.rotation >= 25 ? -25 : d.rotation + 10;
+  saveStickers();
+  const el = document.querySelector('.sticker[data-id="' + id + '"]');
+  if (el) el.style.transform = 'translate(-50%,-50%) rotate(' + d.rotation + 'deg)';
+}
+
+function showSilhouetteTooltip(st, el) {
+  document.querySelectorAll('.silhouette-tooltip').forEach(t => t.remove());
+  const tip = document.createElement('div');
+  tip.className = 'silhouette-tooltip';
+  tip.textContent = st.name + ' — ' + st.criteria + ' to peel';
+  document.body.appendChild(tip);
+  const r = el.getBoundingClientRect();
+  tip.style.left = Math.min(window.innerWidth - 230, Math.max(8, r.left)) + 'px';
+  tip.style.top = (r.bottom + 8) + 'px';
+  setTimeout(() => tip.remove(), 2600);
+  document.addEventListener('pointerdown', () => tip.remove(), { once: true });
+}
+
+/* Surface 2: mid-game margin toast */
+function showStickerToast(id) {
+  const st = STICKERS.find(x => x.id === id);
+  const host = document.getElementById('stickerToast');
+  if (!host || !st) return;
+  host.innerHTML = '<div class="sticker sticker-mini" style="background:' + st.color + '">' + stickerArtHTML(st) + '</div><div class="toast-pill">NEW STICKER!</div>';
+  host.classList.remove('hidden', 'toast-out');
+  void host.offsetWidth;
+  host.classList.add('toast-in');
+  setTimeout(() => {
+    host.classList.remove('toast-in');
+    host.classList.add('toast-out');
+    setTimeout(() => host.classList.add('hidden'), 400);
+  }, 1800);
+}
+
+/* Surface 3: slap onto PAGE CLEARED */
+function slapSticker(id) {
+  const st = STICKERS.find(x => x.id === id);
+  const zone = document.getElementById('slapZone');
+  if (!zone || !st) return;
+  playVinylSlap();
+  const wrap = document.createElement('div');
+  wrap.className = 'slap-wrap';
+  wrap.style.transform = 'rotate(' + Math.round(Math.random() * 12 - 6) + 'deg)';
+  const el = document.createElement('div');
+  el.className = 'sticker sticker-slap';
+  el.style.background = st.color;
+  el.innerHTML = stickerArtHTML(st);
+  wrap.appendChild(el);
+  zone.appendChild(wrap);
+  setTimeout(() => wrap.remove(), 2600);
+}
+
+/* Surface 4: glossy sticker sheet */
+function renderStickerSheet() {
+  const grid = document.getElementById('stickerGrid');
+  if (!grid) return;
+  grid.innerHTML = '';
+  STICKERS.forEach(st => {
+    const unlocked = isUnlocked(st.id);
+    const d = state.stickers[st.id];
+    const card = document.createElement('div');
+    card.className = 'sheet-sticker' + (unlocked ? '' : ' locked');
+    card.innerHTML =
+      '<div class="sticker sticker-sheet' + (unlocked ? '' : ' locked-mat') + '" style="background:' + (unlocked ? st.color : '#E4E2DC') + '">' + stickerArtHTML(st) + '</div>' +
+      '<div class="sheet-meta">' +
+        (unlocked
+          ? '<div class="sheet-earned">✓ ' + new Date(d.unlockedAt).toLocaleDateString() + '</div>'
+          : '<div class="sheet-criteria">' + st.criteria + '</div><div class="sheet-progress">' + getStickerProgressText(st) + '</div>') +
+      '</div>';
+    grid.appendChild(card);
+  });
+}
+
+function openStickerSheet() {
+  playPeel();
+  renderStickerSheet();
+  document.getElementById('stickerSheet').classList.add('open');
+  document.getElementById('sheetBackdrop').classList.add('open');
+}
+function closeStickerSheet() {
+  document.getElementById('stickerSheet').classList.remove('open');
+  document.getElementById('sheetBackdrop').classList.remove('open');
+}
+
+/* Vinyl slap + peel SFX (Web Audio) */
+function playVinylSlap() {
+  if (isMuted) return;
+  ensureAudio();
+  const t = audioCtx.currentTime;
+  const noise = audioCtx.createBufferSource();
+  const buf = audioCtx.createBuffer(1, audioCtx.sampleRate * 0.08, audioCtx.sampleRate);
+  const data = buf.getChannelData(0);
+  for (let i = 0; i < data.length; i++) data[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / data.length, 2);
+  noise.buffer = buf;
+  const filter = audioCtx.createBiquadFilter();
+  filter.type = 'lowpass';
+  filter.frequency.setValueAtTime(1800, t);
+  filter.frequency.exponentialRampToValueAtTime(300, t + 0.08);
+  const ng = audioCtx.createGain();
+  ng.gain.setValueAtTime(0.4, t);
+  ng.gain.exponentialRampToValueAtTime(0.001, t + 0.08);
+  noise.connect(filter).connect(ng).connect(audioCtx.destination);
+  noise.start(t);
+  const osc = audioCtx.createOscillator();
+  osc.type = 'sine';
+  osc.frequency.setValueAtTime(160, t);
+  osc.frequency.exponentialRampToValueAtTime(70, t + 0.1);
+  const og = audioCtx.createGain();
+  og.gain.setValueAtTime(0.25, t);
+  og.gain.exponentialRampToValueAtTime(0.001, t + 0.1);
+  osc.connect(og).connect(audioCtx.destination);
+  osc.start(t);
+  osc.stop(t + 0.12);
+}
+
+function playPeel() {
+  if (isMuted) return;
+  ensureAudio();
+  const t = audioCtx.currentTime;
+  const noise = audioCtx.createBufferSource();
+  const buf = audioCtx.createBuffer(1, audioCtx.sampleRate * 0.25, audioCtx.sampleRate);
+  const data = buf.getChannelData(0);
+  for (let i = 0; i < data.length; i++) data[i] = (Math.random() * 2 - 1) * (1 - i / data.length);
+  noise.buffer = buf;
+  const filter = audioCtx.createBiquadFilter();
+  filter.type = 'bandpass';
+  filter.frequency.setValueAtTime(800, t);
+  filter.frequency.exponentialRampToValueAtTime(3500, t + 0.25);
+  filter.Q.value = 1.5;
+  const ng = audioCtx.createGain();
+  ng.gain.setValueAtTime(0.18, t);
+  ng.gain.exponentialRampToValueAtTime(0.001, t + 0.25);
+  noise.connect(filter).connect(ng).connect(audioCtx.destination);
+  noise.start(t);
+}
+
+['stickerPill', 'stickerPill2'].forEach(pid => {
+  const el = document.getElementById(pid);
+  if (el) el.onclick = openStickerSheet;
+});
+document.getElementById('sheetClose').onclick = closeStickerSheet;
+document.getElementById('sheetBackdrop').onclick = closeStickerSheet;
+
 /* -------------------- INIT -------------------- */
 mountMascots();
 mountIcons();
 mountPunchHoles();
 loadState();
+loadStickers();
 renderPageTracker();
 renderSoundToggle();
 renderNotation();
 renderDifficulty();
 renderComboBadge();
+refreshStickerSurfaces();
 </script>
 </body>
 </html>
