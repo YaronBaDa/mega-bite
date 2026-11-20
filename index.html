@@ -8,25 +8,47 @@
 @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,800&family=Lexend:wght@400;500;600;700&display=swap');
 
 :root {
-  --paper: #FAF8F5;
+  --paper: #F7F5EE;
   --paper-card: #FFFFFF;
-  --paper-tint: #F1EFEA;
-  --grid-blue: rgba(59, 130, 246, 0.14);
+  --paper-tint: #ECE8DB;
+  --grid-blue: rgba(37, 99, 235, 0.12);
   --margin-pink: rgba(244, 63, 94, 0.28);
-  --ink: #1E293B;
-  --ink-muted: #475569;
-  --pen-blue: #1D4ED8;
+  --ink: #141413;
+  --ink-muted: #5A5851;
+  --pen-blue: #2563EB;
   --pen-pink: #BE123C;
   --pen-red: #E11D48;
   --pen-green: #15803D;
-  --overdrive: #0284C7;
+  --overdrive: #2563EB;
   --overdrive-cyan: #38BDF8;
-  --highlighter: #FEF08A;
-  --border-ink: #334155;
+  --highlighter: #C6F432;
+  --accent: #C6F432;
+  --accent-soft: rgba(198, 244, 50, 0.28);
+  --border-ink: #141413;
   --font-ui: 'Lexend', sans-serif;
   --font-brand: 'Fraunces', serif;
   --spring: cubic-bezier(0.175, 0.885, 0.32, 1.275);
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+:root[data-theme="dark"] {
+  --paper: #121316;
+  --paper-card: #1E2025;
+  --paper-tint: #2A2C33;
+  --grid-blue: rgba(56, 189, 248, 0.10);
+  --margin-pink: rgba(251, 113, 133, 0.20);
+  --ink: #F4F4F0;
+  --ink-muted: #A8A8A2;
+  --pen-blue: #38BDF8;
+  --pen-pink: #FB7185;
+  --pen-red: #FB7185;
+  --pen-green: #4ADE80;
+  --overdrive: #38BDF8;
+  --overdrive-cyan: #7DD3FC;
+  --highlighter: #D9F99D;
+  --accent: #D9F99D;
+  --accent-soft: rgba(217, 249, 157, 0.24);
+  --border-ink: #F4F4F0;
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
@@ -35,14 +57,14 @@ html, body {
   overflow: hidden;
   overscroll-behavior: none;
   font-family: var(--font-ui);
-  background: #FAFAFA;
+  background: var(--paper);
   color: var(--ink);
   padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
 }
 
 /* Plain desk background */
 body {
-  background-color: #FAFAFA;
+  background-color: var(--paper);
   background-image: none;
   position: relative;
 }
@@ -62,16 +84,17 @@ body {
 .header {
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 12px 16px 8px 24px;
+  gap: 10px;
+  padding: 12px 14px 4px;
   flex-shrink: 0;
 }
+.header .ink-track { flex: 1; height: 16px; }
 
 .icon-btn {
   width: 44px; height: 44px;
   border-radius: 10px;
   background: var(--paper-card);
-  border: 1px solid #E5E7EB;
+  border: 2px solid var(--border-ink);
   color: var(--ink-muted);
   cursor: pointer;
   display: flex; align-items: center; justify-content: center;
@@ -115,15 +138,11 @@ body {
 }
 
 /* ===== INK METER ===== */
-.ink-wrap {
-  padding: 0 16px 12px 24px;
-  flex-shrink: 0;
-}
 .ink-track {
   height: 14px;
   background: var(--paper-tint);
   border-radius: 8px;
-  border: 1px solid #E5E7EB;
+  border: 2px solid var(--border-ink);
   overflow: hidden;
   position: relative;
 }
@@ -148,11 +167,14 @@ body {
 .ink-label {
   display: flex;
   justify-content: space-between;
+  align-items: baseline;
+  padding: 4px 22px 2px;
   font-size: 0.62rem;
   font-weight: 700;
   letter-spacing: 0.5px;
   color: var(--ink-muted);
-  margin-top: 5px;
+  margin-top: 0;
+  flex-shrink: 0;
 }
 .ink-label .lbl { color: var(--ink-muted); font-family: var(--font-ui); font-size: 0.78rem; letter-spacing: 0; }
 .ink-label #stepCounter { color: var(--pen-blue); font-family: var(--font-ui); }
@@ -213,7 +235,7 @@ body {
   letter-spacing: 1.5px;
   padding: 4px 14px;
   border-radius: 6px;
-  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.10);
+  box-shadow: 2px 2px 0 var(--border-ink);
   z-index: 2;
   pointer-events: none;
 }
@@ -232,8 +254,8 @@ body {
     linear-gradient(90deg, var(--grid-blue) 1px, transparent 1px);
   background-size: 24px 24px;
   border-radius: 16px;
-  border: 1px solid #E5E7EB;
-  box-shadow: 0 4px 16px rgba(15, 23, 42, 0.04);
+  border: 2px solid var(--border-ink);
+  box-shadow: 3px 3px 0 var(--border-ink);
   position: relative;
   transition: transform 0.4s var(--spring);
 }
@@ -258,20 +280,44 @@ body {
   position: relative;
 }
 .food-token.num { color: var(--ink); min-width: 32px; }
-.food-token.op { color: var(--pen-blue); font-size: 1.8rem; padding: 1px 2px; }
+.food-token.op {
+  color: var(--pen-blue);
+  font-size: 1.8rem;
+  padding: 1px 2px;
+  position: relative;
+  cursor: pointer;
+}
+.food-token.op::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 52px;
+  height: 52px;
+}
 .food-token.paren { color: var(--pen-blue); font-size: 1.85rem; padding: 0 1px; }
 /* Overdrive electric-cyan pen tint */
 body.overdrive .food-token.op,
 body.overdrive .food-token.paren,
 body.overdrive .food-token sup,
 body.overdrive .chunk-card .op-sym { color: var(--overdrive-cyan); }
+/* LOCKED IN flow: electric accent on the equation card + meter */
+body.locked .food-chain {
+  border-color: var(--accent);
+  box-shadow: 3px 3px 0 var(--accent);
+}
+body.locked .ink-fill.locked {
+  background-color: var(--accent);
+  background-image: none;
+  box-shadow: 0 0 8px rgba(198, 244, 50, 0.5);
+}
 
 /* Hover/touch highlighter sweep + dashed ink underline */
 .food-token.chunk-highlight {
-  background: var(--highlighter);
-  color: var(--ink) !important;
-  border-bottom: 2px dashed var(--ink);
-  border-radius: 3px;
+  background: var(--accent-soft);
+  border-radius: 7px;
+  box-shadow: inset 0 -2px 0 var(--accent);
 }
 
 .sup,
@@ -288,13 +334,21 @@ body.overdrive .chunk-card .op-sym { color: var(--overdrive-cyan); }
 
 /* Implode/evaporate the solved chunk's tokens */
 .food-token.crunch-implode {
-  animation: implodeOut 0.28s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  animation: squeezeOut 0.14s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
-@keyframes implodeOut {
-  0% { transform: scale(1); opacity: 1; filter: blur(0); }
-  100% { transform: scale(0.15); opacity: 0; filter: blur(4px); }
+@keyframes squeezeOut {
+  0% { transform: scale(1); opacity: 1; filter: none; }
+  55% { transform: scale(0.92); opacity: 1; filter: brightness(1.6); }
+  100% { transform: scale(0.92); opacity: 0.35; filter: blur(0.5px); }
 }
 /* New digit pops in as red teacher ink, then settles to standard ink */
+.food-token.op.op-pulse { animation: opPulse 1.2s ease; }
+@keyframes opPulse {
+  0%, 100% { transform: scale(1); color: var(--pen-blue); }
+  20% { transform: scale(1.35); color: var(--accent); }
+  55% { transform: scale(1.12); color: var(--accent); }
+}
+
 .food-token.crunch-pop {
   color: var(--pen-red);
   background: rgba(225, 29, 72, 0.08);
@@ -366,22 +420,24 @@ body.overdrive .chunk-card .op-sym { color: var(--overdrive-cyan); }
 .prompt strong { color: var(--ink); }
 
 .rules-toggle {
-  padding: 8px 14px;
-  min-height: 40px;
+  width: 44px;
+  height: 44px;
+  padding: 0;
   border-radius: 10px;
   background: var(--paper-card);
-  border: 1px solid #E5E7EB;
+  border: 2px solid var(--border-ink);
   font-family: var(--font-ui);
-  font-size: 0.85rem;
+  font-size: 1.15rem;
+  font-weight: 800;
   color: var(--ink-muted);
   cursor: pointer;
-  display: inline-flex; align-items: center; gap: 3px;
+  display: inline-flex; align-items: center; justify-content: center;
   transition: transform 0.12s var(--spring), box-shadow 0.12s var(--spring);
   flex-shrink: 0;
-  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.06);
+  box-shadow: 3px 3px 0 var(--border-ink);
 }
 .rules-toggle:hover { color: var(--pen-blue); }
-.rules-toggle:active { transform: translateY(1px); box-shadow: 0 1px 2px rgba(15, 23, 42, 0.08); }
+.rules-toggle:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 var(--border-ink); }
 .rules-toggle.open { border-color: var(--pen-blue); color: var(--pen-blue); }
 .rules-toggle.pulse-hint { animation: pulseHint 1s ease-in-out 3; border-color: var(--pen-blue); }
 @keyframes pulseHint {
@@ -447,7 +503,7 @@ body.overdrive .chunk-card .op-sym { color: var(--overdrive-cyan); }
     linear-gradient(var(--grid-blue) 1px, transparent 1px),
     linear-gradient(90deg, var(--grid-blue) 1px, transparent 1px);
   background-size: 24px 24px;
-  border: 1px solid #E5E7EB;
+  border: 2px solid var(--border-ink);
   color: var(--ink);
   font-family: var(--font-ui);
   font-size: 1.15rem;
@@ -458,10 +514,10 @@ body.overdrive .chunk-card .op-sym { color: var(--overdrive-cyan); }
   align-items: center;
   justify-content: center;
   gap: 6px;
-  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.06);
+  box-shadow: 3px 3px 0 var(--border-ink);
   position: relative;
 }
-.chunk-card:active { transform: translateY(1px); box-shadow: 0 1px 3px rgba(15, 23, 42, 0.08); }
+.chunk-card:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 var(--border-ink); }
 .chunk-card.shake { animation: cardShake 0.4s ease; border-color: var(--pen-red); }
 .chunk-card .op-sym { color: var(--pen-blue); }
 
@@ -483,16 +539,16 @@ body.overdrive .chunk-card .op-sym { color: var(--overdrive-cyan); }
     linear-gradient(var(--grid-blue) 1px, transparent 1px),
     linear-gradient(90deg, var(--grid-blue) 1px, transparent 1px);
   background-size: 24px 24px;
-  border: 1px solid #E5E7EB;
+  border: 2px solid var(--border-ink);
   color: var(--ink);
   font-family: var(--font-ui);
   font-size: 1.35rem;
   font-weight: 800;
   cursor: pointer;
   transition: transform 0.12s var(--spring), box-shadow 0.12s var(--spring);
-  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.06);
+  box-shadow: 3px 3px 0 var(--border-ink);
 }
-.answer-btn:active { transform: translateY(1px); box-shadow: 0 1px 3px rgba(15, 23, 42, 0.08); }
+.answer-btn:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 var(--border-ink); }
 .answer-btn.correct {
   background: var(--pen-red);
   border-color: var(--pen-red);
@@ -532,10 +588,10 @@ body.overdrive .chunk-card .op-sym { color: var(--overdrive-cyan); }
 .cheat-sheet.open { opacity: 1; pointer-events: auto; transform: translate(-50%, -50%) scale(1) rotate(-1deg); }
 .cheat-panel {
   background: var(--paper-card);
-  border: 1px solid #E5E7EB;
+  border: 2px solid var(--border-ink);
   border-radius: 12px;
   padding: 20px 18px;
-  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
+  box-shadow: 4px 4px 0 var(--border-ink);
   position: relative;
 }
 .cheat-close {
@@ -546,7 +602,7 @@ body.overdrive .chunk-card .op-sym { color: var(--overdrive-cyan); }
   height: 38px;
   border-radius: 8px;
   background: var(--paper-tint);
-  border: 1px solid #E5E7EB;
+  border: 2px solid var(--border-ink);
   color: var(--ink-muted);
   font-size: 1rem;
   font-weight: 700;
@@ -664,10 +720,10 @@ body.overdrive .chunk-card .op-sym { color: var(--overdrive-cyan); }
   letter-spacing: 0.5px;
   cursor: pointer;
   font-family: inherit;
-  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.10);
+  box-shadow: 3px 3px 0 var(--border-ink);
   transition: transform 0.12s var(--spring), box-shadow 0.12s var(--spring);
 }
-.refill-btn:active { transform: translateY(1px); box-shadow: 0 1px 3px rgba(15, 23, 42, 0.08); }
+.refill-btn:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 var(--border-ink); }
 
 @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
@@ -779,7 +835,7 @@ body.overdrive .chunk-card .op-sym { color: var(--overdrive-cyan); }
   padding: 12px 16px;
   min-height: 46px;
   border-radius: 10px;
-  border: 1px solid #E5E7EB;
+  border: 2px solid var(--border-ink);
   background: var(--paper-card);
   color: var(--ink-muted);
   font-size: 0.78rem;
@@ -788,9 +844,9 @@ body.overdrive .chunk-card .op-sym { color: var(--overdrive-cyan); }
   cursor: pointer;
   transition: transform 0.12s var(--spring), box-shadow 0.12s var(--spring), background 0.2s, color 0.2s, border-color 0.2s;
   font-family: inherit;
-  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.06);
+  box-shadow: 3px 3px 0 var(--border-ink);
 }
-.diff-btn:active { transform: translateY(1px); box-shadow: 0 1px 3px rgba(15, 23, 42, 0.08); }
+.diff-btn:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 var(--border-ink); }
 .diff-btn.active {
   border-color: var(--pen-blue);
   background: var(--pen-blue);
@@ -838,7 +894,7 @@ body.overdrive .chunk-card .op-sym { color: var(--overdrive-cyan); }
 .notation-toggle {
   display: inline-flex;
   background: var(--paper-tint);
-  border: 1px solid #E5E7EB;
+  border: 2px solid var(--border-ink);
   border-radius: 10px;
   padding: 3px;
   gap: 3px;
@@ -861,6 +917,53 @@ body.overdrive .chunk-card .op-sym { color: var(--overdrive-cyan); }
   background: var(--pen-blue);
   color: var(--paper-card);
 }
+.theme-toggle {
+  display: flex;
+  gap: 8px;
+}
+.theme-btn {
+  flex: 1;
+  padding: 11px 10px;
+  min-height: 44px;
+  border-radius: 10px;
+  border: 2px solid var(--border-ink);
+  background: var(--paper-card);
+  color: var(--ink-muted);
+  font-family: var(--font-ui);
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  box-shadow: 3px 3px 0 var(--border-ink);
+  transition: transform 0.12s var(--spring), box-shadow 0.12s var(--spring), background 0.2s, color 0.2s;
+}
+.theme-btn:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 var(--border-ink); }
+.theme-btn.active {
+  background: var(--ink);
+  color: var(--paper-card);
+}
+.reminder-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  padding: 8px 12px 4px;
+  flex-shrink: 0;
+}
+.reminder-bar .rem-pill {
+  padding: 4px 10px;
+  border-radius: 6px;
+  border: 1.5px solid var(--border-ink);
+  background: var(--paper-card);
+  font-family: var(--font-ui);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  color: var(--ink-muted);
+  opacity: 0.75;
+  font-variant-numeric: tabular-nums;
+}
+.reminder-bar .rem-sep { color: var(--ink-muted); opacity: 0.4; font-weight: 800; }
 
 /* ===== LEVEL COMPLETE ===== */
 .page-card {
@@ -902,7 +1005,17 @@ body.overdrive .chunk-card .op-sym { color: var(--overdrive-cyan); }
   text-align: center;
   line-height: 1.25;
 }
-.stamp-badge.flawless { color: var(--pen-green); border-color: var(--pen-green); }
+.stamp-badge.flawless {
+  color: var(--pen-green);
+  border-color: var(--pen-green);
+  background-image: linear-gradient(115deg, transparent 22%, rgba(255,255,255,0.5) 38%, rgba(198,244,50,0.35) 46%, transparent 62%);
+  background-size: 220% 100%;
+  animation: foilShimmer 2.8s linear infinite;
+}
+@keyframes foilShimmer {
+  0% { background-position: 130% 0; }
+  100% { background-position: -130% 0; }
+}
 .stamp-badge.speed { color: var(--pen-blue); border-color: var(--pen-blue); }
 .stamp-badge.cleared { color: var(--ink); border-color: var(--ink); }
 .bonus-hunter {
@@ -937,10 +1050,10 @@ body.overdrive .chunk-card .op-sym { color: var(--overdrive-cyan); }
   letter-spacing: 1px;
   cursor: pointer;
   font-family: inherit;
-  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.10);
+  box-shadow: 3px 3px 0 var(--border-ink);
   transition: transform 0.12s var(--spring), box-shadow 0.12s var(--spring);
 }
-.next-btn:active { transform: translateY(1px); box-shadow: 0 1px 3px rgba(15, 23, 42, 0.08); }
+.next-btn:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 var(--border-ink); }
 
 .share-btn {
   padding: 14px 28px;
@@ -954,26 +1067,26 @@ body.overdrive .chunk-card .op-sym { color: var(--overdrive-cyan); }
   letter-spacing: 0.5px;
   cursor: pointer;
   font-family: inherit;
-  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.10);
+  box-shadow: 3px 3px 0 var(--border-ink);
   transition: transform 0.12s var(--spring), box-shadow 0.12s var(--spring);
 }
-.share-btn:active { transform: translateY(1px); box-shadow: 0 1px 3px rgba(15, 23, 42, 0.08); }
+.share-btn:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 var(--border-ink); }
 .menu-btn {
   padding: 10px 20px;
   min-height: 44px;
   border-radius: 10px;
-  border: 1px solid #E5E7EB;
+  border: 2px solid var(--border-ink);
   background: var(--paper-card);
   color: var(--ink-muted);
   font-size: 0.85rem;
   font-weight: 800;
   cursor: pointer;
   font-family: inherit;
-  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.06);
+  box-shadow: 3px 3px 0 var(--border-ink);
   transition: transform 0.12s var(--spring), box-shadow 0.12s var(--spring);
   margin-top: 10px;
 }
-.menu-btn:active { transform: translateY(1px); box-shadow: 0 1px 3px rgba(15, 23, 42, 0.08); }
+.menu-btn:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 var(--border-ink); }
 .daily-note {
   font-size: 0.75rem;
   color: var(--pen-red);
@@ -1009,10 +1122,10 @@ body.overdrive .chunk-card .op-sym { color: var(--overdrive-cyan); }
 .settings-sheet.open { opacity: 1; pointer-events: auto; transform: translate(-50%, -50%) scale(1) rotate(-1deg); }
 .settings-panel {
   background: var(--paper-card);
-  border: 1px solid #E5E7EB;
+  border: 2px solid var(--border-ink);
   border-radius: 12px;
   padding: 20px 18px;
-  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
+  box-shadow: 4px 4px 0 var(--border-ink);
   position: relative;
 }
 .settings-close {
@@ -1023,7 +1136,7 @@ body.overdrive .chunk-card .op-sym { color: var(--overdrive-cyan); }
   height: 38px;
   border-radius: 8px;
   background: var(--paper-tint);
-  border: 1px solid #E5E7EB;
+  border: 2px solid var(--border-ink);
   color: var(--ink-muted);
   font-size: 1rem;
   font-weight: 700;
@@ -1059,16 +1172,16 @@ body.overdrive .chunk-card .op-sym { color: var(--overdrive-cyan); }
   min-height: 48px;
   border-radius: 10px;
   background: var(--paper-card);
-  border: 1px solid #E5E7EB;
+  border: 2px solid var(--border-ink);
   color: var(--ink);
   font-weight: 800;
   cursor: pointer;
   display: flex; align-items: center; justify-content: center; gap: 8px;
   font-family: inherit;
-  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.06);
+  box-shadow: 3px 3px 0 var(--border-ink);
   transition: transform 0.12s var(--spring), box-shadow 0.12s var(--spring);
 }
-.sound-toggle:active { transform: translateY(1px); box-shadow: 0 1px 3px rgba(15, 23, 42, 0.08); }
+.sound-toggle:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 var(--border-ink); }
 
 /* Numbers align — timers, counters & equations */
 .food-token, .chunk-card, .answer-btn, .ink-label, .page-sub, .cheat-rank { font-variant-numeric: tabular-nums; }
@@ -1281,10 +1394,10 @@ body.overdrive .chunk-card .op-sym { color: var(--overdrive-cyan); }
 .sheet-modal.open { opacity: 1; pointer-events: auto; transform: translate(-50%, -50%) scale(1); }
 .sheet-panel {
   background: var(--paper-card);
-  border: 1px solid #E5E7EB;
+  border: 2px solid var(--border-ink);
   border-radius: 12px;
   padding: 18px 16px 20px;
-  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
+  box-shadow: 4px 4px 0 var(--border-ink);
   position: relative;
   max-height: 86vh;
   overflow-y: auto;
@@ -1297,7 +1410,7 @@ body.overdrive .chunk-card .op-sym { color: var(--overdrive-cyan); }
   height: 38px;
   border-radius: 8px;
   background: var(--paper-tint);
-  border: 1px solid #E5E7EB;
+  border: 2px solid var(--border-ink);
   color: var(--ink-muted);
   font-size: 1rem;
   font-weight: 700;
@@ -1416,7 +1529,7 @@ body.overdrive .chunk-card .op-sym { color: var(--overdrive-cyan); }
 
   <div class="landing-controls">
     <button class="play-btn" id="playBtn">Start Page 1</button>
-    <button class="daily-btn" id="dailyBtn">Daily Pop Quiz</button>
+    <button class="daily-btn" id="dailyBtn">Daily Crunch</button>
   </div>
 
   <div class="sticker-canvas" id="stickerCanvas" aria-label="Sticker cover"></div>
@@ -1425,20 +1538,18 @@ body.overdrive .chunk-card .op-sym { color: var(--overdrive-cyan); }
 <!-- GAME SCREEN -->
 <div id="gameScreen" class="screen">
   <div class="header">
-    <div class="brand">CRUNCH</div>
     <div class="page-tracker" id="pageTracker" aria-label="Page progress"></div>
-    <button class="icon-btn" id="settingsBtn" aria-label="Settings"></button>
-  </div>
-
-  <div class="ink-wrap">
     <div class="ink-track">
       <div class="ink-fill" id="inkFill" style="width: 100%"></div>
     </div>
-    <div class="ink-label">
-      <span class="lbl">INK</span>
-      <span id="stepCounter"></span>
-      <span id="inkText">LOCKED IN</span>
-    </div>
+    <button class="rules-toggle" id="rulesToggle" aria-label="Order of operations rules">?</button>
+    <button class="icon-btn" id="settingsBtn" aria-label="Settings"></button>
+  </div>
+
+  <div class="ink-label">
+    <span class="lbl">INK</span>
+    <span id="stepCounter"></span>
+    <span id="inkText">LOCKED IN</span>
   </div>
 
   <div class="feedback-slot" aria-live="polite"><div class="feedback-banner" id="feedbackBanner"></div></div>
@@ -1451,10 +1562,16 @@ body.overdrive .chunk-card .op-sym { color: var(--overdrive-cyan); }
 
   <div class="prompt-row">
     <div class="prompt" id="prompt">Which operation crunches first?</div>
-    <button class="rules-toggle" id="rulesToggle" aria-label="Order of operations rules">? RULES</button>
   </div>
 
   <div class="action-tray" id="actionTray"></div>
+
+  <div class="reminder-bar hidden" id="reminderBar" aria-hidden="true">
+    <span class="rem-pill">( )</span><span class="rem-sep">›</span>
+    <span class="rem-pill">x² √</span><span class="rem-sep">›</span>
+    <span class="rem-pill">÷ ×</span><span class="rem-sep">›</span>
+    <span class="rem-pill">+ −</span>
+  </div>
 </div>
 
 <!-- ORDER OF OPERATIONS MODAL -->
@@ -1561,6 +1678,13 @@ body.overdrive .chunk-card .op-sym { color: var(--overdrive-cyan); }
       </div>
     </div>
     <div class="settings-group">
+      <div class="settings-label">THEME</div>
+      <div class="theme-toggle" role="group" aria-label="Theme">
+        <button class="theme-btn active" data-t="light">PAPER ZINE</button>
+        <button class="theme-btn" data-t="dark">BLACKOUT</button>
+      </div>
+    </div>
+    <div class="settings-group">
       <button class="sound-toggle" id="soundToggle"></button>
     </div>
   </div>
@@ -1578,6 +1702,7 @@ const LS_MUTE = 'crunch_muted';
 const LS_BONUS = 'crunch_bonus';
 const LS_DAILY_PREFIX = 'crunch_daily_';
 const LS_STICKERS = 'crunch_stickers';
+const LS_THEME = 'crunch_theme';
 const APP_URL = 'https://yaronbada.github.io/mega-bite/';
 const BONUS_HUNTER_GOAL = 5;
 const DAILY_PAR = 60;
@@ -2245,8 +2370,8 @@ function updateStepCounter() {
 function startInkTimer() {
   stopInkTimer();
   state.inkTimer = setInterval(() => {
-    const overdrivePause = state.flowStreak >= 5 && Date.now() < (state.overdriveUntil || 0);
-    if (state.phase === 'select' && state.inkEnergy > 0 && !overdrivePause) {
+    const flowPause = state.flowStreak >= 3;
+    if (state.phase === 'select' && state.inkEnergy > 0 && !flowPause) {
       state.inkEnergy = Math.max(0, state.inkEnergy - getInkDrain());
       renderInkEnergy();
       if (state.inkEnergy === 0) showOutOfInk();
@@ -2273,15 +2398,15 @@ function renderInkEnergy() {
 function renderComboBadge() {
   const el = document.getElementById('inkText');
   const fill = document.getElementById('inkFill');
-  const overdrive = state.flowStreak >= 5;
   const locked = state.flowStreak >= 3;
+  const overdrive = state.flowStreak >= 5;
   el.classList.toggle('locked', locked);
   el.classList.toggle('overdrive', overdrive);
-  if (overdrive) el.textContent = 'LOCKED IN • OVERDRIVE 2×';
-  else if (locked) el.textContent = 'LOCKED IN • 2×';
+  if (locked) el.textContent = 'LOCKED IN • ' + state.flowStreak + '×';
   else el.textContent = 'LOCKED IN';
   fill.classList.toggle('locked', locked);
   fill.classList.toggle('overdrive', overdrive);
+  document.body.classList.toggle('locked', locked);
   document.body.classList.toggle('overdrive', overdrive);
 }
 
@@ -2352,6 +2477,8 @@ function renderFoodChain() {
       opSpan.className = 'food-token op';
       opSpan.textContent = OPSYMBOLS[node.op] || node.op;
       opSpan._astNode = node;
+      opSpan.addEventListener('pointerenter', () => { if (state.phase === 'select') highlightTokens([node, node.left, node.right]); });
+      opSpan.addEventListener('pointerleave', () => { if (state.phase === 'select') clearChunkHighlights(); });
       parent.appendChild(opSpan);
       renderNode(node.right, parent);
     }
@@ -2474,11 +2601,23 @@ function showFeedback(msg, type = 'error') {
   clearTimeout(feedbackTimer);
   feedbackTimer = setTimeout(() => {
     el.className = 'feedback-banner';
-  }, 4000);
+  }, 1200);
 }
 function clearFeedback() {
   clearTimeout(feedbackTimer);
   $('feedbackBanner').className = 'feedback-banner';
+}
+
+function pulseOperator(node) {
+  if (!node) return;
+  document.querySelectorAll('#foodChain .food-token.op').forEach(tok => {
+    if (tok._astNode === node) {
+      tok.classList.remove('op-pulse');
+      void tok.offsetWidth;
+      tok.classList.add('op-pulse');
+      setTimeout(() => tok.classList.remove('op-pulse'), 1200);
+    }
+  });
 }
 
 function pulseRules() {
@@ -2606,6 +2745,7 @@ function handleVisualDistractorTap(distractor, correctNode, btn) {
   const msg = `${distractor.leftVal} and ${distractor.rightVal} aren't a real chunk — the ${OPSYMBOLS[distractor.op] || distractor.op} links bigger pieces.`;
   showFeedback(msg, 'error');
   pulseRules();
+  pulseOperator(correctNode);
 
   setTimeout(() => {
     btn.classList.remove('shake');
@@ -2656,6 +2796,7 @@ function handleChunkSelect(candidate, correctNode, btn) {
     }
     showFeedback(msg, 'error');
     pulseRules();
+    pulseOperator(correctNode);
 
     setTimeout(() => {
       btn.classList.remove('shake');
@@ -2690,7 +2831,7 @@ function handleAnswerSelect(val, correct, btn) {
     saveStickers();
     if (state.bracketBreaks >= 10) unlockSticker('bracket_breaker', 'toast');
     if (state.powerBreaks >= 10) unlockSticker('power_surge', 'toast');
-    if (state.flowStreak >= 5) unlockSticker('locked_in', 'toast');
+    if (state.flowStreak >= 3) unlockSticker('locked_in', 'toast');
 
     const tokensToCollapse = [];
     document.querySelectorAll('#foodChain .food-token').forEach(tok => {
@@ -2735,7 +2876,7 @@ function handleAnswerSelect(val, correct, btn) {
         state.isProcessing = false;
         renderActionTray();
       }
-    }, 280);
+    }, 160);
   } else {
     btn.classList.add('wrong');
     playThud();
@@ -2775,6 +2916,7 @@ function loadLevel() {
   renderActionTray();
   renderInkEnergy();
   updateStepCounter();
+  renderReminderBar();
 }
 
 function onEquationSolved() {
@@ -2835,7 +2977,7 @@ function renderBonusHunter() {
   }
 }
 
-/* -------------------- DAILY POP QUIZ -------------------- */
+/* -------------------- DAILY CRUNCH -------------------- */
 function getDateStr() {
   const d = new Date();
   return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
@@ -2880,7 +3022,7 @@ function dailyEmojiRow(m, elapsed) {
 }
 
 function renderDailyCard(result, isRevisit) {
-  $('dailyTitle').textContent = `DAILY POP QUIZ #${result.dayNumber} CLEARED!`;
+  $('dailyTitle').textContent = `DAILY CRUNCH #${result.dayNumber} CLEARED!`;
   $('dailyStamp').textContent = result.badgeText;
   $('dailyStamp').className = 'stamp-badge ' + (result.badgeClass || 'cleared');
   $('dailySub').textContent = `5 equations • ${result.mistakes} mistake${result.mistakes === 1 ? '' : 's'} • ${result.elapsed}s`;
@@ -2901,6 +3043,7 @@ function showDailyComplete() {
     dayNumber: state.dailyDayNumber,
     elapsed,
     mistakes: m,
+    inkLeft: Math.round(state.inkEnergy),
     badgeText: badge.text,
     badgeClass: badge.cls,
     badgePlain: badge.plain,
@@ -3009,7 +3152,9 @@ $('dailyBtn').onclick = () => {
 $('shareBtn').onclick = () => {
   const r = state.dailyResult;
   if (!r) return;
-  const text = `CRUNCH • Daily Pop Quiz #${r.dayNumber} 🖊️\nPage Cleared in ${r.elapsed}s (${r.badgePlain})\n${r.emojiRow}\nCan you beat my time? ${APP_URL}`;
+  const drops = Math.max(1, Math.round((r.inkLeft || 0) / 20));
+  const inkRow = '💧'.repeat(drops);
+  const text = `CRUNCH • Daily Crunch #${r.dayNumber} 🖊️\n${r.emojiRow}\nInk ${inkRow}\n${r.mistakes} mistake${r.mistakes === 1 ? '' : 's'} • ${r.elapsed}s\nCan you beat my time? ${APP_URL}`;
   copyShareText(text);
   const btn = $('shareBtn');
   btn.textContent = 'Copied! ✓';
@@ -3023,6 +3168,22 @@ $('dailyMenuBtn').onclick = () => {
   $('startScreen').classList.add('active');
   state.mode = 'endless';
 };
+
+function applyTheme() {
+  const t = localStorage.getItem(LS_THEME) || 'light';
+  document.documentElement.setAttribute('data-theme', t === 'dark' ? 'dark' : 'light');
+}
+function renderTheme() {
+  const t = localStorage.getItem(LS_THEME) || 'light';
+  document.querySelectorAll('.theme-btn').forEach(b => b.classList.toggle('active', b.dataset.t === t));
+}
+document.querySelectorAll('.theme-btn').forEach(btn => {
+  btn.onclick = () => {
+    localStorage.setItem(LS_THEME, btn.dataset.t);
+    applyTheme();
+    renderTheme();
+  };
+});
 
 function renderSoundToggle() {
   $('soundToggle').innerHTML = (isMuted ? ICON_MUTE : ICON_SOUND) + ' <span>SFX: ' + (isMuted ? 'OFF' : 'ON') + '</span>';
@@ -3090,6 +3251,13 @@ function setNotation(n) {
 
 function renderDifficulty() {
   document.querySelectorAll('.diff-btn').forEach(b => b.classList.toggle('active', b.dataset.d === state.difficulty));
+  renderReminderBar();
+}
+
+function renderReminderBar() {
+  const show = state.difficulty === 'warmup' && state.mode !== 'daily';
+  const el = $('reminderBar');
+  if (el) el.classList.toggle('hidden', !show);
 }
 
 document.querySelectorAll('.notation-btn').forEach(btn => {
@@ -3399,6 +3567,8 @@ document.getElementById('sheetBackdrop').onclick = closeStickerSheet;
 /* -------------------- INIT -------------------- */
 mountMascots();
 mountIcons();
+applyTheme();
+renderTheme();
 loadState();
 loadStickers();
 renderPageTracker();
