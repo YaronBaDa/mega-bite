@@ -2376,12 +2376,23 @@ function renderActionTray() {
   tray.innerHTML = '';
 
   if (state.phase === 'select') {
-    renderPrompt('Which operation crunches <strong>first</strong>?');
-
     const candidates = findCandidateChunks(state.ast);
     const visualDistractors = findVisualDistractors(state.ast);
     const correct = findNextReduction(state.ast);
     state.currentCandidates = candidates;
+
+    // Last operation left: nothing to decide or teach — jump straight to solving.
+    if (candidates.length === 1 && visualDistractors.length === 0) {
+      state.selectedChunk = candidates[0];
+      state.correctAnswer = getChunkValue(candidates[0].node);
+      state.phase = 'answer';
+      highlightTokens([candidates[0].node, candidates[0].node.left, candidates[0].node.right]);
+      clearFeedback();
+      renderActionTray();
+      return;
+    }
+
+    renderPrompt('Which operation crunches <strong>first</strong>?');
 
     const grid = document.createElement('div');
 
