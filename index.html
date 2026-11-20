@@ -35,18 +35,15 @@ html, body {
   overflow: hidden;
   overscroll-behavior: none;
   font-family: var(--font-ui);
-  background: var(--paper);
+  background: #FAFAFA;
   color: var(--ink);
   padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
 }
 
-/* Graph-paper grid */
+/* Plain desk background */
 body {
-  background-color: var(--paper);
-  background-image:
-    linear-gradient(var(--grid-blue) 1px, transparent 1px),
-    linear-gradient(90deg, var(--grid-blue) 1px, transparent 1px);
-  background-size: 24px 24px;
+  background-color: #FAFAFA;
+  background-image: none;
   position: relative;
 }
 
@@ -230,7 +227,10 @@ body {
   width: 100%;
   padding: 28px 20px;
   background-color: var(--paper-card);
-  background-image: repeating-linear-gradient(to bottom, transparent 0, transparent 27px, rgba(59, 130, 246, 0.09) 27px, rgba(59, 130, 246, 0.09) 28px);
+  background-image:
+    linear-gradient(var(--grid-blue) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-blue) 1px, transparent 1px);
+  background-size: 24px 24px;
   border-radius: 12px;
   border: 2px solid var(--border-ink);
   box-shadow: 3px 3px 0 var(--border-ink);
@@ -442,7 +442,11 @@ body.overdrive .chunk-card .op-sym { color: var(--overdrive-cyan); }
   padding: 16px 14px;
   min-height: 62px;
   border-radius: 12px;
-  background: var(--paper-card);
+  background-color: var(--paper-card);
+  background-image:
+    linear-gradient(var(--grid-blue) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-blue) 1px, transparent 1px);
+  background-size: 24px 24px;
   border: 2px solid var(--border-ink);
   color: var(--ink);
   font-family: var(--font-ui);
@@ -474,7 +478,11 @@ body.overdrive .chunk-card .op-sym { color: var(--overdrive-cyan); }
   padding: 16px 14px;
   min-height: 62px;
   border-radius: 12px;
-  background: var(--paper-card);
+  background-color: var(--paper-card);
+  background-image:
+    linear-gradient(var(--grid-blue) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-blue) 1px, transparent 1px);
+  background-size: 24px 24px;
   border: 2px solid var(--border-ink);
   color: var(--ink);
   font-family: var(--font-ui);
@@ -491,7 +499,7 @@ body.overdrive .chunk-card .op-sym { color: var(--overdrive-cyan); }
   color: var(--paper-card);
 }
 .answer-btn.wrong {
-  background: var(--paper-card);
+  background-color: var(--paper-card);
   border-color: var(--pen-red);
   color: var(--pen-red);
   animation: cardShake 0.4s ease;
