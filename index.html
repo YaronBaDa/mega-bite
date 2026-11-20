@@ -60,39 +60,6 @@ body {
   position: relative;
   z-index: 1;
 }
-/* Notebook margin line */
-.app::before {
-  content: '';
-  position: absolute;
-  left: 15px;
-  top: 0;
-  bottom: 0;
-  width: 1px;
-  background: rgba(225, 29, 72, 0.25);
-  z-index: 0;
-  pointer-events: none;
-}
-
-/* Perforated punch holes down the left margin */
-.punch-holes {
-  position: absolute;
-  left: 4px;
-  top: 0;
-  bottom: 0;
-  width: 12px;
-  z-index: 0;
-  pointer-events: none;
-}
-.punch-hole {
-  position: absolute;
-  left: 0;
-  width: 11px;
-  height: 11px;
-  border-radius: 50%;
-  background: rgba(30, 41, 59, 0.08);
-  box-shadow: inset 0 2px 3px rgba(0, 0, 0, 0.28), inset 0 -1px 1px rgba(255, 255, 255, 0.35);
-  transform: translateY(-50%);
-}
 
 /* ===== HEADER ===== */
 .header {
@@ -106,7 +73,7 @@ body {
 .icon-btn {
   width: 44px; height: 44px;
   border-radius: 10px;
-  background: transparent;
+  background: var(--paper-card);
   border: 1.5px solid var(--ink-muted);
   color: var(--ink-muted);
   cursor: pointer;
@@ -121,7 +88,7 @@ body {
   right: 12px;
   z-index: 5;
 }
-#startSettingsBtn { border-color: #fff; color: #fff; }
+#startSettingsBtn { border-color: #000; color: #111; }
 
 .brand {
   flex: 1;
@@ -859,49 +826,33 @@ body.overdrive .chunk-card .op-sym { color: var(--overdrive-cyan); }
 .daily-btn:hover { background: #fff; }
 .daily-btn:active { transform: translateY(2px); box-shadow: 0 0 0 #111; }
 
-/* Notation pill toggle (BODMAS | PEMDAS) — compact settings control */
-.notation-wrap {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 3px;
-  margin-bottom: 2px;
-}
-.notation-label {
-  font-family: var(--font-ui);
-  font-size: 0.6rem;
-  font-weight: 700;
-  letter-spacing: 1.6px;
-  text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.72);
-}
+/* Notation pill toggle (BODMAS | PEMDAS) — in Settings */
 .notation-toggle {
   display: inline-flex;
-  background: rgba(255, 255, 255, 0.14);
-  border: 1px solid rgba(255, 255, 255, 0.35);
-  border-radius: 9px;
-  padding: 2px;
-  gap: 2px;
+  background: var(--paper-tint);
+  border: 2px solid var(--border-ink);
+  border-radius: 10px;
+  padding: 3px;
+  gap: 3px;
 }
 .notation-btn {
-  padding: 5px 13px;
-  min-height: 28px;
+  padding: 8px 16px;
+  min-height: 38px;
   border: none;
   border-radius: 7px;
-  background: transparent;
-  color: rgba(255, 255, 255, 0.85);
+  background: var(--paper-card);
+  color: var(--ink-muted);
   font-family: var(--font-ui);
-  font-size: 0.68rem;
-  font-weight: 700;
-  letter-spacing: 0.3px;
+  font-size: 0.8rem;
+  font-weight: 800;
+  letter-spacing: 0.5px;
   cursor: pointer;
   transition: background 0.15s, color 0.15s;
 }
 .notation-btn.active {
-  background: #fff;
-  color: #111;
+  background: var(--pen-blue);
+  color: var(--paper-card);
 }
-.start-notation { margin-bottom: 0; }
 
 /* ===== LEVEL COMPLETE ===== */
 .page-card {
@@ -1424,7 +1375,6 @@ body.overdrive .chunk-card .op-sym { color: var(--overdrive-cyan); }
 </head>
 <body>
 <div class="app">
-<div class="punch-holes" id="punchHoles" aria-hidden="true"></div>
 
 <!-- START SCREEN -->
 <div id="startScreen" class="screen active">
@@ -1433,12 +1383,12 @@ body.overdrive .chunk-card .op-sym { color: var(--overdrive-cyan); }
     <svg class="cover-marble" viewBox="0 0 1000 1600" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
       <defs>
         <filter id="agateFilter" x="0" y="0" width="100%" height="100%">
-          <feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves="4" seed="7" stitchTiles="stitch" result="n"/>
+          <feTurbulence type="fractalNoise" baseFrequency="0.018" numOctaves="3" seed="7" stitchTiles="stitch" result="n"/>
           <feColorMatrix in="n" type="matrix" values="0.33 0.33 0.33 0 0  0.33 0.33 0.33 0 0  0.33 0.33 0.33 0 0  0 0 0 1 0" result="gray"/>
           <feComponentTransfer in="gray">
-            <feFuncR type="discrete" tableValues="0.067 0.067 0.957"/>
-            <feFuncG type="discrete" tableValues="0.067 0.067 0.957"/>
-            <feFuncB type="discrete" tableValues="0.067 0.067 0.941"/>
+            <feFuncR type="discrete" tableValues="0.067 0.067 1"/>
+            <feFuncG type="discrete" tableValues="0.067 0.067 1"/>
+            <feFuncB type="discrete" tableValues="0.067 0.067 1"/>
           </feComponentTransfer>
         </filter>
       </defs>
@@ -1457,13 +1407,6 @@ body.overdrive .chunk-card .op-sym { color: var(--overdrive-cyan); }
   <button class="sticker-pill" id="stickerPill">Stickers 0/8</button>
 
   <div class="landing-controls">
-    <div class="notation-wrap">
-      <span class="notation-label">Notation</span>
-      <div class="notation-toggle start-notation" role="group" aria-label="Order of operations notation">
-        <button class="notation-btn active" data-n="bodmas">BODMAS</button>
-        <button class="notation-btn" data-n="pemdas">PEMDAS</button>
-      </div>
-    </div>
     <button class="play-btn" id="playBtn">Start Page 1</button>
     <button class="daily-btn" id="dailyBtn">Daily Pop Quiz</button>
   </div>
@@ -1678,18 +1621,6 @@ function mountIcons() {
   if (g1) g1.innerHTML = ICON_GEAR;
   const g2 = document.getElementById('startSettingsBtn');
   if (g2) g2.innerHTML = ICON_GEAR;
-}
-
-function mountPunchHoles() {
-  const c = document.getElementById('punchHoles');
-  if (!c) return;
-  const N = 9;
-  for (let i = 0; i < N; i++) {
-    const h = document.createElement('div');
-    h.className = 'punch-hole';
-    h.style.top = ((i + 0.5) / N * 100) + '%';
-    c.appendChild(h);
-  }
 }
 
 /* -------------------- TOKENIZER & AST -------------------- */
@@ -3449,7 +3380,6 @@ document.getElementById('sheetBackdrop').onclick = closeStickerSheet;
 /* -------------------- INIT -------------------- */
 mountMascots();
 mountIcons();
-mountPunchHoles();
 loadState();
 loadStickers();
 renderPageTracker();
