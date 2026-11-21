@@ -94,7 +94,7 @@ body {
   width: 44px; height: 44px;
   border-radius: 10px;
   background: var(--paper-card);
-  border: 2px solid var(--border-ink);
+  border: 1px solid var(--border-ink);
   color: var(--ink-muted);
   cursor: pointer;
   display: flex; align-items: center; justify-content: center;
@@ -142,7 +142,7 @@ body {
   height: 14px;
   background: var(--paper-tint);
   border-radius: 8px;
-  border: 2px solid var(--border-ink);
+  border: 1px solid var(--border-ink);
   overflow: hidden;
   position: relative;
 }
@@ -235,7 +235,6 @@ body {
   letter-spacing: 1.5px;
   padding: 4px 14px;
   border-radius: 6px;
-  box-shadow: 2px 2px 0 var(--border-ink);
   z-index: 2;
   pointer-events: none;
 }
@@ -255,7 +254,7 @@ body {
   background-size: 24px 24px;
   border-radius: 16px;
   border: 2px solid var(--border-ink);
-  box-shadow: 3px 3px 0 var(--border-ink);
+  box-shadow: 2px 2px 0 var(--border-ink);
   position: relative;
   transition: transform 0.4s var(--spring);
 }
@@ -305,7 +304,7 @@ body.overdrive .chunk-card .op-sym { color: var(--overdrive-cyan); }
 /* LOCKED IN flow: electric accent on the equation card + meter */
 body.locked .food-chain {
   border-color: var(--accent);
-  box-shadow: 3px 3px 0 var(--accent);
+  box-shadow: 2px 2px 0 var(--accent);
 }
 body.locked .ink-fill.locked {
   background-color: var(--accent);
@@ -425,16 +424,15 @@ body.locked .ink-fill.locked {
   padding: 0;
   border-radius: 10px;
   background: var(--paper-card);
-  border: 2px solid var(--border-ink);
+  border: 1px solid var(--border-ink);
   font-family: var(--font-ui);
   font-size: 1.15rem;
   font-weight: 800;
   color: var(--ink-muted);
   cursor: pointer;
   display: inline-flex; align-items: center; justify-content: center;
-  transition: transform 0.12s var(--spring), box-shadow 0.12s var(--spring);
+  transition: transform 0.12s var(--spring);
   flex-shrink: 0;
-  box-shadow: 3px 3px 0 var(--border-ink);
 }
 .rules-toggle:hover { color: var(--pen-blue); }
 .rules-toggle:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 var(--border-ink); }
@@ -514,7 +512,7 @@ body.locked .ink-fill.locked {
   align-items: center;
   justify-content: center;
   gap: 6px;
-  box-shadow: 3px 3px 0 var(--border-ink);
+  box-shadow: 2px 2px 0 var(--border-ink);
   position: relative;
 }
 .chunk-card:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 var(--border-ink); }
@@ -546,7 +544,7 @@ body.locked .ink-fill.locked {
   font-weight: 800;
   cursor: pointer;
   transition: transform 0.12s var(--spring), box-shadow 0.12s var(--spring);
-  box-shadow: 3px 3px 0 var(--border-ink);
+  box-shadow: 2px 2px 0 var(--border-ink);
 }
 .answer-btn:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 var(--border-ink); }
 .answer-btn.correct {
@@ -591,7 +589,7 @@ body.locked .ink-fill.locked {
   border: 2px solid var(--border-ink);
   border-radius: 12px;
   padding: 20px 18px;
-  box-shadow: 4px 4px 0 var(--border-ink);
+  box-shadow: 2px 2px 0 var(--border-ink);
   position: relative;
 }
 .cheat-close {
@@ -602,7 +600,7 @@ body.locked .ink-fill.locked {
   height: 38px;
   border-radius: 8px;
   background: var(--paper-tint);
-  border: 2px solid var(--border-ink);
+  border: 1px solid var(--border-ink);
   color: var(--ink-muted);
   font-size: 1rem;
   font-weight: 700;
@@ -720,7 +718,7 @@ body.locked .ink-fill.locked {
   letter-spacing: 0.5px;
   cursor: pointer;
   font-family: inherit;
-  box-shadow: 3px 3px 0 var(--border-ink);
+  box-shadow: 2px 2px 0 var(--border-ink);
   transition: transform 0.12s var(--spring), box-shadow 0.12s var(--spring);
 }
 .refill-btn:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 var(--border-ink); }
@@ -835,16 +833,15 @@ body.locked .ink-fill.locked {
   padding: 12px 16px;
   min-height: 46px;
   border-radius: 10px;
-  border: 2px solid var(--border-ink);
+  border: 1px solid var(--border-ink);
   background: var(--paper-card);
   color: var(--ink-muted);
   font-size: 0.78rem;
   font-weight: 800;
   letter-spacing: 1px;
   cursor: pointer;
-  transition: transform 0.12s var(--spring), box-shadow 0.12s var(--spring), background 0.2s, color 0.2s, border-color 0.2s;
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
   font-family: inherit;
-  box-shadow: 3px 3px 0 var(--border-ink);
 }
 .diff-btn:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 var(--border-ink); }
 .diff-btn.active {
@@ -894,7 +891,7 @@ body.locked .ink-fill.locked {
 .notation-toggle {
   display: inline-flex;
   background: var(--paper-tint);
-  border: 2px solid var(--border-ink);
+  border: 1px solid var(--border-ink);
   border-radius: 10px;
   padding: 3px;
   gap: 3px;
@@ -926,7 +923,7 @@ body.locked .ink-fill.locked {
   padding: 11px 10px;
   min-height: 44px;
   border-radius: 10px;
-  border: 2px solid var(--border-ink);
+  border: 1px solid var(--border-ink);
   background: var(--paper-card);
   color: var(--ink-muted);
   font-family: var(--font-ui);
@@ -934,8 +931,7 @@ body.locked .ink-fill.locked {
   font-weight: 800;
   letter-spacing: 0.5px;
   cursor: pointer;
-  box-shadow: 3px 3px 0 var(--border-ink);
-  transition: transform 0.12s var(--spring), box-shadow 0.12s var(--spring), background 0.2s, color 0.2s;
+  transition: background 0.2s, color 0.2s;
 }
 .theme-btn:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 var(--border-ink); }
 .theme-btn.active {
@@ -1050,7 +1046,7 @@ body.locked .ink-fill.locked {
   letter-spacing: 1px;
   cursor: pointer;
   font-family: inherit;
-  box-shadow: 3px 3px 0 var(--border-ink);
+  box-shadow: 2px 2px 0 var(--border-ink);
   transition: transform 0.12s var(--spring), box-shadow 0.12s var(--spring);
 }
 .next-btn:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 var(--border-ink); }
@@ -1067,7 +1063,7 @@ body.locked .ink-fill.locked {
   letter-spacing: 0.5px;
   cursor: pointer;
   font-family: inherit;
-  box-shadow: 3px 3px 0 var(--border-ink);
+  box-shadow: 2px 2px 0 var(--border-ink);
   transition: transform 0.12s var(--spring), box-shadow 0.12s var(--spring);
 }
 .share-btn:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 var(--border-ink); }
@@ -1075,15 +1071,13 @@ body.locked .ink-fill.locked {
   padding: 10px 20px;
   min-height: 44px;
   border-radius: 10px;
-  border: 2px solid var(--border-ink);
+  border: 1px solid var(--border-ink);
   background: var(--paper-card);
   color: var(--ink-muted);
   font-size: 0.85rem;
   font-weight: 800;
   cursor: pointer;
   font-family: inherit;
-  box-shadow: 3px 3px 0 var(--border-ink);
-  transition: transform 0.12s var(--spring), box-shadow 0.12s var(--spring);
   margin-top: 10px;
 }
 .menu-btn:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 var(--border-ink); }
@@ -1125,7 +1119,7 @@ body.locked .ink-fill.locked {
   border: 2px solid var(--border-ink);
   border-radius: 12px;
   padding: 20px 18px;
-  box-shadow: 4px 4px 0 var(--border-ink);
+  box-shadow: 2px 2px 0 var(--border-ink);
   position: relative;
 }
 .settings-close {
@@ -1136,7 +1130,7 @@ body.locked .ink-fill.locked {
   height: 38px;
   border-radius: 8px;
   background: var(--paper-tint);
-  border: 2px solid var(--border-ink);
+  border: 1px solid var(--border-ink);
   color: var(--ink-muted);
   font-size: 1rem;
   font-weight: 700;
@@ -1172,14 +1166,12 @@ body.locked .ink-fill.locked {
   min-height: 48px;
   border-radius: 10px;
   background: var(--paper-card);
-  border: 2px solid var(--border-ink);
+  border: 1px solid var(--border-ink);
   color: var(--ink);
   font-weight: 800;
   cursor: pointer;
   display: flex; align-items: center; justify-content: center; gap: 8px;
   font-family: inherit;
-  box-shadow: 3px 3px 0 var(--border-ink);
-  transition: transform 0.12s var(--spring), box-shadow 0.12s var(--spring);
 }
 .sound-toggle:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 var(--border-ink); }
 
@@ -1397,7 +1389,7 @@ body.locked .ink-fill.locked {
   border: 2px solid var(--border-ink);
   border-radius: 12px;
   padding: 18px 16px 20px;
-  box-shadow: 4px 4px 0 var(--border-ink);
+  box-shadow: 2px 2px 0 var(--border-ink);
   position: relative;
   max-height: 86vh;
   overflow-y: auto;
@@ -1410,7 +1402,7 @@ body.locked .ink-fill.locked {
   height: 38px;
   border-radius: 8px;
   background: var(--paper-tint);
-  border: 2px solid var(--border-ink);
+  border: 1px solid var(--border-ink);
   color: var(--ink-muted);
   font-size: 1rem;
   font-weight: 700;
