@@ -84,6 +84,8 @@
   --lift: 0 1px 0 rgba(255, 255, 255, 0.05), 0 6px 16px -8px rgba(0, 0, 0, 0.5);
 }
 
+body:has(#startScreen.active) { background: #0A0A0A; }
+
 :root[data-theme="terminal"] body::after {
   content: '';
   position: fixed;
@@ -147,7 +149,7 @@ body {
 }
 .icon-btn:hover { color: var(--ink); border-color: var(--ink); }
 .start-settings {
-  position: fixed;
+  position: absolute;
   top: 12px;
   right: 12px;
   z-index: 5;
@@ -326,6 +328,21 @@ body {
 @keyframes traceFade {
   from { opacity: 0; transform: translateY(2px); }
   to { opacity: 1; transform: translateY(0); }
+}
+
+.food-chain.sweep { overflow: hidden; }
+.food-chain.sweep::after {
+  content: '';
+  position: absolute;
+  top: 0; bottom: 0; left: 0;
+  width: 50%;
+  pointer-events: none;
+  background: linear-gradient(90deg, transparent, var(--accent-soft) 60%, transparent);
+  transform: translateX(-100%);
+  animation: sweepAcross 250ms ease-out forwards;
+}
+@keyframes sweepAcross {
+  to { transform: translateX(300%); }
 }
 
 @keyframes arenaShake {
@@ -800,7 +817,11 @@ body.locked .ink-fill.locked {
   position: fixed;
   inset: 0;
   z-index: -1;
-  background: #111;
+  background-color: #111;
+  background-image:
+    radial-gradient(circle, rgba(255, 255, 255, 0.055) 0.6px, transparent 1.3px),
+    radial-gradient(circle, rgba(255, 255, 255, 0.04) 0.5px, transparent 1.1px);
+  background-size: 9px 9px, 5px 5px;
 }
 .cover-spine {
   position: absolute;
@@ -819,21 +840,11 @@ body.locked .ink-fill.locked {
   width: 2px;
   background: repeating-linear-gradient(to bottom, rgba(255,255,255,0.28) 0 6px, transparent 6px 12px);
 }
-.cover-marble {
-  position: absolute;
-  left: 11.5%;
-  top: 0;
-  width: 88.5%;
-  height: 100%;
-  display: block;
-}
 
 /* Title label box (hero card) */
 .title-label {
-  position: fixed;
-  left: 28.25vw;
-  top: 11.5vh;
-  width: 55vw;
+  position: relative;
+  width: min(85%, 340px);
   aspect-ratio: 2.5 / 1;
   min-height: 172px;
   z-index: 4;
@@ -887,16 +898,13 @@ body.locked .ink-fill.locked {
 
 /* Landing controls (buttons below the label, centered in the marbled section) */
 .landing-controls {
-  position: fixed;
-  left: 55.75vw;
-  top: calc(11.5vh + max(22vw, 172px) + 24px);
-  transform: translateX(-50%);
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 12px;
   z-index: 6;
-  width: min(85vw, 320px);
+  width: min(85%, 320px);
   text-align: center;
 }
 .diff-btn {
@@ -1239,7 +1247,7 @@ body.locked .ink-fill.locked {
 
 /* ===== STICKER ECOSYSTEM ===== */
 .sticker-pill {
-  position: fixed;
+  position: absolute;
   top: 12px;
   right: 66px;
   z-index: 7;
@@ -1275,6 +1283,7 @@ body.locked .ink-fill.locked {
   height: 92px;
   border-radius: var(--r-m);
   border: 3px solid #fff;
+  box-shadow: 0 2px 0 rgba(0,0,0,.25), 0 8px 14px -6px rgba(0,0,0,.4);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -1292,16 +1301,9 @@ body.locked .ink-fill.locked {
   -webkit-user-select: none;
   z-index: 5;
 }
-.sticker::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(135deg, rgba(255,255,255,0.38) 0%, rgba(255,255,255,0.06) 42%, rgba(255,255,255,0) 55%);
-  pointer-events: none;
-}
 .sticker .sticker-icon { width: 26px; height: 26px; flex-shrink: 0; }
 .sticker .sticker-icon svg { width: 100%; height: 100%; display: block; }
-.sticker .sticker-name { font-size: 0.75rem; letter-spacing: 0.4px; line-height: 1.1; word-break: break-word; }
+.sticker .sticker-name { font-size: 0.75rem; letter-spacing: 0.4px; line-height: 1.1; word-break: break-word; max-height: 2.2em; overflow: hidden; }
 .sticker.dragging { cursor: grabbing; z-index: 20; }
 
 .sticker-rotate {
@@ -1516,6 +1518,7 @@ body.locked .ink-fill.locked {
 .hidden { display: none !important; }
 .screen { display: none; height: 100%; position: relative; }
 .screen.active { display: flex; flex-direction: column; }
+#startScreen.screen.active { align-items: center; justify-content: center; gap: 22px; padding: 28px 0; }
 
 /* Page tear-away transition */
 #gameScreen {
@@ -1548,6 +1551,16 @@ body.locked .ink-fill.locked {
     transform: translateY(-1px);
   }
 }
+@media (min-width: 600px) {
+  .cover-bg, .sticker-canvas {
+    left: 50%;
+    right: auto;
+    transform: translateX(-50%);
+    width: 540px;
+    max-width: 540px;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.01ms !important;
@@ -1564,20 +1577,6 @@ body.locked .ink-fill.locked {
 <div id="startScreen" class="screen active">
   <div class="cover-bg" aria-hidden="true">
     <div class="cover-spine"></div>
-    <svg class="cover-marble" viewBox="0 0 1000 1600" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-      <defs>
-        <filter id="agateFilter" x="0" y="0" width="100%" height="100%">
-          <feTurbulence type="fractalNoise" baseFrequency="0.018" numOctaves="3" seed="7" stitchTiles="stitch" result="n"/>
-          <feColorMatrix in="n" type="matrix" values="0.33 0.33 0.33 0 0  0.33 0.33 0.33 0 0  0.33 0.33 0.33 0 0  0 0 0 1 0" result="gray"/>
-          <feComponentTransfer in="gray">
-            <feFuncR type="discrete" tableValues="0.067 0.067 1"/>
-            <feFuncG type="discrete" tableValues="0.067 0.067 1"/>
-            <feFuncB type="discrete" tableValues="0.067 0.067 1"/>
-          </feComponentTransfer>
-        </filter>
-      </defs>
-      <rect width="1000" height="1600" filter="url(#agateFilter)"/>
-    </svg>
   </div>
 
   <div class="title-label">
@@ -2879,7 +2878,6 @@ function handleAnswerSelect(val, correct, btn) {
     state.isProcessing = true;
     btn.classList.add('correct');
     playChomp();
-    $('foodChain').classList.add('arena-shake');
 
     refillInk();
     state.flowStreak++;
@@ -2912,10 +2910,10 @@ function handleAnswerSelect(val, correct, btn) {
 
     tokensToCollapse.forEach(tok => tok.classList.add('crunch-implode'));
     drawRedSlash(tokensToCollapse);
-    burstInkPuff(tokensToCollapse);
+    $('foodChain').classList.add('sweep');
+    setTimeout(() => $('foodChain').classList.remove('sweep'), 300);
 
     setTimeout(() => {
-      $('foodChain').classList.remove('arena-shake');
       const resultNode = { type: 'num', value: correct };
       state.ast = replaceNode(state.ast, chunkNode, resultNode);
       state.ast = simplifyBrackets(state.ast);
