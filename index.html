@@ -88,11 +88,12 @@ body {
 .header {
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
   gap: 10px;
   padding: 12px 14px 4px;
   flex-shrink: 0;
 }
-.header .ink-track { flex: 1; height: 16px; }
+.header .ink-track { flex: 0 0 100%; order: 3; height: 16px; }
 
 .icon-btn {
   width: 44px; height: 44px;
@@ -104,6 +105,7 @@ body {
   display: flex; align-items: center; justify-content: center;
   transition: color 0.15s, border-color 0.15s;
   flex-shrink: 0;
+  order: 2;
 }
 .icon-btn:hover { color: var(--ink); border-color: var(--ink); }
 .start-settings {
@@ -129,10 +131,11 @@ body {
   align-items: center;
   gap: 6px;
   flex-shrink: 0;
+  order: 1;
 }
 .page-tracker .stamp {
-  width: 14px;
-  height: 14px;
+  width: 10px;
+  height: 10px;
   border: 1px solid var(--ink);
   border-radius: 50%;
   background: transparent;
@@ -140,31 +143,36 @@ body {
 .page-tracker .stamp.filled {
   background: var(--ink);
 }
+.page-tracker .tracker-label {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  color: var(--ink-muted);
+  margin-right: 2px;
+}
 
 /* ===== INK METER ===== */
 .ink-track {
   height: 14px;
   background: var(--paper-tint);
   border-radius: var(--r-s);
-  overflow: hidden;
   position: relative;
+  -webkit-mask-image: repeating-linear-gradient(90deg, #000 0 calc(10% - 3px), transparent calc(10% - 3px) 10%);
+  mask-image: repeating-linear-gradient(90deg, #000 0 calc(10% - 3px), transparent calc(10% - 3px) 10%);
 }
 .ink-fill {
   height: 100%;
   background-color: var(--pen-green);
-  background-image: repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.16) 0px, rgba(255, 255, 255, 0.16) 4px, transparent 4px, transparent 8px);
-  border-radius: var(--r-s);
   transition: width 0.6s var(--spring);
   position: relative;
 }
 .ink-fill.low {
-  background-color: var(--pen-pink);
-  background-image: repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.16) 0px, rgba(255, 255, 255, 0.16) 4px, transparent 4px, transparent 8px);
+  background-color: var(--pen-red);
 }
-.ink-fill.locked { }
+.ink-fill.locked { background-color: var(--accent); }
 .ink-fill.overdrive {
   background-color: var(--overdrive);
-  background-image: repeating-linear-gradient(45deg, rgba(56, 189, 248, 0.3) 0px, rgba(56, 189, 248, 0.3) 4px, transparent 4px, transparent 8px);
 }
 .ink-label {
   display: flex;
@@ -431,6 +439,8 @@ body.locked .ink-fill.locked {
   display: inline-flex; align-items: center; justify-content: center;
   transition: transform 0.12s var(--spring);
   flex-shrink: 0;
+  order: 2;
+  margin-left: auto;
 }
 .rules-toggle:hover { color: var(--pen-blue); }
 .rules-toggle.open { border-color: var(--pen-blue); color: var(--pen-blue); }
@@ -2407,7 +2417,8 @@ function refillPen() {
 function renderPageTracker() {
   const tracker = $('pageTracker');
   if (!tracker) return;
-  let html = '';
+  const label = state.mode === 'daily' ? 'DAILY' : ('P' + state.pageNumber);
+  let html = `<span class="tracker-label">${label}</span>`;
   for (let i = 0; i < 5; i++) {
     html += `<span class="stamp${i < state.equationsInPage ? ' filled' : ''}"></span>`;
   }
@@ -2717,6 +2728,7 @@ function handleVisualDistractorTap(distractor, correctNode, btn) {
 
   state.pageMistakes++;
   state.flowStreak = 0;
+  applyMistakeCost();
   saveState();
   renderComboBadge();
 
@@ -2750,6 +2762,7 @@ function handleChunkSelect(candidate, correctNode, btn) {
 
     state.pageMistakes++;
     state.flowStreak = 0;
+    applyMistakeCost();
     saveState();
     renderComboBadge();
 
@@ -2862,6 +2875,7 @@ function handleAnswerSelect(val, correct, btn) {
 
     state.pageMistakes++;
     state.flowStreak = 0;
+    applyMistakeCost();
     saveState();
     renderComboBadge();
 
@@ -3246,6 +3260,15 @@ function getParSeconds() {
   if (state.difficulty === 'speedrun') return 90;
   if (state.difficulty === 'warmup') return 40;
   return 60;
+}
+
+const INK_MISTAKE_COST = 10;
+const INK_HINT_COST = 5;
+
+function applyMistakeCost() {
+  state.inkEnergy = Math.max(0, state.inkEnergy - INK_MISTAKE_COST);
+  renderInkEnergy();
+  if (state.inkEnergy === 0) showOutOfInk();
 }
 
 function getInkDrain() {
