@@ -196,13 +196,15 @@ body {
 .ink-track {
   height: 14px;
   background: var(--paper-tint);
-  border-radius: var(--r-s);
+  border-radius: 6px;
+  overflow: hidden;
   position: relative;
   -webkit-mask-image: repeating-linear-gradient(90deg, #000 0 calc(10% - 3px), transparent calc(10% - 3px) 10%);
   mask-image: repeating-linear-gradient(90deg, #000 0 calc(10% - 3px), transparent calc(10% - 3px) 10%);
 }
 .ink-fill {
   height: 100%;
+  border-radius: 6px;
   background-color: var(--pen-green);
   transition: width 0.6s var(--spring);
   position: relative;
@@ -551,23 +553,37 @@ body.locked .ink-fill.locked {
   width: 44px;
   height: 44px;
   padding: 0;
-  border-radius: var(--r-m);
-  background: var(--paper-card);
-  box-shadow: var(--lift);
+  border-radius: 12px;
+  background: transparent;
+  border: 1px solid var(--border-ink);
+  box-shadow: none;
   font-family: var(--font-ui);
   font-size: 1.15rem;
   font-weight: 600;
   color: var(--ink-muted);
   cursor: pointer;
   display: inline-flex; align-items: center; justify-content: center;
-  transition: transform 0.12s var(--spring);
+  transition: background-color 150ms ease, border-color 150ms ease, color 150ms ease, transform 100ms ease;
   flex-shrink: 0;
   order: 2;
   margin-left: auto;
 }
-.rules-toggle:hover { color: var(--pen-blue); }
+.rules-toggle:hover,
+.rules-toggle:focus-visible { background: var(--paper-tint); border-color: var(--pen-blue); color: var(--ink); }
+.rules-toggle:active { transform: scale(0.96); }
 .rules-toggle.open { border-color: var(--pen-blue); color: var(--pen-blue); }
 .rules-toggle.pulse-hint { animation: pulseHint 1s ease-in-out 3; border-color: var(--pen-blue); }
+#settingsBtn {
+  border-radius: 12px;
+  background: transparent;
+  border: 1px solid var(--border-ink);
+  box-shadow: none;
+  color: var(--ink-muted);
+  transition: background-color 150ms ease, border-color 150ms ease, color 150ms ease, transform 100ms ease;
+}
+#settingsBtn:hover,
+#settingsBtn:focus-visible { background: var(--paper-tint); border-color: var(--pen-blue); color: var(--ink); }
+#settingsBtn:active { transform: scale(0.96); }
 @keyframes pulseHint {
   0%, 100% { background: var(--paper-card); }
   50% { background: var(--accent-soft); }
@@ -1559,13 +1575,13 @@ body.locked .ink-fill.locked {
 
 
 /* ===== KEYCAP BUTTONS (mechanical-keyboard look) ===== */
-.chunk-card, .answer-btn, .play-btn, .daily-btn, .refill-btn, .next-btn, .share-btn, .rules-toggle, .menu-btn, .diff-btn, .notation-btn, .theme-btn {
+.chunk-card, .answer-btn, .play-btn, .daily-btn, .refill-btn, .next-btn, .share-btn, .menu-btn, .diff-btn, .notation-btn, .theme-btn {
   border: 1px solid var(--ink);
   border-radius: var(--r-m);
   box-shadow: 0 3px 0 var(--ink);
   transition: transform 0.08s, box-shadow 0.08s, background-color 0.08s, color 0.08s, border-color 0.08s;
 }
-.chunk-card:active, .answer-btn:active, .play-btn:active, .daily-btn:active, .refill-btn:active, .next-btn:active, .share-btn:active, .rules-toggle:active, .menu-btn:active, .diff-btn:active, .notation-btn:active, .theme-btn:active {
+.chunk-card:active, .answer-btn:active, .play-btn:active, .daily-btn:active, .refill-btn:active, .next-btn:active, .share-btn:active, .menu-btn:active, .diff-btn:active, .notation-btn:active, .theme-btn:active {
   transform: translateY(3px);
   box-shadow: 0 0 0 var(--ink);
 }
@@ -1574,7 +1590,7 @@ body.locked .ink-fill.locked {
     opacity: 1;
     pointer-events: auto;
   }
-  .chunk-card:hover, .answer-btn:hover, .play-btn:hover, .daily-btn:hover, .refill-btn:hover, .next-btn:hover, .share-btn:hover, .rules-toggle:hover, .menu-btn:hover, .diff-btn:hover, .notation-btn:hover, .theme-btn:hover {
+  .chunk-card:hover, .answer-btn:hover, .play-btn:hover, .daily-btn:hover, .refill-btn:hover, .next-btn:hover, .share-btn:hover, .menu-btn:hover, .diff-btn:hover, .notation-btn:hover, .theme-btn:hover {
     transform: translateY(-1px);
   }
 }
