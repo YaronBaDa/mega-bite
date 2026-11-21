@@ -11,8 +11,7 @@
   --paper: #F7F5EE;
   --paper-card: #FFFFFF;
   --paper-tint: #ECE8DB;
-  --grid-blue: rgba(37, 99, 235, 0.12);
-  --margin-pink: rgba(244, 63, 94, 0.28);
+  --dot: rgba(20, 19, 19, 0.10);
   --ink: #141413;
   --ink-muted: #5A5851;
   --pen-blue: #2563EB;
@@ -21,10 +20,14 @@
   --pen-green: #15803D;
   --overdrive: #2563EB;
   --overdrive-cyan: #38BDF8;
-  --highlighter: #C6F432;
   --accent: #C6F432;
   --accent-soft: rgba(198, 244, 50, 0.28);
+  --pow: #7C3AED;
   --border-ink: #E1DED2;
+  --r-s: 8px;
+  --r-m: 14px;
+  --r-l: 22px;
+  --lift: 0 1px 0 rgba(20,19,19,.06), 0 6px 16px -8px rgba(20,19,19,.18);
   --font-ui: 'Lexend', sans-serif;
   --font-brand: 'Fraunces', serif;
   --spring: cubic-bezier(0.175, 0.885, 0.32, 1.275);
@@ -35,8 +38,7 @@
   --paper: #121316;
   --paper-card: #1E2025;
   --paper-tint: #2A2C33;
-  --grid-blue: rgba(56, 189, 248, 0.10);
-  --margin-pink: rgba(251, 113, 133, 0.20);
+  --dot: rgba(244, 244, 240, 0.12);
   --ink: #F4F4F0;
   --ink-muted: #A8A8A2;
   --pen-blue: #38BDF8;
@@ -45,10 +47,11 @@
   --pen-green: #4ADE80;
   --overdrive: #38BDF8;
   --overdrive-cyan: #7DD3FC;
-  --highlighter: #D9F99D;
   --accent: #D9F99D;
   --accent-soft: rgba(217, 249, 157, 0.24);
+  --pow: #A78BFA;
   --border-ink: #3E4148;
+  --lift: 0 1px 0 rgba(255,255,255,.05), 0 6px 16px -8px rgba(0,0,0,.5);
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
@@ -92,9 +95,9 @@ body {
 
 .icon-btn {
   width: 44px; height: 44px;
-  border-radius: 10px;
+  border-radius: var(--r-m);
   background: var(--paper-card);
-  border: 1px solid var(--border-ink);
+  box-shadow: var(--lift);
   color: var(--ink-muted);
   cursor: pointer;
   display: flex; align-items: center; justify-content: center;
@@ -141,8 +144,7 @@ body {
 .ink-track {
   height: 14px;
   background: var(--paper-tint);
-  border-radius: 8px;
-  border: 1px solid var(--border-ink);
+  border-radius: var(--r-s);
   overflow: hidden;
   position: relative;
 }
@@ -150,7 +152,7 @@ body {
   height: 100%;
   background-color: var(--pen-green);
   background-image: repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.16) 0px, rgba(255, 255, 255, 0.16) 4px, transparent 4px, transparent 8px);
-  border-radius: 4px;
+  border-radius: var(--r-s);
   transition: width 0.6s var(--spring);
   position: relative;
 }
@@ -233,7 +235,7 @@ body {
   font-size: 0.72rem;
   letter-spacing: 1.5px;
   padding: 4px 14px;
-  border-radius: 6px;
+  border-radius: var(--r-s);
   z-index: 2;
   pointer-events: none;
 }
@@ -247,11 +249,9 @@ body {
   width: 100%;
   padding: 28px 20px;
   background-color: var(--paper-card);
-  background-image:
-    linear-gradient(var(--grid-blue) 1px, transparent 1px),
-    linear-gradient(90deg, var(--grid-blue) 1px, transparent 1px);
+  background-image: radial-gradient(circle, var(--dot) 1.2px, transparent 1.2px);
   background-size: 24px 24px;
-  border-radius: 16px;
+  border-radius: var(--r-m);
   border: 1px solid var(--border-ink);
   position: relative;
   transition: transform 0.4s var(--spring);
@@ -269,7 +269,7 @@ body {
   align-items: center;
   justify-content: center;
   padding: 4px 2px;
-  border-radius: 6px;
+  border-radius: var(--r-s);
   font-family: var(--font-ui);
   font-weight: 800;
   font-size: 1.75rem;
@@ -311,7 +311,7 @@ body.locked .ink-fill.locked {
 /* Hover/touch highlighter sweep + dashed ink underline */
 .food-token.chunk-highlight {
   background: var(--accent-soft);
-  border-radius: 7px;
+  border-radius: var(--r-s);
   border-bottom: 2px solid var(--accent);
 }
 
@@ -324,7 +324,7 @@ body.locked .ink-fill.locked {
   vertical-align: baseline;
   position: relative;
   top: -0.55em;
-  color: var(--pen-blue);
+  color: var(--pow);
 }
 
 /* Implode/evaporate the solved chunk's tokens */
@@ -348,7 +348,7 @@ body.locked .ink-fill.locked {
   color: var(--pen-red);
   background: rgba(225, 29, 72, 0.08);
   border-bottom: 3px solid var(--pen-red);
-  border-radius: 4px;
+  border-radius: var(--r-s);
   animation: popIn 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 @keyframes popIn {
@@ -418,9 +418,9 @@ body.locked .ink-fill.locked {
   width: 44px;
   height: 44px;
   padding: 0;
-  border-radius: 10px;
+  border-radius: var(--r-m);
   background: var(--paper-card);
-  border: 1px solid var(--border-ink);
+  box-shadow: var(--lift);
   font-family: var(--font-ui);
   font-size: 1.15rem;
   font-weight: 800;
@@ -458,7 +458,7 @@ body.locked .ink-fill.locked {
   color: var(--pen-red);
   padding: 0 0 1px 12px;
   border-left: 3px solid var(--pen-red);
-  border-radius: 2px;
+  border-radius: var(--r-s);
   background: transparent;
 }
 .feedback-banner.show { display: block; animation: bannerIn 0.25s var(--spring); }
@@ -491,13 +491,9 @@ body.locked .ink-fill.locked {
 .chunk-card {
   padding: 16px 14px;
   min-height: 62px;
-  border-radius: 12px;
+  border-radius: var(--r-m);
   background-color: var(--paper-card);
-  background-image:
-    linear-gradient(var(--grid-blue) 1px, transparent 1px),
-    linear-gradient(90deg, var(--grid-blue) 1px, transparent 1px);
-  background-size: 24px 24px;
-  border: 1px solid var(--border-ink);
+  box-shadow: var(--lift);
   color: var(--ink);
   font-family: var(--font-ui);
   font-size: 1.15rem;
@@ -526,13 +522,9 @@ body.locked .ink-fill.locked {
   position: relative;
   padding: 16px 14px;
   min-height: 62px;
-  border-radius: 12px;
+  border-radius: var(--r-m);
   background-color: var(--paper-card);
-  background-image:
-    linear-gradient(var(--grid-blue) 1px, transparent 1px),
-    linear-gradient(90deg, var(--grid-blue) 1px, transparent 1px);
-  background-size: 24px 24px;
-  border: 1px solid var(--border-ink);
+  box-shadow: var(--lift);
   color: var(--ink);
   font-family: var(--font-ui);
   font-size: 1.35rem;
@@ -542,13 +534,15 @@ body.locked .ink-fill.locked {
 }
 .answer-btn:active { transform: translate(2px, 2px); }
 .answer-btn.correct {
-  background: var(--pen-red);
-  border-color: var(--pen-red);
-  color: var(--paper-card);
+  background: var(--accent);
+  color: #141413;
+}
+.answer-btn.correct::after {
+  content: ' ✓';
+  font-weight: 800;
 }
 .answer-btn.wrong {
   background-color: var(--paper-card);
-  border-color: var(--pen-red);
   color: var(--pen-red);
   animation: cardShake 0.4s ease;
 }
@@ -580,8 +574,8 @@ body.locked .ink-fill.locked {
 .cheat-sheet.open { opacity: 1; pointer-events: auto; transform: translate(-50%, -50%) scale(1) rotate(-1deg); }
 .cheat-panel {
   background: var(--paper-card);
-  border: 1px solid var(--border-ink);
-  border-radius: 12px;
+  box-shadow: var(--lift);
+  border-radius: var(--r-m);
   padding: 20px 18px;
   position: relative;
 }
@@ -591,9 +585,9 @@ body.locked .ink-fill.locked {
   right: 12px;
   width: 38px;
   height: 38px;
-  border-radius: 8px;
+  border-radius: var(--r-s);
   background: var(--paper-tint);
-  border: 1px solid var(--border-ink);
+  box-shadow: var(--lift);
   color: var(--ink-muted);
   font-size: 1rem;
   font-weight: 700;
@@ -665,10 +659,9 @@ body.locked .ink-fill.locked {
   font-weight: 800;
   letter-spacing: 0.5px;
   color: var(--ink);
-  background: var(--highlighter);
+  background: var(--accent);
   padding: 3px 8px;
-  border-radius: 6px;
-  border: 1px solid var(--border-ink);
+  border-radius: var(--r-s);
   white-space: nowrap;
 }
 
@@ -702,10 +695,10 @@ body.locked .ink-fill.locked {
 .refill-btn {
   padding: 14px 28px;
   min-height: 52px;
-  border-radius: 12px;
-  border: 1px solid var(--pen-blue);
-  background: var(--pen-blue);
-  color: var(--paper-card);
+  border-radius: var(--r-m);
+  box-shadow: var(--lift);
+  background: var(--accent);
+  color: #141413;
   font-size: 0.95rem;
   font-weight: 800;
   letter-spacing: 0.5px;
@@ -761,7 +754,7 @@ body.locked .ink-fill.locked {
   z-index: 4;
   background: #fff;
   border: 2px solid #000;
-  border-radius: 22px;
+  border-radius: var(--r-l);
   padding: 3.5px;
   box-sizing: border-box;
 }
@@ -778,7 +771,7 @@ body.locked .ink-fill.locked {
   background-origin: content-box;
   background-clip: content-box;
   border: 2px solid #000;
-  border-radius: 18px;
+  border-radius: var(--r-m);
   position: relative;
   display: flex;
   flex-direction: column;
@@ -824,8 +817,8 @@ body.locked .ink-fill.locked {
 .diff-btn {
   padding: 12px 16px;
   min-height: 46px;
-  border-radius: 10px;
-  border: 1px solid var(--border-ink);
+  border-radius: var(--r-m);
+  box-shadow: var(--lift);
   background: var(--paper-card);
   color: var(--ink-muted);
   font-size: 0.78rem;
@@ -845,10 +838,10 @@ body.locked .ink-fill.locked {
   width: 100%;
   padding: 15px 28px;
   min-height: 56px;
-  border-radius: 14px;
-  border: 1px solid #000;
-  background: #FFD400;
-  color: #111;
+  border-radius: var(--r-m);
+  box-shadow: var(--lift);
+  background: var(--accent);
+  color: #141413;
   font-size: 1.2rem;
   font-weight: 800;
   letter-spacing: 1px;
@@ -856,17 +849,17 @@ body.locked .ink-fill.locked {
   font-family: inherit;
   transition: transform 0.12s var(--spring), box-shadow 0.12s var(--spring), background 0.2s;
 }
-.play-btn:hover { background: #FFE14D; }
-.play-btn:active { transform: translateY(4px); }
+.play-btn:hover { filter: brightness(1.06); }
+.play-btn:active { transform: translateY(2px); }
 
 .daily-btn {
   width: 100%;
   padding: 12px 24px;
   min-height: 46px;
-  border-radius: 12px;
-  border: 1px solid #111;
+  border-radius: var(--r-m);
+  box-shadow: var(--lift);
   background: #F4F4F0;
-  color: #111;
+  color: #141413;
   font-size: 0.92rem;
   font-weight: 700;
   letter-spacing: 0.5px;
@@ -881,8 +874,8 @@ body.locked .ink-fill.locked {
 .notation-toggle {
   display: inline-flex;
   background: var(--paper-tint);
-  border: 1px solid var(--border-ink);
-  border-radius: 10px;
+  box-shadow: var(--lift);
+  border-radius: var(--r-m);
   padding: 3px;
   gap: 3px;
 }
@@ -890,7 +883,7 @@ body.locked .ink-fill.locked {
   padding: 8px 16px;
   min-height: 38px;
   border: none;
-  border-radius: 7px;
+  border-radius: var(--r-s);
   background: var(--paper-card);
   color: var(--ink-muted);
   font-family: var(--font-ui);
@@ -912,8 +905,8 @@ body.locked .ink-fill.locked {
   flex: 1;
   padding: 11px 10px;
   min-height: 44px;
-  border-radius: 10px;
-  border: 1px solid var(--border-ink);
+  border-radius: var(--r-m);
+  box-shadow: var(--lift);
   background: var(--paper-card);
   color: var(--ink-muted);
   font-family: var(--font-ui);
@@ -938,7 +931,7 @@ body.locked .ink-fill.locked {
 }
 .reminder-bar .rem-pill {
   padding: 4px 10px;
-  border-radius: 6px;
+  border-radius: var(--r-s);
   border: 1.5px solid var(--border-ink);
   background: var(--paper-card);
   font-family: var(--font-ui);
@@ -981,8 +974,7 @@ body.locked .ink-fill.locked {
 .stamp-badge {
   display: inline-block;
   padding: 10px 20px;
-  border: 1px solid var(--border-ink);
-  border-radius: 10px;
+  border-radius: var(--r-m);
   font-weight: 800;
   font-size: 0.95rem;
   letter-spacing: 1px;
@@ -1014,7 +1006,7 @@ body.locked .ink-fill.locked {
 .bonus-hunter.unlocked {
   color: var(--pen-red);
   border: 1px solid var(--pen-red);
-  border-radius: 8px;
+  border-radius: var(--r-s);
   padding: 4px 12px;
   transform: rotate(-2deg);
 }
@@ -1027,10 +1019,10 @@ body.locked .ink-fill.locked {
 .next-btn {
   padding: 14px 32px;
   min-height: 52px;
-  border-radius: 12px;
-  border: 1px solid var(--pen-blue);
-  background: var(--pen-blue);
-  color: var(--paper-card);
+  border-radius: var(--r-m);
+  box-shadow: var(--lift);
+  background: var(--accent);
+  color: #141413;
   font-size: 0.95rem;
   font-weight: 800;
   letter-spacing: 1px;
@@ -1043,10 +1035,10 @@ body.locked .ink-fill.locked {
 .share-btn {
   padding: 14px 28px;
   min-height: 52px;
-  border-radius: 12px;
-  border: 1px solid var(--pen-red);
-  background: var(--pen-red);
-  color: #fff;
+  border-radius: var(--r-m);
+  box-shadow: var(--lift);
+  background: var(--accent);
+  color: #141413;
   font-size: 0.95rem;
   font-weight: 800;
   letter-spacing: 0.5px;
@@ -1058,8 +1050,8 @@ body.locked .ink-fill.locked {
 .menu-btn {
   padding: 10px 20px;
   min-height: 44px;
-  border-radius: 10px;
-  border: 1px solid var(--border-ink);
+  border-radius: var(--r-m);
+  box-shadow: var(--lift);
   background: var(--paper-card);
   color: var(--ink-muted);
   font-size: 0.85rem;
@@ -1104,8 +1096,8 @@ body.locked .ink-fill.locked {
 .settings-sheet.open { opacity: 1; pointer-events: auto; transform: translate(-50%, -50%) scale(1) rotate(-1deg); }
 .settings-panel {
   background: var(--paper-card);
-  border: 1px solid var(--border-ink);
-  border-radius: 12px;
+  box-shadow: var(--lift);
+  border-radius: var(--r-m);
   padding: 20px 18px;
   position: relative;
 }
@@ -1115,9 +1107,9 @@ body.locked .ink-fill.locked {
   right: 12px;
   width: 38px;
   height: 38px;
-  border-radius: 8px;
+  border-radius: var(--r-s);
   background: var(--paper-tint);
-  border: 1px solid var(--border-ink);
+  box-shadow: var(--lift);
   color: var(--ink-muted);
   font-size: 1rem;
   font-weight: 700;
@@ -1151,9 +1143,9 @@ body.locked .ink-fill.locked {
   width: 100%;
   padding: 12px 14px;
   min-height: 48px;
-  border-radius: 10px;
+  border-radius: var(--r-m);
   background: var(--paper-card);
-  border: 1px solid var(--border-ink);
+  box-shadow: var(--lift);
   color: var(--ink);
   font-weight: 800;
   cursor: pointer;
@@ -1173,10 +1165,10 @@ body.locked .ink-fill.locked {
   z-index: 7;
   height: 44px;
   padding: 0 16px;
-  border-radius: 10px;
-  border: 1px solid #000;
+  border-radius: var(--r-m);
+  box-shadow: var(--lift);
   background: #F4F4F0;
-  color: #111;
+  color: #141413;
   font-family: var(--font-ui);
   font-size: 0.72rem;
   font-weight: 800;
@@ -1201,7 +1193,7 @@ body.locked .ink-fill.locked {
   position: absolute;
   width: 92px;
   height: 92px;
-  border-radius: 14px;
+  border-radius: var(--r-m);
   border: 3px solid #fff;
   display: flex;
   flex-direction: column;
@@ -1257,7 +1249,7 @@ body.locked .ink-fill.locked {
   position: absolute;
   width: 76px;
   height: 76px;
-  border-radius: 14px;
+  border-radius: var(--r-m);
   border: 2px dashed rgba(255, 255, 255, 0.35);
   background: rgba(255, 255, 255, 0.08);
   display: flex;
@@ -1276,7 +1268,7 @@ body.locked .ink-fill.locked {
   z-index: 200;
   max-width: 220px;
   padding: 10px 12px;
-  border-radius: 10px;
+  border-radius: var(--r-m);
   background: var(--ink);
   color: #fff;
   font-family: var(--font-ui);
@@ -1313,7 +1305,7 @@ body.locked .ink-fill.locked {
   font-weight: 800;
   letter-spacing: 0.5px;
   padding: 3px 8px;
-  border-radius: 10px;
+  border-radius: var(--r-m);
   white-space: nowrap;
 }
 
@@ -1369,8 +1361,8 @@ body.locked .ink-fill.locked {
 .sheet-modal.open { opacity: 1; pointer-events: auto; transform: translate(-50%, -50%) scale(1); }
 .sheet-panel {
   background: var(--paper-card);
-  border: 1px solid var(--border-ink);
-  border-radius: 12px;
+  box-shadow: var(--lift);
+  border-radius: var(--r-m);
   padding: 18px 16px 20px;
   position: relative;
   max-height: 86vh;
@@ -1382,9 +1374,9 @@ body.locked .ink-fill.locked {
   right: 12px;
   width: 38px;
   height: 38px;
-  border-radius: 8px;
+  border-radius: var(--r-s);
   background: var(--paper-tint);
-  border: 1px solid var(--border-ink);
+  box-shadow: var(--lift);
   color: var(--ink-muted);
   font-size: 1rem;
   font-weight: 700;
@@ -1413,7 +1405,7 @@ body.locked .ink-fill.locked {
   align-items: center;
   gap: 6px;
   padding: 8px;
-  border-radius: 10px;
+  border-radius: var(--r-m);
   background: var(--paper-tint);
 }
 .sheet-sticker.locked { opacity: 0.85; }
