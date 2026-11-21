@@ -864,23 +864,6 @@ body.locked .ink-fill.locked {
     radial-gradient(circle, rgba(255, 255, 255, 0.04) 0.5px, transparent 1.1px);
   background-size: 9px 9px, 5px 5px;
 }
-.cover-spine {
-  position: absolute;
-  left: 0;
-  top: 0;
-  height: 100%;
-  width: 11.5%;
-  background: #1E1E1E;
-}
-.cover-spine::after {
-  content: '';
-  position: absolute;
-  right: 0;
-  top: 0;
-  height: 100%;
-  width: 2px;
-  background: repeating-linear-gradient(to bottom, rgba(255,255,255,0.28) 0 6px, transparent 6px 12px);
-}
 
 /* Title label box (hero card) */
 .title-label {
@@ -1326,7 +1309,7 @@ body.locked .ink-fill.locked {
 .sticker-canvas {
   position: fixed;
   inset: 0;
-  z-index: 3;
+  z-index: 5;
   pointer-events: none;
 }
 .sticker-canvas > * { pointer-events: auto; }
@@ -1335,9 +1318,9 @@ body.locked .ink-fill.locked {
   position: absolute;
   width: 92px;
   height: 92px;
-  border-radius: var(--r-m);
-  border: 3px solid #fff;
-  box-shadow: 0 2px 0 rgba(0,0,0,.25), 0 8px 14px -6px rgba(0,0,0,.4);
+  border-radius: var(--r-l);
+  border: 4px solid #fff;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.45), 0 2px 5px rgba(0, 0, 0, 0.30);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -1358,6 +1341,21 @@ body.locked .ink-fill.locked {
 .sticker .sticker-icon { width: 26px; height: 26px; flex-shrink: 0; }
 .sticker .sticker-icon svg { width: 100%; height: 100%; display: block; }
 .sticker .sticker-name { font-size: 0.75rem; letter-spacing: 0.4px; line-height: 1.1; word-break: break-word; max-height: 2.2em; overflow: hidden; }
+.sticker::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(135deg, rgba(255,255,255,0.26) 0%, rgba(255,255,255,0.04) 45%, rgba(255,255,255,0) 50%);
+  pointer-events: none;
+}
+.sticker .sticker-icon svg { filter: drop-shadow(0 1px 1px rgba(0,0,0,0.28)); }
+.sticker .sticker-name { text-shadow: 0 1px 2px rgba(0,0,0,0.30); }
+.sticker.is-selected .sticker-rotate,
+.sticker:focus-within .sticker-rotate {
+  opacity: 1;
+  pointer-events: auto;
+}
 .sticker.dragging { cursor: grabbing; z-index: 20; }
 
 .sticker-rotate {
@@ -1379,40 +1377,11 @@ body.locked .ink-fill.locked {
   line-height: 1;
   touch-action: none;
   z-index: 3;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.15s;
 }
 
-.silhouette {
-  position: absolute;
-  width: 76px;
-  height: 76px;
-  border-radius: var(--r-m);
-  border: 2px dashed rgba(255, 255, 255, 0.35);
-  background: rgba(255, 255, 255, 0.08);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: rgba(255, 255, 255, 0.6);
-  font-family: var(--font-ui);
-  font-size: 1.4rem;
-  font-weight: 600;
-  cursor: pointer;
-  z-index: 2;
-  transform: translate(-50%, -50%);
-}
-.silhouette-tooltip {
-  position: fixed;
-  z-index: 200;
-  max-width: 220px;
-  padding: 10px 12px;
-  border-radius: var(--r-m);
-  background: var(--ink);
-  color: #fff;
-  font-family: var(--font-ui);
-  font-size: 0.75rem;
-  font-weight: 600;
-  line-height: 1.4;
-  pointer-events: none;
-}
 
 /* Surface 2: left-margin unlock toast */
 #stickerToast {
@@ -1601,6 +1570,10 @@ body.locked .ink-fill.locked {
   box-shadow: 0 0 0 var(--ink);
 }
 @media (hover: hover) {
+  .sticker:hover .sticker-rotate {
+    opacity: 1;
+    pointer-events: auto;
+  }
   .chunk-card:hover, .answer-btn:hover, .play-btn:hover, .daily-btn:hover, .refill-btn:hover, .next-btn:hover, .share-btn:hover, .rules-toggle:hover, .menu-btn:hover, .diff-btn:hover, .notation-btn:hover, .theme-btn:hover {
     transform: translateY(-1px);
   }
@@ -1630,7 +1603,6 @@ body.locked .ink-fill.locked {
 <!-- START SCREEN -->
 <div id="startScreen" class="screen active">
   <div class="cover-bg" aria-hidden="true">
-    <div class="cover-spine"></div>
   </div>
 
   <div class="title-label">
@@ -3494,14 +3466,14 @@ function getInkDrain() {
 
 /* -------------------- STICKER ECOSYSTEM -------------------- */
 const STICKERS = [
-  { id: 'first_crunch', name: 'FIRST CRUNCH', color: '#1D4ED8', group: 'page', dx: 0.13, dy: 0.16, drot: -10, criteria: 'Clear Page 1', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5z"/></svg>' },
-  { id: 'flawless_ink', name: 'FLAWLESS INK', color: '#15803D', group: 'page', dx: 0.84, dy: 0.20, drot: 8, criteria: 'Clear a page with 0 mistakes', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3s6 6.6 6 11a6 6 0 0 1-12 0c0-4.4 6-11 6-11z"/><path d="M9 14l2 2 4-4"/></svg>' },
-  { id: 'speed_demon', name: 'SPEED DEMON', color: '#F59E0B', group: 'page', dx: 0.13, dy: 0.55, drot: 6, criteria: 'Clear a page in under 15 seconds', icon: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M13 2 4 14h6l-1 8 9-12h-6z"/></svg>' },
-  { id: 'bracket_breaker', name: 'BRACKET BREAKER', color: '#E11D48', group: 'mid', dx: 0.85, dy: 0.52, drot: -7, criteria: 'Reduce 10 bracketed chunks', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 4H6a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h2"/><path d="M16 4h2a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-2"/><path d="M9 12h6"/></svg>' },
-  { id: 'power_surge', name: 'POWER SURGE', color: '#7C3AED', group: 'mid', dx: 0.16, dy: 0.36, drot: 11, criteria: 'Reduce 10 exponent/order chunks', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 20h8"/><path d="M15 8h4v4h-4z"/></svg>' },
-  { id: 'locked_in', name: 'LOCKED IN', color: '#0284C7', group: 'mid', dx: 0.83, dy: 0.36, drot: -12, criteria: 'Reach a 5× consecutive streak', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>' },
-  { id: 'bonus_hunter', name: 'BONUS HUNTER', color: '#DB2777', group: 'page', dx: 0.32, dy: 0.80, drot: 5, criteria: 'Solve 5 bonus problems', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 21h8"/><path d="M12 17v4"/><path d="M7 4h10v5a5 5 0 0 1-10 0z"/><path d="M7 5H4v1a3 3 0 0 0 3 3"/><path d="M17 5h3v1a3 3 0 0 1-3 3"/></svg>' },
-  { id: 'page_10_club', name: 'PAGE 10 CLUB', color: '#1E293B', group: 'page', dx: 0.68, dy: 0.80, drot: -6, criteria: 'Reach and clear Page 10', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3h8l4 4v12H7z"/><path d="M9 3v4h4"/><path d="M11 15h4"/><path d="M11 11h4"/></svg>' },
+  { id: 'first_crunch', name: 'FIRST CRUNCH', color: '#1D4ED8', group: 'page', dx: 0.14, dy: 0.12, drot: -10, criteria: 'Clear Page 1', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5z"/></svg>' },
+  { id: 'flawless_ink', name: 'FLAWLESS INK', color: '#15803D', group: 'page', dx: 0.86, dy: 0.13, drot: 8, criteria: 'Clear a page with 0 mistakes', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3s6 6.6 6 11a6 6 0 0 1-12 0c0-4.4 6-11 6-11z"/><path d="M9 14l2 2 4-4"/></svg>' },
+  { id: 'speed_demon', name: 'SPEED DEMON', color: '#F59E0B', group: 'page', dx: 0.15, dy: 0.80, drot: 6, criteria: 'Clear a page in under 15 seconds', icon: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M13 2 4 14h6l-1 8 9-12h-6z"/></svg>' },
+  { id: 'bracket_breaker', name: 'BRACKET BREAKER', color: '#E11D48', group: 'mid', dx: 0.85, dy: 0.82, drot: -7, criteria: 'Reduce 10 bracketed chunks', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 4H6a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h2"/><path d="M16 4h2a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-2"/><path d="M9 12h6"/></svg>' },
+  { id: 'power_surge', name: 'POWER SURGE', color: '#7C3AED', group: 'mid', dx: 0.16, dy: 0.22, drot: 11, criteria: 'Reduce 10 exponent/order chunks', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 20h8"/><path d="M15 8h4v4h-4z"/></svg>' },
+  { id: 'locked_in', name: 'LOCKED IN', color: '#0284C7', group: 'mid', dx: 0.84, dy: 0.22, drot: -12, criteria: 'Reach a 5× consecutive streak', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>' },
+  { id: 'bonus_hunter', name: 'BONUS HUNTER', color: '#DB2777', group: 'page', dx: 0.34, dy: 0.90, drot: 5, criteria: 'Solve 5 bonus problems', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 21h8"/><path d="M12 17v4"/><path d="M7 4h10v5a5 5 0 0 1-10 0z"/><path d="M7 5H4v1a3 3 0 0 0 3 3"/><path d="M17 5h3v1a3 3 0 0 1-3 3"/></svg>' },
+  { id: 'page_10_club', name: 'PAGE 10 CLUB', color: '#1E293B', group: 'page', dx: 0.66, dy: 0.88, drot: -6, criteria: 'Reach and clear Page 10', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3h8l4 4v12H7z"/><path d="M9 3v4h4"/><path d="M11 15h4"/><path d="M11 11h4"/></svg>' },
 ];
 
 function loadStickers() {
@@ -3590,23 +3562,13 @@ function renderCoverStickers() {
     rot.addEventListener('click', e => { e.stopPropagation(); rotateSticker(st.id); });
     canvas.appendChild(el);
   });
-  const locked = STICKERS.filter(st => !isUnlocked(st.id)).slice(0, 3);
-  const silPos = [['10%', '42%'], ['90%', '26%'], ['90%', '70%']];
-  locked.forEach((st, i) => {
-    const el = document.createElement('div');
-    el.className = 'silhouette';
-    el.style.left = silPos[i][0];
-    el.style.top = silPos[i][1];
-    el.textContent = '?';
-    el.dataset.id = st.id;
-    el.addEventListener('click', e => { e.stopPropagation(); showSilhouetteTooltip(st, el); });
-    canvas.appendChild(el);
-  });
 }
 
 function attachCoverDrag(el, id) {
   el.addEventListener('pointerdown', e => {
     if (e.target.closest('.sticker-rotate')) return;
+    document.querySelectorAll('.sticker.is-selected').forEach(s => s.classList.remove('is-selected'));
+    el.classList.add('is-selected');
     e.preventDefault();
     try { el.setPointerCapture(e.pointerId); } catch (err) {}
     el.classList.add('dragging');
@@ -3633,6 +3595,12 @@ function attachCoverDrag(el, id) {
   });
 }
 
+document.addEventListener('pointerdown', e => {
+  if (!e.target.closest('.sticker')) {
+    document.querySelectorAll('.sticker.is-selected').forEach(s => s.classList.remove('is-selected'));
+  }
+});
+
 function rotateSticker(id) {
   const d = state.stickers[id];
   if (!d) return;
@@ -3640,19 +3608,6 @@ function rotateSticker(id) {
   saveStickers();
   const el = document.querySelector('.sticker[data-id="' + id + '"]');
   if (el) el.style.transform = 'translate(-50%,-50%) rotate(' + d.rotation + 'deg)';
-}
-
-function showSilhouetteTooltip(st, el) {
-  document.querySelectorAll('.silhouette-tooltip').forEach(t => t.remove());
-  const tip = document.createElement('div');
-  tip.className = 'silhouette-tooltip';
-  tip.textContent = st.name + ' — ' + st.criteria + ' to peel';
-  document.body.appendChild(tip);
-  const r = el.getBoundingClientRect();
-  tip.style.left = Math.min(window.innerWidth - 230, Math.max(8, r.left)) + 'px';
-  tip.style.top = (r.bottom + 8) + 'px';
-  setTimeout(() => tip.remove(), 2600);
-  document.addEventListener('pointerdown', () => tip.remove(), { once: true });
 }
 
 /* Surface 2: mid-game margin toast */
