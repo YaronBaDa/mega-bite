@@ -433,7 +433,6 @@ body.locked .ink-fill.locked {
   flex-shrink: 0;
 }
 .rules-toggle:hover { color: var(--pen-blue); }
-.rules-toggle:active { transform: translate(2px, 2px); }
 .rules-toggle.open { border-color: var(--pen-blue); color: var(--pen-blue); }
 .rules-toggle.pulse-hint { animation: pulseHint 1s ease-in-out 3; border-color: var(--pen-blue); }
 @keyframes pulseHint {
@@ -508,8 +507,7 @@ body.locked .ink-fill.locked {
   gap: 6px;
   position: relative;
 }
-.chunk-card:active { transform: translate(2px, 2px); }
-.chunk-card.shake { animation: cardShake 0.4s ease; border-color: var(--pen-red); }
+.chunk-card.shake { animation: cardShake 0.4s ease; border-color: var(--pen-red); box-shadow: 0 3px 0 var(--pen-red); }
 .chunk-card .op-sym { color: var(--pen-blue); }
 
 @keyframes cardShake {
@@ -534,7 +532,6 @@ body.locked .ink-fill.locked {
   cursor: pointer;
   transition: transform 0.12s var(--spring), box-shadow 0.12s var(--spring);
 }
-.answer-btn:active { transform: translate(2px, 2px); }
 .answer-btn.correct {
   background: var(--accent);
   color: #141413;
@@ -545,6 +542,8 @@ body.locked .ink-fill.locked {
 }
 .answer-btn.wrong {
   background-color: var(--paper-card);
+  border-color: var(--pen-red);
+  box-shadow: 0 3px 0 var(--pen-red);
   color: var(--pen-red);
   animation: cardShake 0.4s ease;
 }
@@ -709,7 +708,6 @@ body.locked .ink-fill.locked {
   font-family: inherit;
   transition: transform 0.12s var(--spring), box-shadow 0.12s var(--spring);
 }
-.refill-btn:active { transform: translate(2px, 2px); }
 
 @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
@@ -831,10 +829,8 @@ body.locked .ink-fill.locked {
   transition: background 0.2s, color 0.2s, border-color 0.2s;
   font-family: inherit;
 }
-.diff-btn:active { transform: translate(2px, 2px); }
 .diff-btn.active {
-  border-color: var(--pen-blue);
-  background: var(--pen-blue);
+  background: var(--ink);
   color: var(--paper-card);
 }
 .play-btn {
@@ -853,7 +849,6 @@ body.locked .ink-fill.locked {
   transition: transform 0.12s var(--spring), box-shadow 0.12s var(--spring), background 0.2s;
 }
 .play-btn:hover { filter: brightness(1.06); }
-.play-btn:active { transform: translateY(2px); }
 
 .daily-btn {
   width: 100%;
@@ -861,8 +856,8 @@ body.locked .ink-fill.locked {
   min-height: 46px;
   border-radius: var(--r-m);
   box-shadow: var(--lift);
-  background: #F4F4F0;
-  color: #141413;
+  background: var(--paper-card);
+  color: var(--ink);
   font-size: 0.92rem;
   font-weight: 600;
   letter-spacing: 0.5px;
@@ -870,8 +865,6 @@ body.locked .ink-fill.locked {
   font-family: inherit;
   transition: transform 0.12s var(--spring), box-shadow 0.12s var(--spring), background 0.2s;
 }
-.daily-btn:hover { background: #fff; }
-.daily-btn:active { transform: translateY(2px); }
 
 /* Notation pill toggle (BODMAS | PEMDAS) — in Settings */
 .notation-toggle {
@@ -879,8 +872,8 @@ body.locked .ink-fill.locked {
   background: var(--paper-tint);
   box-shadow: var(--lift);
   border-radius: var(--r-m);
-  padding: 3px;
-  gap: 3px;
+  padding: 6px;
+  gap: 4px;
 }
 .notation-btn {
   padding: 8px 16px;
@@ -897,7 +890,7 @@ body.locked .ink-fill.locked {
   transition: background 0.15s, color 0.15s;
 }
 .notation-btn.active {
-  background: var(--pen-blue);
+  background: var(--ink);
   color: var(--paper-card);
 }
 .theme-toggle {
@@ -919,7 +912,6 @@ body.locked .ink-fill.locked {
   cursor: pointer;
   transition: background 0.2s, color 0.2s;
 }
-.theme-btn:active { transform: translate(2px, 2px); }
 .theme-btn.active {
   background: var(--ink);
   color: var(--paper-card);
@@ -1036,15 +1028,14 @@ body.locked .ink-fill.locked {
   font-family: inherit;
   transition: transform 0.12s var(--spring), box-shadow 0.12s var(--spring);
 }
-.next-btn:active { transform: translate(2px, 2px); }
 
 .share-btn {
   padding: 14px 28px;
   min-height: 52px;
   border-radius: var(--r-m);
   box-shadow: var(--lift);
-  background: var(--accent);
-  color: #141413;
+  background: var(--paper-card);
+  color: var(--ink);
   font-size: 0.95rem;
   font-weight: 600;
   letter-spacing: 0.5px;
@@ -1052,7 +1043,6 @@ body.locked .ink-fill.locked {
   font-family: inherit;
   transition: transform 0.12s var(--spring), box-shadow 0.12s var(--spring);
 }
-.share-btn:active { transform: translate(2px, 2px); }
 .menu-btn {
   padding: 10px 20px;
   min-height: 44px;
@@ -1066,7 +1056,6 @@ body.locked .ink-fill.locked {
   font-family: inherit;
   margin-top: 10px;
 }
-.menu-btn:active { transform: translate(2px, 2px); }
 .daily-note {
   font-size: 0.75rem;
   color: var(--pen-red);
@@ -1457,6 +1446,23 @@ body.locked .ink-fill.locked {
   .brand { font-size: 1.25rem; }
 }
 
+
+/* ===== KEYCAP BUTTONS (mechanical-keyboard look) ===== */
+.chunk-card, .answer-btn, .play-btn, .daily-btn, .refill-btn, .next-btn, .share-btn, .rules-toggle, .menu-btn, .diff-btn, .notation-btn, .theme-btn {
+  border: 1px solid var(--ink);
+  border-radius: var(--r-m);
+  box-shadow: 0 3px 0 var(--ink);
+  transition: transform 0.08s, box-shadow 0.08s, background-color 0.08s, color 0.08s, border-color 0.08s;
+}
+.chunk-card:active, .answer-btn:active, .play-btn:active, .daily-btn:active, .refill-btn:active, .next-btn:active, .share-btn:active, .rules-toggle:active, .menu-btn:active, .diff-btn:active, .notation-btn:active, .theme-btn:active {
+  transform: translateY(3px);
+  box-shadow: 0 0 0 var(--ink);
+}
+@media (hover: hover) {
+  .chunk-card:hover, .answer-btn:hover, .play-btn:hover, .daily-btn:hover, .refill-btn:hover, .next-btn:hover, .share-btn:hover, .rules-toggle:hover, .menu-btn:hover, .diff-btn:hover, .notation-btn:hover, .theme-btn:hover {
+    transform: translateY(-1px);
+  }
+}
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.01ms !important;
