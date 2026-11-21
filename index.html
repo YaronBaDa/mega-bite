@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <title>CRUNCH</title>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,800&family=Lexend:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,800&family=JetBrains+Mono:wght@500;700&family=Lexend:wght@400;500;600;700&display=swap');
 
 :root {
   --paper: #F7F5EE;
@@ -30,6 +30,7 @@
   --lift: 0 1px 0 rgba(20,19,19,.06), 0 6px 16px -8px rgba(20,19,19,.18);
   --font-ui: 'Lexend', sans-serif;
   --font-brand: 'Fraunces', serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
   --spring: cubic-bezier(0.175, 0.885, 0.32, 1.275);
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
 }
@@ -170,16 +171,17 @@ body {
   justify-content: space-between;
   align-items: baseline;
   padding: 4px 22px 2px;
-  font-size: 0.62rem;
-  font-weight: 700;
+  font-size: 0.75rem;
+  font-family: var(--font-mono);
+  font-weight: 500;
   letter-spacing: 0.5px;
   color: var(--ink-muted);
   margin-top: 0;
   flex-shrink: 0;
 }
-.ink-label .lbl { color: var(--ink-muted); font-family: var(--font-ui); font-size: 0.78rem; letter-spacing: 0; }
-.ink-label #stepCounter { color: var(--pen-blue); font-family: var(--font-ui); }
-.ink-label #inkText { color: var(--ink-muted); font-weight: 800; }
+.ink-label .lbl { color: var(--ink-muted); font-family: var(--font-mono); font-size: 0.78rem; letter-spacing: 0; }
+.ink-label #stepCounter { color: var(--pen-blue); font-family: var(--font-mono); }
+.ink-label #inkText { color: var(--ink-muted); font-family: var(--font-mono); font-weight: 500; }
 .ink-label #inkText.locked { color: var(--pen-blue); }
 .ink-label #inkText.overdrive { color: var(--overdrive-cyan); }
 
@@ -231,8 +233,8 @@ body {
   background: var(--pen-red);
   color: #fff;
   font-family: var(--font-ui);
-  font-weight: 800;
-  font-size: 0.72rem;
+  font-weight: 600;
+  font-size: 0.75rem;
   letter-spacing: 1.5px;
   padding: 4px 14px;
   border-radius: var(--r-s);
@@ -270,8 +272,8 @@ body {
   justify-content: center;
   padding: 4px 2px;
   border-radius: var(--r-s);
-  font-family: var(--font-ui);
-  font-weight: 800;
+  font-family: var(--font-mono);
+  font-weight: 700;
   font-size: 1.75rem;
   transition: background 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
   position: relative;
@@ -320,7 +322,7 @@ body.locked .ink-fill.locked {
 .chunk-card sup {
   margin-left: 0;
   font-size: 0.55em;
-  font-weight: 800;
+  font-weight: 700;
   vertical-align: baseline;
   position: relative;
   top: -0.55em;
@@ -409,7 +411,7 @@ body.locked .ink-fill.locked {
   text-align: left;
   font-size: 0.9rem;
   color: var(--ink-muted);
-  font-weight: 700;
+  font-weight: 600;
   flex: 1;
 }
 .prompt strong { color: var(--ink); }
@@ -423,7 +425,7 @@ body.locked .ink-fill.locked {
   box-shadow: var(--lift);
   font-family: var(--font-ui);
   font-size: 1.15rem;
-  font-weight: 800;
+  font-weight: 600;
   color: var(--ink-muted);
   cursor: pointer;
   display: inline-flex; align-items: center; justify-content: center;
@@ -451,7 +453,7 @@ body.locked .ink-fill.locked {
 .feedback-banner {
   display: none;
   font-size: 0.82rem;
-  font-weight: 700;
+  font-weight: 600;
   font-style: italic;
   text-align: left;
   line-height: 1.4;
@@ -495,9 +497,9 @@ body.locked .ink-fill.locked {
   background-color: var(--paper-card);
   box-shadow: var(--lift);
   color: var(--ink);
-  font-family: var(--font-ui);
+  font-family: var(--font-mono);
   font-size: 1.15rem;
-  font-weight: 800;
+  font-weight: 700;
   cursor: pointer;
   transition: transform 0.12s var(--spring), box-shadow 0.12s var(--spring);
   display: flex;
@@ -526,9 +528,9 @@ body.locked .ink-fill.locked {
   background-color: var(--paper-card);
   box-shadow: var(--lift);
   color: var(--ink);
-  font-family: var(--font-ui);
+  font-family: var(--font-mono);
   font-size: 1.35rem;
-  font-weight: 800;
+  font-weight: 700;
   cursor: pointer;
   transition: transform 0.12s var(--spring), box-shadow 0.12s var(--spring);
 }
@@ -539,7 +541,7 @@ body.locked .ink-fill.locked {
 }
 .answer-btn.correct::after {
   content: ' ✓';
-  font-weight: 800;
+  font-weight: 700;
 }
 .answer-btn.wrong {
   background-color: var(--paper-card);
@@ -590,7 +592,7 @@ body.locked .ink-fill.locked {
   box-shadow: var(--lift);
   color: var(--ink-muted);
   font-size: 1rem;
-  font-weight: 700;
+  font-weight: 600;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -619,16 +621,16 @@ body.locked .ink-fill.locked {
   border-radius: 50%;
   background: var(--pen-blue);
   color: var(--paper-card);
-  font-family: var(--font-ui);
-  font-size: 0.7rem;
-  font-weight: 800;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 500;
   display: flex; align-items: center; justify-content: center;
   flex-shrink: 0;
 }
 .cheat-symbol {
-  font-family: var(--font-ui);
+  font-family: var(--font-mono);
   font-size: 1.05rem;
-  font-weight: 800;
+  font-weight: 700;
   color: var(--ink);
   min-width: 44px;
 }
@@ -644,19 +646,19 @@ body.locked .ink-fill.locked {
 }
 .cheat-name {
   font-size: 0.78rem;
-  font-weight: 700;
+  font-weight: 600;
   color: var(--ink);
 }
 .cheat-hint {
-  font-size: 0.62rem;
+  font-size: 0.75rem;
   font-weight: 600;
   color: var(--ink-muted);
 }
 .cheat-ltr {
   align-self: flex-start;
   display: inline-block;
-  font-size: 0.6rem;
-  font-weight: 800;
+  font-size: 0.75rem;
+  font-weight: 600;
   letter-spacing: 0.5px;
   color: var(--ink);
   background: var(--accent);
@@ -682,6 +684,7 @@ body.locked .ink-fill.locked {
 .out-of-ink-title {
   font-family: var(--font-ui);
   font-size: 1.7rem;
+  font-weight: 800;
   color: var(--ink);
   margin-bottom: 6px;
 }
@@ -700,7 +703,7 @@ body.locked .ink-fill.locked {
   background: var(--accent);
   color: #141413;
   font-size: 0.95rem;
-  font-weight: 800;
+  font-weight: 600;
   letter-spacing: 0.5px;
   cursor: pointer;
   font-family: inherit;
@@ -791,9 +794,9 @@ body.locked .ink-fill.locked {
   text-align: center;
 }
 .label-sub {
-  font-family: var(--font-ui);
-  font-weight: 600;
-  font-size: clamp(0.72rem, 2vw, 0.9rem);
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: clamp(0.75rem, 2vw, 0.9rem);
   color: #1E293B;
   line-height: var(--rule-gap);
   max-width: 94%;
@@ -822,7 +825,7 @@ body.locked .ink-fill.locked {
   background: var(--paper-card);
   color: var(--ink-muted);
   font-size: 0.78rem;
-  font-weight: 800;
+  font-weight: 600;
   letter-spacing: 1px;
   cursor: pointer;
   transition: background 0.2s, color 0.2s, border-color 0.2s;
@@ -861,7 +864,7 @@ body.locked .ink-fill.locked {
   background: #F4F4F0;
   color: #141413;
   font-size: 0.92rem;
-  font-weight: 700;
+  font-weight: 600;
   letter-spacing: 0.5px;
   cursor: pointer;
   font-family: inherit;
@@ -888,7 +891,7 @@ body.locked .ink-fill.locked {
   color: var(--ink-muted);
   font-family: var(--font-ui);
   font-size: 0.8rem;
-  font-weight: 800;
+  font-weight: 600;
   letter-spacing: 0.5px;
   cursor: pointer;
   transition: background 0.15s, color 0.15s;
@@ -911,7 +914,7 @@ body.locked .ink-fill.locked {
   color: var(--ink-muted);
   font-family: var(--font-ui);
   font-size: 0.78rem;
-  font-weight: 800;
+  font-weight: 600;
   letter-spacing: 0.5px;
   cursor: pointer;
   transition: background 0.2s, color 0.2s;
@@ -934,15 +937,15 @@ body.locked .ink-fill.locked {
   border-radius: var(--r-s);
   border: 1.5px solid var(--border-ink);
   background: var(--paper-card);
-  font-family: var(--font-ui);
-  font-size: 0.68rem;
-  font-weight: 700;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 500;
   letter-spacing: 0.5px;
   color: var(--ink-muted);
   opacity: 0.75;
   font-variant-numeric: tabular-nums;
 }
-.reminder-bar .rem-sep { color: var(--ink-muted); opacity: 0.4; font-weight: 800; }
+.reminder-bar .rem-sep { color: var(--ink-muted); opacity: 0.4; font-weight: 600; }
 
 /* ===== LEVEL COMPLETE ===== */
 .page-card {
@@ -975,7 +978,8 @@ body.locked .ink-fill.locked {
   display: inline-block;
   padding: 10px 20px;
   border-radius: var(--r-m);
-  font-weight: 800;
+  font-family: var(--font-mono);
+  font-weight: 700;
   font-size: 0.95rem;
   letter-spacing: 1px;
   transform: rotate(-4deg);
@@ -997,8 +1001,8 @@ body.locked .ink-fill.locked {
 .stamp-badge.speed { color: var(--pen-blue); border-color: var(--pen-blue); }
 .stamp-badge.cleared { color: var(--ink); border-color: var(--ink); }
 .bonus-hunter {
-  font-size: 0.72rem;
-  font-weight: 800;
+  font-size: 0.75rem;
+  font-weight: 600;
   letter-spacing: 0.5px;
   color: var(--ink-muted);
   margin-bottom: 8px;
@@ -1011,7 +1015,9 @@ body.locked .ink-fill.locked {
   transform: rotate(-2deg);
 }
 .page-sub {
+  font-family: var(--font-mono);
   font-size: 0.88rem;
+  font-weight: 500;
   color: var(--ink-muted);
   margin-bottom: 24px;
   text-align: center;
@@ -1024,7 +1030,7 @@ body.locked .ink-fill.locked {
   background: var(--accent);
   color: #141413;
   font-size: 0.95rem;
-  font-weight: 800;
+  font-weight: 600;
   letter-spacing: 1px;
   cursor: pointer;
   font-family: inherit;
@@ -1040,7 +1046,7 @@ body.locked .ink-fill.locked {
   background: var(--accent);
   color: #141413;
   font-size: 0.95rem;
-  font-weight: 800;
+  font-weight: 600;
   letter-spacing: 0.5px;
   cursor: pointer;
   font-family: inherit;
@@ -1055,7 +1061,7 @@ body.locked .ink-fill.locked {
   background: var(--paper-card);
   color: var(--ink-muted);
   font-size: 0.85rem;
-  font-weight: 800;
+  font-weight: 600;
   cursor: pointer;
   font-family: inherit;
   margin-top: 10px;
@@ -1064,7 +1070,7 @@ body.locked .ink-fill.locked {
 .daily-note {
   font-size: 0.75rem;
   color: var(--pen-red);
-  font-weight: 700;
+  font-weight: 600;
   margin-top: 2px;
   margin-bottom: 12px;
   text-align: center;
@@ -1112,7 +1118,7 @@ body.locked .ink-fill.locked {
   box-shadow: var(--lift);
   color: var(--ink-muted);
   font-size: 1rem;
-  font-weight: 700;
+  font-weight: 600;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -1123,7 +1129,7 @@ body.locked .ink-fill.locked {
 .settings-close:hover { border-color: var(--pen-pink); color: var(--pen-pink); }
 .settings-title {
   font-size: 1.1rem;
-  font-weight: 800;
+  font-weight: 600;
   color: var(--ink);
   letter-spacing: 0.5px;
   margin-bottom: 14px;
@@ -1131,8 +1137,8 @@ body.locked .ink-fill.locked {
 .settings-group { margin-bottom: 16px; }
 .settings-group:last-child { margin-bottom: 0; }
 .settings-label {
-  font-size: 0.7rem;
-  font-weight: 800;
+  font-size: 0.75rem;
+  font-weight: 600;
   letter-spacing: 1px;
   color: var(--ink-muted);
   margin-bottom: 8px;
@@ -1147,7 +1153,7 @@ body.locked .ink-fill.locked {
   background: var(--paper-card);
   box-shadow: var(--lift);
   color: var(--ink);
-  font-weight: 800;
+  font-weight: 600;
   cursor: pointer;
   display: flex; align-items: center; justify-content: center; gap: 8px;
   font-family: inherit;
@@ -1155,7 +1161,7 @@ body.locked .ink-fill.locked {
 .sound-toggle:active { transform: translate(2px, 2px); }
 
 /* Numbers align — timers, counters & equations */
-.food-token, .chunk-card, .answer-btn, .ink-label, .page-sub, .cheat-rank { font-variant-numeric: tabular-nums; }
+.food-token, .chunk-card, .answer-btn, .ink-label, .page-sub, .cheat-rank, .stamp-badge, .cheat-symbol, .label-sub { font-variant-numeric: tabular-nums; }
 
 /* ===== STICKER ECOSYSTEM ===== */
 .sticker-pill {
@@ -1169,9 +1175,9 @@ body.locked .ink-fill.locked {
   box-shadow: var(--lift);
   background: #F4F4F0;
   color: #141413;
-  font-family: var(--font-ui);
-  font-size: 0.72rem;
-  font-weight: 800;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 500;
   letter-spacing: 0.5px;
   cursor: pointer;
   font-variant-numeric: tabular-nums;
@@ -1203,7 +1209,7 @@ body.locked .ink-fill.locked {
   padding: 6px;
   color: #fff;
   font-family: var(--font-ui);
-  font-weight: 800;
+  font-weight: 600;
   text-align: center;
   overflow: hidden;
   cursor: grab;
@@ -1221,7 +1227,7 @@ body.locked .ink-fill.locked {
 }
 .sticker .sticker-icon { width: 26px; height: 26px; flex-shrink: 0; }
 .sticker .sticker-icon svg { width: 100%; height: 100%; display: block; }
-.sticker .sticker-name { font-size: 0.58rem; letter-spacing: 0.4px; line-height: 1.1; word-break: break-word; }
+.sticker .sticker-name { font-size: 0.75rem; letter-spacing: 0.4px; line-height: 1.1; word-break: break-word; }
 .sticker.dragging { cursor: grabbing; z-index: 20; }
 
 .sticker-rotate {
@@ -1234,8 +1240,8 @@ body.locked .ink-fill.locked {
   border: 2px solid #fff;
   background: rgba(0, 0, 0, 0.28);
   color: #fff;
-  font-size: 0.72rem;
-  font-weight: 800;
+  font-size: 0.75rem;
+  font-weight: 600;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -1258,7 +1264,7 @@ body.locked .ink-fill.locked {
   color: rgba(255, 255, 255, 0.6);
   font-family: var(--font-ui);
   font-size: 1.4rem;
-  font-weight: 800;
+  font-weight: 600;
   cursor: pointer;
   z-index: 2;
   transform: translate(-50%, -50%);
@@ -1273,7 +1279,7 @@ body.locked .ink-fill.locked {
   color: #fff;
   font-family: var(--font-ui);
   font-size: 0.75rem;
-  font-weight: 700;
+  font-weight: 600;
   line-height: 1.4;
   pointer-events: none;
 }
@@ -1301,8 +1307,8 @@ body.locked .ink-fill.locked {
   background: var(--pen-red);
   color: #fff;
   font-family: var(--font-ui);
-  font-size: 0.6rem;
-  font-weight: 800;
+  font-size: 0.75rem;
+  font-weight: 600;
   letter-spacing: 0.5px;
   padding: 3px 8px;
   border-radius: var(--r-m);
@@ -1379,7 +1385,7 @@ body.locked .ink-fill.locked {
   box-shadow: var(--lift);
   color: var(--ink-muted);
   font-size: 1rem;
-  font-weight: 700;
+  font-weight: 600;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -1389,7 +1395,7 @@ body.locked .ink-fill.locked {
 .sheet-close:hover { border-color: var(--pen-red); color: var(--pen-red); }
 .sheet-title {
   font-size: 1.1rem;
-  font-weight: 800;
+  font-weight: 600;
   color: var(--ink);
   letter-spacing: 0.5px;
   margin-bottom: 14px;
@@ -1414,19 +1420,19 @@ body.locked .ink-fill.locked {
 .sticker-sheet.locked-mat { filter: grayscale(0.6); opacity: 0.5; }
 .sheet-meta { text-align: center; width: 100%; }
 .sheet-earned {
-  font-size: 0.62rem;
-  font-weight: 700;
+  font-size: 0.75rem;
+  font-weight: 600;
   color: var(--pen-green);
 }
 .sheet-criteria {
-  font-size: 0.6rem;
+  font-size: 0.75rem;
   font-weight: 600;
   color: var(--ink-muted);
   line-height: 1.3;
 }
 .sheet-progress {
-  font-size: 0.62rem;
-  font-weight: 800;
+  font-size: 0.75rem;
+  font-weight: 600;
   color: var(--pen-red);
   margin-top: 2px;
   font-variant-numeric: tabular-nums;
@@ -1486,7 +1492,7 @@ body.locked .ink-fill.locked {
   <div class="title-label">
     <div class="title-label-inner">
       <div class="label-logo">CRUNCH</div>
-      <div class="label-sub">Crunch the numbers. Master the order. Don't run out of ink.</div>
+      <div class="label-sub">// Crunch the numbers. Master the order. Don't run out of ink.</div>
     </div>
   </div>
 
