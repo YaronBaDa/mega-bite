@@ -227,6 +227,39 @@ body {
   margin-top: 0;
   flex-shrink: 0;
 }
+.ink-label { position: relative; }
+.ink-shield {
+  position: absolute;
+  left: 22px;
+  top: -18px;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  color: var(--accent);
+}
+.ink-float {
+  position: fixed;
+  top: 58px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 60;
+  pointer-events: none;
+  opacity: 0;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--accent);
+}
+.ink-float.show {
+  animation: inkFloatUp 1s ease-out forwards;
+}
+@keyframes inkFloatUp {
+  0% { opacity: 0; transform: translate(-50%, 4px); }
+  20% { opacity: 1; }
+  100% { opacity: 0; transform: translate(-50%, -16px); }
+}
+
 .ink-label .lbl { color: var(--ink-muted); font-family: var(--font-mono); font-size: 0.78rem; letter-spacing: 0; }
 .ink-label #stepCounter { color: var(--pen-blue); font-family: var(--font-mono); }
 .ink-label #inkText { color: var(--ink-muted); font-family: var(--font-mono); font-weight: 500; }
@@ -343,6 +376,14 @@ body {
 }
 @keyframes sweepAcross {
   to { transform: translateX(300%); }
+}
+
+.reminder-bar .rem-pill.flash {
+  animation: pillFlash 1.5s ease-out;
+}
+@keyframes pillFlash {
+  0% { background: var(--accent-soft); border-color: var(--accent); color: var(--ink); }
+  100% { background: var(--paper-card); border-color: var(--border-ink); color: var(--ink-muted); }
 }
 
 @keyframes arenaShake {
@@ -1149,6 +1190,19 @@ body.locked .ink-fill.locked {
   font-family: inherit;
   margin-top: 10px;
 }
+.daily-streak {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  color: #141413;
+  background: var(--accent);
+  padding: 4px 14px;
+  border-radius: var(--r-s);
+  margin-bottom: 8px;
+}
+
 .daily-note {
   font-size: 0.75rem;
   color: var(--pen-red);
@@ -1609,10 +1663,12 @@ body.locked .ink-fill.locked {
   </div>
 
   <div class="ink-label">
+    <span class="ink-shield hidden" id="inkShield">SHIELD</span>
     <span class="lbl">INK</span>
     <span id="stepCounter"></span>
     <span id="inkText">LOCKED IN</span>
   </div>
+  <div class="ink-float" id="inkFloat" aria-hidden="true"></div>
 
   <div class="feedback-slot" aria-live="polite"><div class="feedback-banner" id="feedbackBanner"></div></div>
   <div id="stickerToast" class="hidden" aria-live="polite"></div>
@@ -1630,10 +1686,10 @@ body.locked .ink-fill.locked {
   <div class="action-tray" id="actionTray"></div>
 
   <div class="reminder-bar hidden" id="reminderBar" aria-hidden="true">
-    <span class="rem-pill">( )</span><span class="rem-sep">›</span>
-    <span class="rem-pill">x² √</span><span class="rem-sep">›</span>
-    <span class="rem-pill">÷ ×</span><span class="rem-sep">›</span>
-    <span class="rem-pill">+ −</span>
+    <span class="rem-pill" data-tier="B">( )</span><span class="rem-sep">›</span>
+    <span class="rem-pill" data-tier="O">x² √</span><span class="rem-sep">›</span>
+    <span class="rem-pill" data-tier="DM">÷ ×</span><span class="rem-sep">›</span>
+    <span class="rem-pill" data-tier="AS">+ −</span>
   </div>
 </div>
 
@@ -1691,9 +1747,10 @@ body.locked .ink-fill.locked {
   <div class="mascot page-mascot" id="dailyMascot" aria-hidden="true"></div>
   <div class="page-title" id="dailyTitle">DAILY POP QUIZ CLEARED!</div>
   <div class="stamp-badge" id="dailyStamp">★ FLAWLESS CLEAR</div>
+  <div class="daily-streak hidden" id="dailyStreak">STREAK: 1 DAY</div>
   <div class="daily-note hidden" id="dailyNote">You already cleared today's quiz</div>
   <div class="page-sub" id="dailySub">5 equations • 0 mistakes • 0s</div>
-  <button class="share-btn" id="shareBtn">Share Score</button>
+  <button class="share-btn" id="shareBtn">Share Result</button>
   <button class="menu-btn" id="dailyMenuBtn">Back to Menu</button>
 </div>
 
@@ -1755,6 +1812,8 @@ const LS_BONUS = 'crunch_bonus';
 const LS_DAILY_PREFIX = 'crunch_daily_';
 const LS_STICKERS = 'crunch_stickers';
 const LS_THEME = 'crunch_theme';
+const LS_DAILY_STREAK = 'crunch_daily_streak';
+const LS_DAILY_LAST = 'crunch_daily_last';
 const APP_URL = 'https://yaronbada.github.io/mega-bite/';
 const BONUS_HUNTER_GOAL = 5;
 const DAILY_PAR = 60;
@@ -2339,6 +2398,7 @@ let state = {
   pageMistakes: 0,
   flowStreak: 0,
   inkEnergy: 100,
+  inkShield: false,
   ast: null,
   trace: [],
   totalStepsOriginal: 0,
@@ -2693,6 +2753,32 @@ function pulseRules() {
   setTimeout(() => t.classList.remove('pulse-hint'), 4200);
 }
 
+function flashRibbonTier(tier) {
+  document.querySelectorAll('#reminderBar .rem-pill').forEach(pill => {
+    if (pill.dataset.tier === tier) {
+      pill.classList.remove('flash');
+      void pill.offsetWidth;
+      pill.classList.add('flash');
+      setTimeout(() => pill.classList.remove('flash'), 1500);
+    }
+  });
+}
+
+function renderInkShield() {
+  const el = $('inkShield');
+  if (el) el.classList.toggle('hidden', !state.inkShield);
+}
+
+function showInkFloat(text) {
+  const el = $('inkFloat');
+  if (!el) return;
+  el.textContent = text;
+  el.classList.remove('show');
+  void el.offsetWidth;
+  el.classList.add('show');
+  setTimeout(() => el.classList.remove('show'), 1000);
+}
+
 /* Red-pen mark overlays (draw-in via stroke-dashoffset) */
 const SVG_NS = 'http://www.w3.org/2000/svg';
 
@@ -2846,24 +2932,26 @@ function handleChunkSelect(candidate, correctNode, btn) {
     const candidateTier = candidate.node.tier;
     const currentCandidates = state.currentCandidates || [];
     const hasBracketChunk = currentCandidates.find(c => c.insideBracket);
+    const bodmas = state.notation === 'bodmas';
 
     let msg;
     if (hasBracketChunk && !candidate.insideBracket) {
-      msg = state.notation === 'bodmas'
-        ? `Brackets first — crack what's inside before touching the outside.`
-        : `Parentheses first — crack what's inside before touching the outside.`;
-    } else if (correctTier === candidateTier) {
-      msg = 'Equal rank — read left to right like a line of text.';
+      msg = bodmas ? 'Crunch inside the brackets first.' : 'Crunch inside the parentheses first.';
     } else if (correctTier === 'O') {
-      msg = state.notation === 'bodmas'
-        ? `Orders first — powers and roots beat multiply and divide.`
-        : `Exponents first — powers and roots beat multiply and divide.`;
+      msg = bodmas
+        ? `Crunch orders (powers/roots) before ×, ÷, +, and −.`
+        : `Crunch exponents (powers/roots) before ×, ÷, +, and −.`;
+    } else if (correctTier === 'DM' && candidateTier === 'AS') {
+      msg = 'Multiply and divide before adding or subtracting.';
+    } else if (correctTier === candidateTier) {
+      msg = "It's a tie! Work from left to right.";
     } else {
-      msg = `Multiply & divide beat add & subtract. Crunch ${getChunkText(correctNode)} first.`;
+      msg = `Crunch ${getChunkText(correctNode)} first.`;
     }
     showFeedback(msg, 'error');
     pulseRules();
     pulseOperator(correctNode);
+    flashRibbonTier(correctTier);
 
     setTimeout(() => {
       btn.classList.remove('shake');
@@ -2881,6 +2969,17 @@ function handleAnswerSelect(val, correct, btn) {
 
     refillInk();
     state.flowStreak++;
+    if (state.flowStreak % 3 === 0) {
+      if (state.inkEnergy >= 100) {
+        state.inkShield = true;
+        renderInkShield();
+        showInkFloat('SHIELDED');
+      } else {
+        state.inkEnergy = Math.min(100, state.inkEnergy + 1);
+        renderInkEnergy();
+        showInkFloat('+1 INK');
+      }
+    }
     if (state.flowStreak === 5) {
       state.overdriveUntil = Date.now() + 8000;
       playOverdriveChime();
@@ -3054,6 +3153,25 @@ function getDateStr() {
   return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
 }
 
+function yesterdayStr() {
+  const d = new Date();
+  d.setDate(d.getDate() - 1);
+  return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+}
+
+function getDailyStreak() {
+  return parseInt(localStorage.getItem(LS_DAILY_STREAK) || '0', 10);
+}
+
+function updateDailyStreak() {
+  const last = localStorage.getItem(LS_DAILY_LAST) || '';
+  const streak = getDailyStreak();
+  const next = (last === yesterdayStr()) ? streak + 1 : 1;
+  localStorage.setItem(LS_DAILY_STREAK, String(next));
+  localStorage.setItem(LS_DAILY_LAST, getDateStr());
+  return next;
+}
+
 function getDayNumber() {
   const now = new Date();
   const epoch = new Date(now.getFullYear(), 0, 1);
@@ -3097,6 +3215,12 @@ function renderDailyCard(result, isRevisit) {
   $('dailyStamp').textContent = result.badgeText;
   $('dailyStamp').className = 'stamp-badge ' + (result.badgeClass || 'cleared');
   $('dailySub').textContent = `5 equations • ${result.mistakes} mistake${result.mistakes === 1 ? '' : 's'} • ${result.elapsed}s`;
+  const streak = getDailyStreak();
+  const ds = $('dailyStreak');
+  if (ds) {
+    ds.textContent = `STREAK: ${streak} ${streak === 1 ? 'DAY' : 'DAYS'}`;
+    ds.classList.toggle('hidden', streak < 1);
+  }
   $('dailyNote').classList.toggle('hidden', !isRevisit);
   $('dailyCard').classList.remove('hidden');
 }
@@ -3121,6 +3245,7 @@ function showDailyComplete() {
     emojiRow: dailyEmojiRow(m, elapsed),
   };
   saveDailyResult(state.dailyResult);
+  updateDailyStreak();
   renderDailyCard(state.dailyResult, false);
 }
 
@@ -3223,13 +3348,14 @@ $('dailyBtn').onclick = () => {
 $('shareBtn').onclick = () => {
   const r = state.dailyResult;
   if (!r) return;
-  const drops = Math.max(1, Math.round((r.inkLeft || 0) / 20));
-  const inkRow = '💧'.repeat(drops);
-  const text = `CRUNCH • Daily Crunch #${r.dayNumber} 🖊️\n${r.emojiRow}\nInk ${inkRow}\n${r.mistakes} mistake${r.mistakes === 1 ? '' : 's'} • ${r.elapsed}s\nCan you beat my time? ${APP_URL}`;
+  const streak = getDailyStreak();
+  const emoji = r.badgeClass === 'speed' ? '⚡' : (r.badgeClass === 'flawless' ? '★' : '✓');
+  const badgeTitle = (r.badgePlain || 'PAGE CLEARED').toLowerCase().replace(/(^|\s)\w/g, c => c.toUpperCase());
+  const text = `CRUNCH Daily Pop Quiz (${getDateStr()})\n${emoji} ${badgeTitle} | 5/5 • ${r.mistakes} mistake${r.mistakes === 1 ? '' : 's'} • ${r.elapsed}s\nStreak: ${streak} ${streak === 1 ? 'day' : 'days'}\n${APP_URL}`;
   copyShareText(text);
   const btn = $('shareBtn');
-  btn.textContent = 'Copied! ✓';
-  setTimeout(() => { btn.textContent = 'Share Score'; }, 2000);
+  btn.textContent = 'COPIED!';
+  setTimeout(() => { btn.textContent = 'Share Result'; }, 2000);
 };
 
 $('dailyMenuBtn').onclick = () => {
@@ -3349,6 +3475,12 @@ const INK_MISTAKE_COST = 10;
 const INK_HINT_COST = 5;
 
 function applyMistakeCost() {
+  if (state.inkShield) {
+    state.inkShield = false;
+    renderInkShield();
+    showInkFloat('SHIELDED');
+    return;
+  }
   state.inkEnergy = Math.max(0, state.inkEnergy - INK_MISTAKE_COST);
   renderInkEnergy();
   if (state.inkEnergy === 0) showOutOfInk();
