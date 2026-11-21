@@ -61,6 +61,38 @@
   --lift: 0 1px 0 rgba(255,255,255,.05), 0 6px 16px -8px rgba(0,0,0,.5);
 }
 
+:root[data-theme="terminal"] {
+  --paper: #0A0F0A;
+  --paper-card: #101810;
+  --paper-tint: #162216;
+  --dot: rgba(110, 255, 110, 0.12);
+  --ink: #D7FFD0;
+  --ink-muted: #6FA66A;
+  --pen-blue: #5CE1E6;
+  --pen-pink: #FF7A9C;
+  --pen-red: #FF5C7A;
+  --pen-green: #6BFF6B;
+  --overdrive: #5CE1E6;
+  --overdrive-cyan: #7DF9FF;
+  --accent: #B6FF3B;
+  --accent-soft: rgba(182, 255, 59, 0.24);
+  --pow: #B99CFF;
+  --bracket-0: #FF7AC8;
+  --bracket-1: #5CE1E6;
+  --bracket-2: #B99CFF;
+  --border-ink: #1F3A1F;
+  --lift: 0 1px 0 rgba(255, 255, 255, 0.05), 0 6px 16px -8px rgba(0, 0, 0, 0.5);
+}
+
+:root[data-theme="terminal"] body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9999;
+  background: repeating-linear-gradient(180deg, rgba(0, 0, 0, 0.035) 0 1px, transparent 1px 3px);
+}
+
 * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 html, body {
   height: 100%;
@@ -607,7 +639,7 @@ body.locked .ink-fill.locked {
   position: fixed;
   left: 50%;
   top: 50%;
-  transform: translate(-50%, -50%) scale(0.9) rotate(-1deg);
+  transform: translate(-50%, -50%) scale(0.9);
   z-index: 100;
   opacity: 0;
   pointer-events: none;
@@ -615,13 +647,14 @@ body.locked .ink-fill.locked {
   width: 90%;
   max-width: 380px;
 }
-.cheat-sheet.open { opacity: 1; pointer-events: auto; transform: translate(-50%, -50%) scale(1) rotate(-1deg); }
+.cheat-sheet.open { opacity: 1; pointer-events: auto; transform: translate(-50%, -50%) scale(1); }
 .cheat-panel {
   background: var(--paper-card);
   box-shadow: var(--lift);
   border-radius: var(--r-m);
   padding: 20px 18px;
   position: relative;
+  font-family: var(--font-mono);
 }
 .cheat-close {
   position: absolute;
@@ -652,29 +685,28 @@ body.locked .ink-fill.locked {
 }
 .cheat-row {
   display: flex;
-  align-items: center;
-  gap: 10px;
+  align-items: baseline;
+  gap: 12px;
   padding: 7px 0;
-  border-bottom: 1px dashed rgba(51, 65, 85, 0.35);
+  border-bottom: 1px solid var(--border-ink);
 }
 .cheat-row:last-child { border-bottom: none; }
 .cheat-rank {
-  width: 24px; height: 24px;
-  border-radius: 50%;
-  background: var(--pen-blue);
-  color: var(--paper-card);
+  width: 1.5em;
+  text-align: right;
+  color: var(--ink-muted);
   font-family: var(--font-mono);
-  font-size: 0.75rem;
+  font-size: 0.8rem;
   font-weight: 500;
-  display: flex; align-items: center; justify-content: center;
   flex-shrink: 0;
 }
 .cheat-symbol {
   font-family: var(--font-mono);
-  font-size: 1.05rem;
+  font-size: 0.9rem;
   font-weight: 700;
   color: var(--ink);
-  min-width: 44px;
+  min-width: 3em;
+  flex-shrink: 0;
 }
 .cheat-row[data-tier="B"] .cheat-symbol,
 .cheat-row[data-tier="O"] .cheat-symbol,
@@ -687,9 +719,18 @@ body.locked .ink-fill.locked {
   gap: 3px;
 }
 .cheat-name {
-  font-size: 0.78rem;
-  font-weight: 600;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  font-weight: 500;
   color: var(--ink);
+  flex: 1;
+}
+.cheat-tie {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--ink-muted);
+  flex: 1;
 }
 .cheat-hint {
   font-size: 0.75rem;
@@ -939,9 +980,10 @@ body.locked .ink-fill.locked {
 .theme-toggle {
   display: flex;
   gap: 8px;
+  flex-wrap: wrap;
 }
 .theme-btn {
-  flex: 1;
+  flex: 1 1 45%;
   padding: 11px 10px;
   min-height: 44px;
   border-radius: var(--r-m);
@@ -1123,7 +1165,7 @@ body.locked .ink-fill.locked {
   position: fixed;
   left: 50%;
   top: 50%;
-  transform: translate(-50%, -50%) scale(0.9) rotate(-1deg);
+  transform: translate(-50%, -50%) scale(0.9);
   z-index: 100;
   opacity: 0;
   pointer-events: none;
@@ -1131,7 +1173,7 @@ body.locked .ink-fill.locked {
   width: 90%;
   max-width: 340px;
 }
-.settings-sheet.open { opacity: 1; pointer-events: auto; transform: translate(-50%, -50%) scale(1) rotate(-1deg); }
+.settings-sheet.open { opacity: 1; pointer-events: auto; transform: translate(-50%, -50%) scale(1); }
 .settings-panel {
   background: var(--paper-card);
   box-shadow: var(--lift);
@@ -1605,34 +1647,22 @@ body.locked .ink-fill.locked {
     <div class="cheat-row" data-tier="B">
       <div class="cheat-rank">1</div>
       <div class="cheat-symbol">( )</div>
-      <div class="cheat-info">
-        <div class="cheat-name" id="cheatNameB">Brackets</div>
-        <div class="cheat-hint">Always crunch inside first</div>
-      </div>
+      <div class="cheat-name" id="cheatNameB">Brackets</div>
     </div>
     <div class="cheat-row" data-tier="O">
       <div class="cheat-rank">2</div>
-      <div class="cheat-symbol">x<span class="sup">2</span> √</div>
-      <div class="cheat-info">
-        <div class="cheat-name" id="cheatNameO">Orders</div>
-        <div class="cheat-hint">Powers and roots next</div>
-      </div>
+      <div class="cheat-symbol">x<span class="sup">2</span></div>
+      <div class="cheat-name" id="cheatNameO">Orders</div>
     </div>
     <div class="cheat-row" data-tier="DM">
       <div class="cheat-rank">3</div>
-      <div class="cheat-symbol">÷ ×</div>
-      <div class="cheat-info">
-        <div class="cheat-name">Divide &amp; Multiply</div>
-        <div class="cheat-ltr">LEFT → RIGHT</div>
-      </div>
+      <div class="cheat-symbol">× ÷</div>
+      <div class="cheat-tie">tie → left to right</div>
     </div>
     <div class="cheat-row" data-tier="AS">
       <div class="cheat-rank">4</div>
       <div class="cheat-symbol">+ −</div>
-      <div class="cheat-info">
-        <div class="cheat-name">Add &amp; Subtract</div>
-        <div class="cheat-ltr">LEFT → RIGHT</div>
-      </div>
+      <div class="cheat-tie">tie → left to right</div>
     </div>
   </div>
 </div>
@@ -1704,6 +1734,7 @@ body.locked .ink-fill.locked {
       <div class="theme-toggle" role="group" aria-label="Theme">
         <button class="theme-btn active" data-t="light">PAPER ZINE</button>
         <button class="theme-btn" data-t="dark">BLACKOUT</button>
+        <button class="theme-btn" data-t="terminal">TERMINAL</button>
       </div>
     </div>
     <div class="settings-group">
@@ -3211,12 +3242,16 @@ $('dailyMenuBtn').onclick = () => {
   state.mode = 'endless';
 };
 
+function resolveTheme() {
+  const stored = localStorage.getItem(LS_THEME);
+  if (stored === 'light' || stored === 'dark' || stored === 'terminal') return stored;
+  return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+}
 function applyTheme() {
-  const t = localStorage.getItem(LS_THEME) || 'light';
-  document.documentElement.setAttribute('data-theme', t === 'dark' ? 'dark' : 'light');
+  document.documentElement.setAttribute('data-theme', resolveTheme());
 }
 function renderTheme() {
-  const t = localStorage.getItem(LS_THEME) || 'light';
+  const t = resolveTheme();
   document.querySelectorAll('.theme-btn').forEach(b => b.classList.toggle('active', b.dataset.t === t));
 }
 document.querySelectorAll('.theme-btn').forEach(btn => {
