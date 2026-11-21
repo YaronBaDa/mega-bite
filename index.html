@@ -21,6 +21,7 @@
   --overdrive: #2563EB;
   --overdrive-cyan: #38BDF8;
   --accent: #C6F432;
+  --mint: #4ADE80;
   --accent-soft: rgba(198, 244, 50, 0.28);
   --pow: #7C3AED;
   --bracket-0: #DB2777;
@@ -52,6 +53,7 @@
   --overdrive: #38BDF8;
   --overdrive-cyan: #7DD3FC;
   --accent: #D9F99D;
+  --mint: #86EFAC;
   --accent-soft: rgba(217, 249, 157, 0.24);
   --pow: #A78BFA;
   --bracket-0: #F472B6;
@@ -75,6 +77,7 @@
   --overdrive: #5CE1E6;
   --overdrive-cyan: #7DF9FF;
   --accent: #B6FF3B;
+  --mint: #86EFAC;
   --accent-soft: rgba(182, 255, 59, 0.24);
   --pow: #B99CFF;
   --bracket-0: #FF7AC8;
@@ -338,8 +341,9 @@ body {
   background-color: var(--paper-card);
   background-image: radial-gradient(circle, var(--dot) 1.2px, transparent 1.2px);
   background-size: 24px 24px;
-  border-radius: var(--r-m);
-  border: 1px solid var(--border-ink);
+  border-radius: 16px;
+  border: 2.5px solid var(--mint);
+  box-shadow: 0 4px 0 var(--mint);
   position: relative;
   transition: transform 0.4s var(--spring);
 }
@@ -642,14 +646,15 @@ body.locked .ink-fill.locked {
   padding: 16px 14px;
   min-height: 62px;
   border-radius: var(--r-m);
-  background-color: var(--paper-card);
-  box-shadow: var(--lift);
+  background: transparent;
+  border: 1px solid var(--border-ink);
+  box-shadow: none;
   color: var(--ink);
   font-family: var(--font-mono);
   font-size: 1.15rem;
   font-weight: 700;
   cursor: pointer;
-  transition: transform 0.12s var(--spring), box-shadow 0.12s var(--spring);
+  transition: background-color 140ms ease, border-color 140ms ease, color 140ms ease, transform 100ms ease;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -672,14 +677,15 @@ body.locked .ink-fill.locked {
   padding: 16px 14px;
   min-height: 62px;
   border-radius: var(--r-m);
-  background-color: var(--paper-card);
-  box-shadow: var(--lift);
+  background: transparent;
+  border: 1px solid var(--border-ink);
+  box-shadow: none;
   color: var(--ink);
   font-family: var(--font-mono);
   font-size: 1.35rem;
   font-weight: 700;
   cursor: pointer;
-  transition: transform 0.12s var(--spring), box-shadow 0.12s var(--spring);
+  transition: background-color 140ms ease, border-color 140ms ease, color 140ms ease, transform 100ms ease;
 }
 .answer-btn.correct {
   background: var(--accent);
@@ -689,6 +695,15 @@ body.locked .ink-fill.locked {
   content: ' ✓';
   font-weight: 700;
 }
+@media (hover: hover) {
+  .chunk-card:hover,
+  .answer-btn:hover { background: var(--paper-tint); border-color: var(--mint); }
+}
+.chunk-card:focus-visible,
+.answer-btn:focus-visible { background: var(--paper-tint); border-color: var(--mint); }
+.chunk-card:active,
+.answer-btn:active { transform: scale(0.98); background: var(--paper-tint); }
+
 .answer-btn.wrong {
   background-color: var(--paper-card);
   border-color: var(--pen-red);
@@ -1575,13 +1590,13 @@ body.locked .ink-fill.locked {
 
 
 /* ===== KEYCAP BUTTONS (mechanical-keyboard look) ===== */
-.chunk-card, .answer-btn, .play-btn, .daily-btn, .refill-btn, .next-btn, .share-btn, .menu-btn, .diff-btn, .notation-btn, .theme-btn {
+.play-btn, .daily-btn, .refill-btn, .next-btn, .share-btn, .menu-btn, .diff-btn, .notation-btn, .theme-btn {
   border: 1px solid var(--ink);
   border-radius: var(--r-m);
   box-shadow: 0 3px 0 var(--ink);
   transition: transform 0.08s, box-shadow 0.08s, background-color 0.08s, color 0.08s, border-color 0.08s;
 }
-.chunk-card:active, .answer-btn:active, .play-btn:active, .daily-btn:active, .refill-btn:active, .next-btn:active, .share-btn:active, .menu-btn:active, .diff-btn:active, .notation-btn:active, .theme-btn:active {
+.play-btn:active, .daily-btn:active, .refill-btn:active, .next-btn:active, .share-btn:active, .menu-btn:active, .diff-btn:active, .notation-btn:active, .theme-btn:active {
   transform: translateY(3px);
   box-shadow: 0 0 0 var(--ink);
 }
@@ -1590,7 +1605,7 @@ body.locked .ink-fill.locked {
     opacity: 1;
     pointer-events: auto;
   }
-  .chunk-card:hover, .answer-btn:hover, .play-btn:hover, .daily-btn:hover, .refill-btn:hover, .next-btn:hover, .share-btn:hover, .menu-btn:hover, .diff-btn:hover, .notation-btn:hover, .theme-btn:hover {
+  .play-btn:hover, .daily-btn:hover, .refill-btn:hover, .next-btn:hover, .share-btn:hover, .menu-btn:hover, .diff-btn:hover, .notation-btn:hover, .theme-btn:hover {
     transform: translateY(-1px);
   }
 }
