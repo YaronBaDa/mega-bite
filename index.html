@@ -23,6 +23,9 @@
   --accent: #C6F432;
   --accent-soft: rgba(198, 244, 50, 0.28);
   --pow: #7C3AED;
+  --bracket-0: #DB2777;
+  --bracket-1: #0891B2;
+  --bracket-2: #7C3AED;
   --border-ink: #E1DED2;
   --r-s: 8px;
   --r-m: 14px;
@@ -51,6 +54,9 @@
   --accent: #D9F99D;
   --accent-soft: rgba(217, 249, 157, 0.24);
   --pow: #A78BFA;
+  --bracket-0: #F472B6;
+  --bracket-1: #22D3EE;
+  --bracket-2: #A78BFA;
   --border-ink: #3E4148;
   --lift: 0 1px 0 rgba(255,255,255,.05), 0 6px 16px -8px rgba(0,0,0,.5);
 }
@@ -227,8 +233,10 @@ body {
 .food-chain-area {
   flex: 1;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
+  gap: 10px;
   padding: 16px 16px 16px 24px;
   min-height: 0;
   position: relative;
@@ -267,6 +275,27 @@ body {
   transition: transform 0.4s var(--spring);
 }
 .food-chain.arena-shake { animation: arenaShake 0.15s ease; }
+.trace {
+  width: 100%;
+  max-height: 5.2em;
+  overflow: hidden;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  line-height: 1.3;
+  color: var(--ink-muted);
+  padding: 0 4px;
+}
+.trace-line {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  animation: traceFade 200ms ease;
+}
+@keyframes traceFade {
+  from { opacity: 0; transform: translateY(2px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
 @keyframes arenaShake {
   0%, 100% { transform: translate(0, 0); }
   25% { transform: translate(-2px, 1px); }
@@ -287,6 +316,7 @@ body {
   position: relative;
 }
 .food-token.num { color: var(--ink); min-width: 32px; }
+.food-token.tap-pow { color: var(--pow); min-width: 32px; }
 .food-token.op {
   color: var(--pen-blue);
   font-size: 1.8rem;
@@ -303,7 +333,10 @@ body {
   width: 52px;
   height: 52px;
 }
-.food-token.paren { color: var(--pen-blue); font-size: 1.85rem; padding: 0 1px; }
+.food-token.paren { font-size: 1.85rem; padding: 0 1px; }
+.food-token.paren.d0 { color: var(--bracket-0); }
+.food-token.paren.d1 { color: var(--bracket-1); }
+.food-token.paren.d2 { color: var(--bracket-2); }
 /* Overdrive electric-cyan pen tint */
 body.overdrive .food-token.op,
 body.overdrive .food-token.paren,
@@ -1546,6 +1579,7 @@ body.locked .ink-fill.locked {
   <div class="food-chain-area">
     <div class="bonus-badge hidden" id="bonusBadge">BONUS PROBLEM</div>
     <div class="food-chain" id="foodChain"></div>
+    <div id="trace" class="trace" aria-label="Working"></div>
   </div>
 
   <div class="prompt-row">
@@ -2276,6 +2310,7 @@ let state = {
   flowStreak: 0,
   inkEnergy: 100,
   ast: null,
+  trace: [],
   totalStepsOriginal: 0,
   phase: 'select',
   selectedChunk: null,
@@ -2432,7 +2467,7 @@ function renderFoodChain() {
   const chain = $('foodChain');
   chain.innerHTML = '';
 
-  function renderNode(node, parent) {
+  function renderNode(node, parent, depth) {
     if (node.type === 'num') {
       const span = document.createElement('span');
       span.className = 'food-token num';
@@ -2441,27 +2476,27 @@ function renderFoodChain() {
       parent.appendChild(span);
     } else if (node.type === 'bracket') {
       const open = document.createElement('span');
-      open.className = 'food-token paren';
+      open.className = 'food-token paren d' + (depth % 3);
       open.textContent = '(';
       open._astNode = node;
       parent.appendChild(open);
-      renderNode(node.inner, parent);
+      renderNode(node.inner, parent, depth + 1);
       const close = document.createElement('span');
-      close.className = 'food-token paren';
+      close.className = 'food-token paren d' + (depth % 3);
       close.textContent = ')';
       close._astNode = node;
       parent.appendChild(close);
     } else if (node.type === 'binop') {
       if (node.op === '^' && node.left.type === 'num' && node.right.type === 'num') {
         const powSpan = document.createElement('span');
-        powSpan.className = 'food-token num';
+        powSpan.className = 'food-token tap-pow';
         powSpan.innerHTML = `${node.left.value}<sup>${node.right.value}</sup>`;
         powSpan._astNode = node;
         powSpan._isPower = true;
         parent.appendChild(powSpan);
         return;
       }
-      renderNode(node.left, parent);
+      renderNode(node.left, parent, depth);
       const opSpan = document.createElement('span');
       opSpan.className = 'food-token op';
       opSpan.textContent = OPSYMBOLS[node.op] || node.op;
@@ -2469,11 +2504,22 @@ function renderFoodChain() {
       opSpan.addEventListener('pointerenter', () => { if (state.phase === 'select') highlightTokens([node, node.left, node.right]); });
       opSpan.addEventListener('pointerleave', () => { if (state.phase === 'select') clearChunkHighlights(); });
       parent.appendChild(opSpan);
-      renderNode(node.right, parent);
+      renderNode(node.right, parent, depth);
     }
   }
 
-  renderNode(state.ast, chain);
+  renderNode(state.ast, chain, 0);
+}
+
+function renderTrace() {
+  const el = $('trace');
+  if (!el) return;
+  const lines = state.trace.slice(1).slice(-4);
+  el.innerHTML = lines.map(s => `<div class="trace-line">→ ${traceDisplay(s)}</div>`).join('');
+}
+
+function traceDisplay(s) {
+  return s.split('').map(c => OPSYMBOLS[c] || c).join('');
 }
 
 function renderPrompt(text) {
@@ -2842,6 +2888,8 @@ function handleAnswerSelect(val, correct, btn) {
       const resultNode = { type: 'num', value: correct };
       state.ast = replaceNode(state.ast, chunkNode, resultNode);
       state.ast = simplifyBrackets(state.ast);
+      state.trace.push(astToString(state.ast));
+      renderTrace();
       clearChunkHighlights();
       updateStepCounter();
 
@@ -2896,6 +2944,7 @@ function loadLevel() {
   }
   $('bonusBadge').classList.toggle('hidden', !isBonus);
   state.ast = parseAST(tokenize(expr));
+  state.trace = [astToString(state.ast)];
   state.totalStepsOriginal = countTotalSteps(state.ast);
   state.phase = 'select';
   state.selectedChunk = null;
@@ -2905,6 +2954,7 @@ function loadLevel() {
   closeCheatSheet();
 
   renderFoodChain();
+  renderTrace();
   renderActionTray();
   renderInkEnergy();
   updateStepCounter();
